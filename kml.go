@@ -176,7 +176,7 @@ func TimeSpan(children ...Element) *CompoundElement      { return newCE("TimeSpa
 func Value(value string) *SimpleElement                  { return newSEString("value", value) }
 func Visibility(value bool) *SimpleElement               { return newSEBool("visibility", value) }
 func West(value float64) *SimpleElement                  { return newSEFloat("west", value) }
-func When(value time.Time) *SimpleElement                { return newSETime("time", value) }
+func When(value time.Time) *SimpleElement                { return newSETime("when", value) }
 func Width(value float64) *SimpleElement                 { return newSEFloat("width", value) }
 
 func Coordinates(value ...Coordinate) *SimpleElement {
