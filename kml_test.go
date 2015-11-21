@@ -205,12 +205,12 @@ func TestWrite(t *testing.T) {
 		},
 	} {
 		b := &bytes.Buffer{}
-		if err := Write(b, tc.e); err != nil {
-			t.Errorf("Write(b, %#v) == %#v, want nil", tc.e, err)
+		if err := tc.e.Write(b); err != nil {
+			t.Errorf("%#v.Write(b) == %#v, want nil", tc.e, err)
 			continue
 		}
 		if got := b.String(); got != tc.want {
-			t.Errorf("Write(b, %#v) wrote %#v, want %#v", tc.e, got, tc.want)
+			t.Errorf("%#v.Write(b) wrote %#v, want %#v", tc.e, got, tc.want)
 		}
 	}
 }

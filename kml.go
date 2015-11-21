@@ -34,9 +34,9 @@ type Vec2 struct {
 }
 
 type Element interface {
+	xml.Marshaler
 	StringXML() (string, error)
-	MarshalXML(*xml.Encoder, xml.StartElement) error
-	WriteTo(io.Writer) error
+	Write(io.Writer) error
 }
 
 type SimpleElement struct {
@@ -81,21 +81,8 @@ func (se *SimpleElement) MarshalXML(e *xml.Encoder, start xml.StartElement) erro
 	return nil
 }
 
-func (se *SimpleElement) StringXML() (string, error) {
-	b := &bytes.Buffer{}
-	if err := se.WriteTo(b); err != nil {
-		return "", err
-	}
-	return b.String(), nil
-}
-
-func (cs *SimpleElement) WriteTo(w io.Writer) error {
-	e := xml.NewEncoder(w)
-	if err := e.Encode(cs); err != nil {
-		return err
-	}
-	return nil
-}
+func (se *SimpleElement) StringXML() (string, error) { return stringXML(se) }
+func (se *SimpleElement) Write(w io.Writer) error    { return write(w, se) }
 
 func newSEBool(name string, value bool) *SimpleElement {
 	var v string
@@ -192,21 +179,8 @@ func (ce *CompoundElement) MarshalXML(e *xml.Encoder, start xml.StartElement) er
 	return nil
 }
 
-func (ce *CompoundElement) StringXML() (string, error) {
-	b := &bytes.Buffer{}
-	if err := ce.WriteTo(b); err != nil {
-		return "", err
-	}
-	return b.String(), nil
-}
-
-func (cs *CompoundElement) WriteTo(w io.Writer) error {
-	e := xml.NewEncoder(w)
-	if err := e.Encode(cs); err != nil {
-		return err
-	}
-	return nil
-}
+func (ce *CompoundElement) StringXML() (string, error) { return stringXML(ce) }
+func (ce *CompoundElement) Write(w io.Writer) error    { return write(w, ce) }
 
 func Altitude(value int) *SimpleElement                  { return newSEInt("altitude", value) }
 func AltitudeMode(value string) *SimpleElement           { return newSEString("altitudeMode", value) }
@@ -295,11 +269,21 @@ func KML(children ...Element) *CompoundElement {
 	}
 }
 
-func Write(w io.Writer, root Element) error {
+func stringXML(m xml.Marshaler) (string, error) {
+	b := &bytes.Buffer{}
+	e := xml.NewEncoder(b)
+	if err := e.Encode(m); err != nil {
+		return "", err
+	}
+	return b.String(), nil
+}
+
+func write(w io.Writer, m xml.Marshaler) error {
 	if _, err := w.Write([]byte(Header)); err != nil {
 		return err
 	}
-	if err := root.WriteTo(w); err != nil {
+	e := xml.NewEncoder(w)
+	if err := e.Encode(m); err != nil {
 		return err
 	}
 	return nil
