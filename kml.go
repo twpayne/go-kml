@@ -50,16 +50,6 @@ type CompoundElement struct {
 	children []Element
 }
 
-// Attr returns the XML attributes.
-func (v2 Vec2) Attr() []xml.Attr {
-	return []xml.Attr{
-		{Name: xml.Name{Local: "x"}, Value: strconv.FormatFloat(v2.X, 'f', -1, 64)},
-		{Name: xml.Name{Local: "y"}, Value: strconv.FormatFloat(v2.Y, 'f', -1, 64)},
-		{Name: xml.Name{Local: "xunits"}, Value: v2.XUnits},
-		{Name: xml.Name{Local: "yunits"}, Value: v2.YUnits},
-	}
-}
-
 // MarshalXML marshals se to e. start is ignored.
 func (se *SimpleElement) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	if err := e.EncodeToken(se.StartElement); err != nil {
@@ -287,7 +277,12 @@ func newSEVec2(name string, value Vec2) *SimpleElement {
 	return &SimpleElement{
 		StartElement: xml.StartElement{
 			Name: xml.Name{Local: name},
-			Attr: value.Attr(),
+			Attr: []xml.Attr{
+				{Name: xml.Name{Local: "x"}, Value: strconv.FormatFloat(value.X, 'f', -1, 64)},
+				{Name: xml.Name{Local: "y"}, Value: strconv.FormatFloat(value.Y, 'f', -1, 64)},
+				{Name: xml.Name{Local: "xunits"}, Value: value.XUnits},
+				{Name: xml.Name{Local: "yunits"}, Value: value.YUnits},
+			},
 		},
 	}
 }
