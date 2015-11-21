@@ -7,11 +7,30 @@ import (
 	"time"
 )
 
+type testCase struct {
+	e    Element
+	want string
+}
+
+func (tc testCase) testWrite(t *testing.T) {
+	b := &bytes.Buffer{}
+	if err := tc.e.Write(b); err != nil {
+		t.Errorf("%#v.Write(b) == %#v, want nil", tc.e, err)
+		return
+	}
+	if got := b.String(); got != tc.want {
+		t.Errorf("%#v.Write(b) wrote %#v, want %#v", tc.e, got, tc.want)
+	}
+}
+
+func (tc testCase) testStringXML(t *testing.T) {
+	if got, err := tc.e.StringXML(); err != nil || got != tc.want {
+		t.Errorf("%#v.StringXML() == %#v, %#v, want %#v, nil", tc.e, got, err, tc.want)
+	}
+}
+
 func TestWrite(t *testing.T) {
-	for _, tc := range []struct {
-		e    Element
-		want string
-	}{
+	for _, tc := range []testCase{
 		{
 			e: KML(),
 			want: `<?xml version="1.0" encoding="UTF-8"?>` + "\n" +
@@ -239,22 +258,12 @@ func TestWrite(t *testing.T) {
 				`</kml>`,
 		},
 	} {
-		b := &bytes.Buffer{}
-		if err := tc.e.Write(b); err != nil {
-			t.Errorf("%#v.Write(b) == %#v, want nil", tc.e, err)
-			continue
-		}
-		if got := b.String(); got != tc.want {
-			t.Errorf("%#v.Write(b) wrote %#v, want %#v", tc.e, got, tc.want)
-		}
+		tc.testWrite(t)
 	}
 }
 
 func TestSimpleElements(t *testing.T) {
-	for _, tc := range []struct {
-		e    Element
-		want string
-	}{
+	for _, tc := range []testCase{
 		{
 			Altitude(0),
 			`<altitude>0</altitude>`,
@@ -325,8 +334,6 @@ func TestSimpleElements(t *testing.T) {
 		},
 		// FIXME More simple elements
 	} {
-		if got, err := tc.e.StringXML(); err != nil || got != tc.want {
-			t.Errorf("%#v.StringXML() == %#v, %#v, want %#v, nil", tc.e, got, err, tc.want)
-		}
+		tc.testStringXML(t)
 	}
 }
