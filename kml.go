@@ -14,9 +14,8 @@ import (
 )
 
 const (
-	Header = xml.Header
-	NS     = "http://www.opengis.net/kml/2.2"
-	NS_GX  = "http://www.google.com/kml/ext/2.2"
+	NS    = "http://www.opengis.net/kml/2.2"
+	NS_GX = "http://www.google.com/kml/ext/2.2"
 )
 
 // A Coordinate represents a single geographical coordinate.
@@ -239,7 +238,7 @@ func stringXML(m xml.Marshaler) (string, error) {
 }
 
 func write(w io.Writer, m xml.Marshaler) error {
-	if _, err := w.Write([]byte(Header)); err != nil {
+	if _, err := w.Write([]byte(xml.Header)); err != nil {
 		return err
 	}
 	e := xml.NewEncoder(w)
