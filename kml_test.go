@@ -1,8 +1,6 @@
 package kml
 
 import (
-	"bytes"
-	"encoding/xml"
 	"image/color"
 	"testing"
 	"time"
@@ -10,11 +8,11 @@ import (
 
 func TestTutorial(t *testing.T) {
 	for _, tc := range []struct {
-		t    xml.Token
+		e    Element
 		want string
 	}{
 		{
-			t: KML(
+			e: KML(
 				Placemark(
 					Name("Simple placemark"),
 					Description("Attached to the ground. Intelligently places itself at the height of the underlying terrain."),
@@ -34,7 +32,7 @@ func TestTutorial(t *testing.T) {
 				`</kml>`,
 		},
 		{
-			t: KML(
+			e: KML(
 				Document(
 					Placemark(
 						Name("Entity references example"),
@@ -69,7 +67,7 @@ func TestTutorial(t *testing.T) {
 				`</kml>`,
 		},
 		{
-			t: KML(
+			e: KML(
 				Folder(
 					Name("Ground Overlays"),
 					Description("Examples of ground overlays"),
@@ -111,21 +109,15 @@ func TestTutorial(t *testing.T) {
 				`</kml>`,
 		},
 	} {
-		w := bytes.NewBuffer(nil)
-		e := xml.NewEncoder(w)
-		if err := e.Encode(tc.t); err != nil {
-			t.Errorf("e.Encode(%#v) == %#v, want nil", tc.t, err)
-			continue
-		}
-		if got := w.String(); got != tc.want {
-			t.Errorf("e.Encode(%#v) encodes\nas   %v,\nwant %v", tc.t, got, tc.want)
+		if got, err := tc.e.StringXML(); err != nil || got != tc.want {
+			t.Errorf("%#v.StringXML() == %#v, %#v, want %#v, nil", tc.e, got, err, tc.want)
 		}
 	}
 }
 
 func TestSimpleElements(t *testing.T) {
 	for _, tc := range []struct {
-		t    xml.Token
+		e    Element
 		want string
 	}{
 		{
@@ -194,14 +186,8 @@ func TestSimpleElements(t *testing.T) {
 		},
 		// FIXME More simple elements
 	} {
-		w := bytes.NewBuffer(nil)
-		e := xml.NewEncoder(w)
-		if err := e.Encode(tc.t); err != nil {
-			t.Errorf("e.Encode(%#v) == %#v, want nil", tc.t, err)
-			continue
-		}
-		if got := w.String(); got != tc.want {
-			t.Errorf("e.Encode(%#v) encodes as %#v, want %#v", tc.t, got, tc.want)
+		if got, err := tc.e.StringXML(); err != nil || got != tc.want {
+			t.Errorf("%#v.StringXML() == %#v, %#v, want %#v, nil", tc.e, got, err, tc.want)
 		}
 	}
 }
