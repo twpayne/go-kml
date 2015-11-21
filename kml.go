@@ -64,8 +64,8 @@ type CompoundElement struct {
 	children []Element
 }
 
-// A SharedStyleElement is a Style element with an id.
-type SharedStyleElement struct {
+// A SharedElement is an element with an id.
+type SharedElement struct {
 	CompoundElement
 	id string
 }
@@ -128,8 +128,9 @@ func (ce *CompoundElement) Write(w io.Writer) error {
 	return write(w, ce)
 }
 
-func (sse *SharedStyleElement) Id() string {
-	return sse.id
+// Id returns se's id.
+func (se *SharedElement) Id() string {
+	return se.id
 }
 
 func Altitude(value int) *SimpleElement                  { return newSEInt("altitude", value) }
@@ -226,22 +227,11 @@ func HrefMustParse(value string) *SimpleElement {
 	return Href(url)
 }
 
-func SharedStyle(id string, children ...Element) *SharedStyleElement {
-	return &SharedStyleElement{
-		CompoundElement: CompoundElement{
-			StartElement: xml.StartElement{
-				Name: xml.Name{Local: "Style"},
-				Attr: []xml.Attr{
-					{Name: xml.Name{Local: "id"}, Value: id},
-				},
-			},
-			children: children,
-		},
-		id: id,
-	}
+func SharedStyle(id string, children ...Element) *SharedElement {
+	return newSharedE("Style", id, children)
 }
 
-func StyleURL(style *SharedStyleElement) *SimpleElement {
+func StyleURL(style *SharedElement) *SimpleElement {
 	return newSEString("styleUrl", "#"+style.Id())
 }
 
@@ -361,4 +351,19 @@ func newCE(name string, children []Element) *CompoundElement {
 
 func newCEElement(name string, child Element) *CompoundElement {
 	return newCE(name, []Element{child})
+}
+
+func newSharedE(name, id string, children []Element) *SharedElement {
+	return &SharedElement{
+		CompoundElement: CompoundElement{
+			StartElement: xml.StartElement{
+				Name: xml.Name{Local: name},
+				Attr: []xml.Attr{
+					{Name: xml.Name{Local: "id"}, Value: id},
+				},
+			},
+			children: children,
+		},
+		id: id,
+	}
 }
