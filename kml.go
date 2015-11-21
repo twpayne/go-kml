@@ -136,7 +136,7 @@ func GroundOverlay(children ...Element) *CompoundElement { return newCE("GroundO
 func GxAltitudeMode(value string) *SimpleElement         { return newSEString("gx:altitudeMode", value) }
 func GxTrack(children ...Element) *CompoundElement       { return newCE("gx:Track", children) }
 func Heading(value float64) *SimpleElement               { return newSEFloat("heading", value) }
-func HotSpot(value Vec2) *SimpleElement                  { return newSEPosition("hotSpot", value) }
+func HotSpot(value Vec2) *SimpleElement                  { return newSEVec2("hotSpot", value) }
 func Href(value *url.URL) *SimpleElement                 { return newSEString("href", value.String()) }
 func Icon(children ...Element) *CompoundElement          { return newCE("Icon", children) }
 func IconStyle(children ...Element) *CompoundElement     { return newCE("IconStyle", children) }
@@ -155,7 +155,7 @@ func Name(value string) *SimpleElement                   { return newSEString("n
 func North(value float64) *SimpleElement                 { return newSEFloat("north", value) }
 func Open(value bool) *SimpleElement                     { return newSEBool("open", value) }
 func OuterBoundaryIs(value Element) *CompoundElement     { return newCEElement("outerBoundaryIs", value) }
-func OverlayXY(value Vec2) *SimpleElement                { return newSEPosition("overlayXY", value) }
+func OverlayXY(value Vec2) *SimpleElement                { return newSEVec2("overlayXY", value) }
 func Placemark(children ...Element) *CompoundElement     { return newCE("Placemark", children) }
 func Point(children ...Element) *CompoundElement         { return newCE("Point", children) }
 func PolyStyle(children ...Element) *CompoundElement     { return newCE("PolyStyle", children) }
@@ -164,7 +164,7 @@ func Roll(value float64) *SimpleElement                  { return newSEFloat("ro
 func Rotation(value float64) *SimpleElement              { return newSEFloat("rotation", value) }
 func Scale(value float64) *SimpleElement                 { return newSEFloat("scale", value) }
 func ScreenOverlay(children ...Element) *CompoundElement { return newCE("ScreenOverlay", children) }
-func ScreenXY(value Vec2) *SimpleElement                 { return newSEPosition("screenXY", value) }
+func ScreenXY(value Vec2) *SimpleElement                 { return newSEVec2("screenXY", value) }
 func Snippet(value string) *SimpleElement                { return newSEString("snippet", value) }
 func South(value float64) *SimpleElement                 { return newSEFloat("south", value) }
 func Style(children ...Element) *CompoundElement         { return newCE("Style", children) }
@@ -283,7 +283,7 @@ func newSEInt(name string, value int) *SimpleElement {
 	}
 }
 
-func newSEPosition(name string, value Vec2) *SimpleElement {
+func newSEVec2(name string, value Vec2) *SimpleElement {
 	return &SimpleElement{
 		StartElement: xml.StartElement{
 			Name: xml.Name{Local: name},
