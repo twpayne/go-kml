@@ -50,6 +50,12 @@ type CompoundElement struct {
 	children []Element
 }
 
+// A SharedStyleElement is a Style element with an id.
+type SharedStyleElement struct {
+	CompoundElement
+	id string
+}
+
 // MarshalXML marshals se to e. start is ignored.
 func (se *SimpleElement) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	if err := e.EncodeToken(se.StartElement); err != nil {
@@ -106,6 +112,10 @@ func (ce *CompoundElement) StringXML() (string, error) {
 // Write writes an XML header and ce to w.
 func (ce *CompoundElement) Write(w io.Writer) error {
 	return write(w, ce)
+}
+
+func (sse *SharedStyleElement) Id() string {
+	return sse.id
 }
 
 func Altitude(value int) *SimpleElement                  { return newSEInt("altitude", value) }
@@ -200,6 +210,25 @@ func HrefMustParse(value string) *SimpleElement {
 		panic(err)
 	}
 	return Href(url)
+}
+
+func SharedStyle(id string, children ...Element) *SharedStyleElement {
+	return &SharedStyleElement{
+		CompoundElement: CompoundElement{
+			StartElement: xml.StartElement{
+				Name: xml.Name{Local: "Style"},
+				Attr: []xml.Attr{
+					{Name: xml.Name{Local: "id"}, Value: id},
+				},
+			},
+			children: children,
+		},
+		id: id,
+	}
+}
+
+func StyleURL(style *SharedStyleElement) *SimpleElement {
+	return newSEString("styleUrl", "#"+style.Id())
 }
 
 func KML(children ...Element) *CompoundElement {

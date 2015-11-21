@@ -105,6 +105,29 @@ func TestSimpleElements(t *testing.T) {
 	}
 }
 
+func TestSharedStyles(t *testing.T) {
+	sharedStyle := SharedStyle("0")
+	for _, tc := range []testCase{
+		{
+			e: Folder(
+				sharedStyle,
+				Placemark(
+					StyleURL(sharedStyle),
+				),
+			),
+			want: `<Folder>` +
+				`<Style id="0">` +
+				`</Style>` +
+				`<Placemark>` +
+				`<styleUrl>#0</styleUrl>` +
+				`</Placemark>` +
+				`</Folder>`,
+		},
+	} {
+		tc.testStringXML(t)
+	}
+}
+
 func TestWrite(t *testing.T) {
 	for _, tc := range []testCase{
 		{
