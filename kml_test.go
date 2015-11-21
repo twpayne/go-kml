@@ -7,11 +7,16 @@ import (
 	"time"
 )
 
-func TestTutorial(t *testing.T) {
+func TestWrite(t *testing.T) {
 	for _, tc := range []struct {
 		e    Element
 		want string
 	}{
+		{
+			e: KML(),
+			want: `<?xml version="1.0" encoding="UTF-8"?>` + "\n" +
+				`<kml xmlns="http://www.opengis.net/kml/2.2"></kml>`,
+		},
 		{
 			e: KML(
 				Placemark(
@@ -22,7 +27,8 @@ func TestTutorial(t *testing.T) {
 					),
 				),
 			),
-			want: `<kml xmlns="http://www.opengis.net/kml/2.2">` +
+			want: `<?xml version="1.0" encoding="UTF-8"?>` + "\n" +
+				`<kml xmlns="http://www.opengis.net/kml/2.2">` +
 				`<Placemark>` +
 				`<name>Simple placemark</name>` +
 				`<description>Attached to the ground. Intelligently places itself at the height of the underlying terrain.</description>` +
@@ -49,7 +55,8 @@ func TestTutorial(t *testing.T) {
 					),
 				),
 			),
-			want: `<kml xmlns="http://www.opengis.net/kml/2.2">` +
+			want: `<?xml version="1.0" encoding="UTF-8"?>` + "\n" +
+				`<kml xmlns="http://www.opengis.net/kml/2.2">` +
 				`<Document>` +
 				`<Placemark>` +
 				`<name>Entity references example</name>` +
@@ -88,7 +95,8 @@ func TestTutorial(t *testing.T) {
 					),
 				),
 			),
-			want: `<kml xmlns="http://www.opengis.net/kml/2.2">` +
+			want: `<?xml version="1.0" encoding="UTF-8"?>` + "\n" +
+				`<kml xmlns="http://www.opengis.net/kml/2.2">` +
 				`<Folder>` +
 				`<name>Ground Overlays</name>` +
 				`<description>Examples of ground overlays</description>` +
@@ -143,7 +151,8 @@ func TestTutorial(t *testing.T) {
 					),
 				),
 			),
-			want: `<kml xmlns="http://www.opengis.net/kml/2.2">` +
+			want: `<?xml version="1.0" encoding="UTF-8"?>` + "\n" +
+				`<kml xmlns="http://www.opengis.net/kml/2.2">` +
 				`<Placemark>` +
 				`<name>The Pentagon</name>` +
 				`<Polygon>` +
@@ -178,8 +187,13 @@ func TestTutorial(t *testing.T) {
 				`</kml>`,
 		},
 	} {
-		if got, err := tc.e.StringXML(); err != nil || got != tc.want {
-			t.Errorf("%#v.StringXML() == %#v, %#v, want %#v, nil", tc.e, got, err, tc.want)
+		b := &bytes.Buffer{}
+		if err := tc.e.Write(b); err != nil {
+			t.Errorf("%#v.Write(b) == %#v, want nil", tc.e, err)
+			continue
+		}
+		if got := b.String(); got != tc.want {
+			t.Errorf("%#v.Write(b) wrote %#v, want %#v", tc.e, got, tc.want)
 		}
 	}
 }
@@ -257,28 +271,6 @@ func TestSimpleElements(t *testing.T) {
 	} {
 		if got, err := tc.e.StringXML(); err != nil || got != tc.want {
 			t.Errorf("%#v.StringXML() == %#v, %#v, want %#v, nil", tc.e, got, err, tc.want)
-		}
-	}
-}
-
-func TestWrite(t *testing.T) {
-	for _, tc := range []struct {
-		e    Element
-		want string
-	}{
-		{
-			KML(),
-			`<?xml version="1.0" encoding="UTF-8"?>` + "\n" +
-				`<kml xmlns="http://www.opengis.net/kml/2.2"></kml>`,
-		},
-	} {
-		b := &bytes.Buffer{}
-		if err := tc.e.Write(b); err != nil {
-			t.Errorf("%#v.Write(b) == %#v, want nil", tc.e, err)
-			continue
-		}
-		if got := b.String(); got != tc.want {
-			t.Errorf("%#v.Write(b) wrote %#v, want %#v", tc.e, got, tc.want)
 		}
 	}
 }
