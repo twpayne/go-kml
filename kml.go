@@ -139,11 +139,13 @@ func HotSpot(value Vec2) *SimpleElement                  { return newSEPosition(
 func Href(value *url.URL) *SimpleElement                 { return newSEString("href", value.String()) }
 func Icon(children ...Element) *CompoundElement          { return newCE("Icon", children) }
 func IconStyle(children ...Element) *CompoundElement     { return newCE("IconStyle", children) }
+func InnerBoundaryIs(value Element) *CompoundElement     { return newCEElement("innerBoundaryIs", value) }
 func LabelStyle(children ...Element) *CompoundElement    { return newCE("LabelStyle", children) }
 func LatLonBox(children ...Element) *CompoundElement     { return newCE("LatLonBox", children) }
 func Latitude(value float64) *SimpleElement              { return newSEFloat("latitude", value) }
 func LineString(children ...Element) *CompoundElement    { return newCE("LineString", children) }
 func LineStyle(children ...Element) *CompoundElement     { return newCE("LineStyle", children) }
+func LinearRing(children ...Element) *CompoundElement    { return newCE("LinearRing", children) }
 func ListItemType(value string) *SimpleElement           { return newSEString("listItemType", value) }
 func ListStyle(children ...Element) *CompoundElement     { return newCE("ListStyle", children) }
 func Longitude(value float64) *SimpleElement             { return newSEFloat("longitude", value) }
@@ -151,10 +153,12 @@ func MultiGeometry(children ...Element) *CompoundElement { return newCE("MultiGe
 func Name(value string) *SimpleElement                   { return newSEString("name", value) }
 func North(value float64) *SimpleElement                 { return newSEFloat("north", value) }
 func Open(value bool) *SimpleElement                     { return newSEBool("open", value) }
+func OuterBoundaryIs(value Element) *CompoundElement     { return newCEElement("outerBoundaryIs", value) }
 func OverlayXY(value Vec2) *SimpleElement                { return newSEPosition("overlayXY", value) }
 func Placemark(children ...Element) *CompoundElement     { return newCE("Placemark", children) }
 func Point(children ...Element) *CompoundElement         { return newCE("Point", children) }
 func PolyStyle(children ...Element) *CompoundElement     { return newCE("PolyStyle", children) }
+func Polygon(children ...Element) *CompoundElement       { return newCE("Polygon", children) }
 func Roll(value float64) *SimpleElement                  { return newSEFloat("roll", value) }
 func Rotation(value float64) *SimpleElement              { return newSEFloat("rotation", value) }
 func Scale(value float64) *SimpleElement                 { return newSEFloat("scale", value) }
@@ -296,4 +300,8 @@ func newCE(name string, children []Element) *CompoundElement {
 		},
 		children: children,
 	}
+}
+
+func newCEElement(name string, child Element) *CompoundElement {
+	return newCE(name, []Element{child})
 }
