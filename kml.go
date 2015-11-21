@@ -10,6 +10,7 @@ import (
 	"net/url"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -17,6 +18,19 @@ const (
 	NS    = "http://www.opengis.net/kml/2.2"
 	NS_GX = "http://www.google.com/kml/ext/2.2"
 )
+
+var (
+	lastId      int
+	lastIdMutex sync.Mutex
+)
+
+func GetId() string {
+	lastIdMutex.Lock()
+	lastId++
+	id := lastId
+	lastIdMutex.Unlock()
+	return strconv.Itoa(id)
+}
 
 // A Coordinate represents a single geographical coordinate.
 // Lon and Lat are in degrees, Alt is in meters.
