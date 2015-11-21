@@ -135,8 +135,8 @@ func Extrude(value bool) *SimpleElement                  { return newSEBool("ext
 func Folder(children ...Element) *CompoundElement        { return newCE("Folder", children) }
 func GroundOverlay(children ...Element) *CompoundElement { return newCE("GroundOverlay", children) }
 func Heading(value float64) *SimpleElement               { return newSEFloat("heading", value) }
-func Href(value *url.URL) *SimpleElement                 { return newSEString("href", value.String()) }
 func HotSpot(value Vec2) *SimpleElement                  { return newSEPosition("hotSpot", value) }
+func Href(value *url.URL) *SimpleElement                 { return newSEString("href", value.String()) }
 func Icon(children ...Element) *CompoundElement          { return newCE("Icon", children) }
 func IconStyle(children ...Element) *CompoundElement     { return newCE("IconStyle", children) }
 func LabelStyle(children ...Element) *CompoundElement    { return newCE("LabelStyle", children) }
