@@ -29,6 +29,82 @@ func (tc testCase) testStringXML(t *testing.T) {
 	}
 }
 
+func TestSimpleElements(t *testing.T) {
+	for _, tc := range []testCase{
+		{
+			Altitude(0),
+			`<altitude>0</altitude>`,
+		},
+		{
+			AltitudeMode("absolute"),
+			`<altitudeMode>absolute</altitudeMode>`,
+		},
+		{
+			Begin(time.Date(1876, 8, 1, 0, 0, 0, 0, time.UTC)),
+			`<begin>1876-08-01T00:00:00Z</begin>`,
+		},
+		{
+			BgColor(color.Black),
+			`<bgColor>ff000000</bgColor>`,
+		},
+		{
+			Color(color.White),
+			`<color>ffffffff</color>`,
+		},
+		{
+			Coordinates(Coordinate{Lon: 1.23, Lat: 4.56, Alt: 7.89}),
+			`<coordinates>1.23,4.56,7.89</coordinates>`,
+		},
+		{
+			Description("text"),
+			`<description>text</description>`,
+		},
+		{
+			End(time.Date(2015, 12, 31, 23, 59, 59, 0, time.UTC)),
+			`<end>2015-12-31T23:59:59Z</end>`,
+		},
+		{
+			Extrude(false),
+			`<extrude>0</extrude>`,
+		},
+		{
+			Folder(),
+			`<Folder></Folder>`,
+		},
+		{
+			GxCoord(Coordinate{1.23, 4.56, 7.89}),
+			`<gx:coord>1.23 4.56 7.89</gx:coord>`,
+		},
+		{
+			Heading(0),
+			`<heading>0</heading>`,
+		},
+		{
+			HotSpot(Vec2{X: 0.5, Y: 0.5, XUnits: "pixels", YUnits: "pixels"}),
+			`<hotSpot x="0.5" y="0.5" xunits="pixels" yunits="pixels"></hotSpot>`,
+		},
+		{
+			HrefMustParse("https://www.google.com/"),
+			`<href>https://www.google.com/</href>`,
+		},
+		{
+			Latitude(0),
+			`<latitude>0</latitude>`,
+		},
+		{
+			ListItemType("check"),
+			`<listItemType>check</listItemType>`,
+		},
+		{
+			OverlayXY(Vec2{X: 0, Y: 0, XUnits: "fraction", YUnits: "fraction"}),
+			`<overlayXY x="0" y="0" xunits="fraction" yunits="fraction"></overlayXY>`,
+		},
+		// FIXME More simple elements
+	} {
+		tc.testStringXML(t)
+	}
+}
+
 func TestWrite(t *testing.T) {
 	for _, tc := range []testCase{
 		{
@@ -259,81 +335,5 @@ func TestWrite(t *testing.T) {
 		},
 	} {
 		tc.testWrite(t)
-	}
-}
-
-func TestSimpleElements(t *testing.T) {
-	for _, tc := range []testCase{
-		{
-			Altitude(0),
-			`<altitude>0</altitude>`,
-		},
-		{
-			AltitudeMode("absolute"),
-			`<altitudeMode>absolute</altitudeMode>`,
-		},
-		{
-			Begin(time.Date(1876, 8, 1, 0, 0, 0, 0, time.UTC)),
-			`<begin>1876-08-01T00:00:00Z</begin>`,
-		},
-		{
-			BgColor(color.Black),
-			`<bgColor>ff000000</bgColor>`,
-		},
-		{
-			Color(color.White),
-			`<color>ffffffff</color>`,
-		},
-		{
-			Coordinates(Coordinate{Lon: 1.23, Lat: 4.56, Alt: 7.89}),
-			`<coordinates>1.23,4.56,7.89</coordinates>`,
-		},
-		{
-			Description("text"),
-			`<description>text</description>`,
-		},
-		{
-			End(time.Date(2015, 12, 31, 23, 59, 59, 0, time.UTC)),
-			`<end>2015-12-31T23:59:59Z</end>`,
-		},
-		{
-			Extrude(false),
-			`<extrude>0</extrude>`,
-		},
-		{
-			Folder(),
-			`<Folder></Folder>`,
-		},
-		{
-			GxCoord(Coordinate{1.23, 4.56, 7.89}),
-			`<gx:coord>1.23 4.56 7.89</gx:coord>`,
-		},
-		{
-			Heading(0),
-			`<heading>0</heading>`,
-		},
-		{
-			HotSpot(Vec2{X: 0.5, Y: 0.5, XUnits: "pixels", YUnits: "pixels"}),
-			`<hotSpot x="0.5" y="0.5" xunits="pixels" yunits="pixels"></hotSpot>`,
-		},
-		{
-			HrefMustParse("https://www.google.com/"),
-			`<href>https://www.google.com/</href>`,
-		},
-		{
-			Latitude(0),
-			`<latitude>0</latitude>`,
-		},
-		{
-			ListItemType("check"),
-			`<listItemType>check</listItemType>`,
-		},
-		{
-			OverlayXY(Vec2{X: 0, Y: 0, XUnits: "fraction", YUnits: "fraction"}),
-			`<overlayXY x="0" y="0" xunits="fraction" yunits="fraction"></overlayXY>`,
-		},
-		// FIXME More simple elements
-	} {
-		tc.testStringXML(t)
 	}
 }
