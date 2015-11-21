@@ -24,8 +24,13 @@ func (tc testCase) testWrite(t *testing.T) {
 }
 
 func (tc testCase) testStringXML(t *testing.T) {
-	if got, err := tc.e.StringXML(); err != nil || got != tc.want {
-		t.Errorf("%#v.StringXML() == %#v, %#v, want %#v, nil", tc.e, got, err, tc.want)
+	got, err := tc.e.StringXML()
+	if err != nil {
+		t.Errorf("%#v.StringXML() == %#v, %#v, want ..., nil", tc.e, got, err)
+		return
+	}
+	if got != tc.want {
+		t.Errorf("%#v.StringXML() == ..., nil,\n got %#v, nil,\nwant %#v, nil", tc.e, got, tc.want)
 	}
 }
 
