@@ -186,6 +186,58 @@ func TestWrite(t *testing.T) {
 				`</Placemark>` +
 				`</kml>`,
 		},
+		{
+			e: GxKML(),
+			want: `<?xml version="1.0" encoding="UTF-8"?>` + "\n" +
+				`<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2"></kml>`,
+		},
+		{
+			e: GxKML(
+				Folder(
+					Placemark(
+						GxTrack(
+							When(time.Date(2010, 5, 28, 2, 2, 9, 0, time.UTC)),
+							When(time.Date(2010, 5, 28, 2, 2, 35, 0, time.UTC)),
+							When(time.Date(2010, 5, 28, 2, 2, 44, 0, time.UTC)),
+							When(time.Date(2010, 5, 28, 2, 2, 53, 0, time.UTC)),
+							When(time.Date(2010, 5, 28, 2, 2, 54, 0, time.UTC)),
+							When(time.Date(2010, 5, 28, 2, 2, 55, 0, time.UTC)),
+							When(time.Date(2010, 5, 28, 2, 2, 56, 0, time.UTC)),
+							GxCoord(Coordinate{-122.207881, 37.371915, 156.000000}),
+							GxCoord(Coordinate{-122.205712, 37.373288, 152.000000}),
+							GxCoord(Coordinate{-122.204678, 37.373939, 147.000000}),
+							GxCoord(Coordinate{-122.203572, 37.374630, 142.199997}),
+							GxCoord(Coordinate{-122.203451, 37.374706, 141.800003}),
+							GxCoord(Coordinate{-122.203329, 37.374780, 141.199997}),
+							GxCoord(Coordinate{-122.203207, 37.374857, 140.199997}),
+						),
+					),
+				),
+			),
+			want: `<?xml version="1.0" encoding="UTF-8"?>` + "\n" +
+				`<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2">` +
+				`<Folder>` +
+				`<Placemark>` +
+				`<gx:Track>` +
+				`<when>2010-05-28T02:02:09Z</when>` +
+				`<when>2010-05-28T02:02:35Z</when>` +
+				`<when>2010-05-28T02:02:44Z</when>` +
+				`<when>2010-05-28T02:02:53Z</when>` +
+				`<when>2010-05-28T02:02:54Z</when>` +
+				`<when>2010-05-28T02:02:55Z</when>` +
+				`<when>2010-05-28T02:02:56Z</when>` +
+				`<gx:coord>-122.207881 37.371915 156</gx:coord>` +
+				`<gx:coord>-122.205712 37.373288 152</gx:coord>` +
+				`<gx:coord>-122.204678 37.373939 147</gx:coord>` +
+				`<gx:coord>-122.203572 37.37463 142.199997</gx:coord>` +
+				`<gx:coord>-122.203451 37.374706 141.800003</gx:coord>` +
+				`<gx:coord>-122.203329 37.37478 141.199997</gx:coord>` +
+				`<gx:coord>-122.203207 37.374857 140.199997</gx:coord>` +
+				`</gx:Track>` +
+				`</Placemark>` +
+				`</Folder>` +
+				`</kml>`,
+		},
 	} {
 		b := &bytes.Buffer{}
 		if err := tc.e.Write(b); err != nil {
@@ -242,6 +294,10 @@ func TestSimpleElements(t *testing.T) {
 		{
 			Folder(),
 			`<Folder></Folder>`,
+		},
+		{
+			GxCoord(Coordinate{1.23, 4.56, 7.89}),
+			`<gx:coord>1.23 4.56 7.89</gx:coord>`,
 		},
 		{
 			Heading(0),

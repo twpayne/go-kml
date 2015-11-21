@@ -134,6 +134,8 @@ func End(value time.Time) *SimpleElement                 { return newSETime("end
 func Extrude(value bool) *SimpleElement                  { return newSEBool("extrude", value) }
 func Folder(children ...Element) *CompoundElement        { return newCE("Folder", children) }
 func GroundOverlay(children ...Element) *CompoundElement { return newCE("GroundOverlay", children) }
+func GxAltitudeMode(value string) *SimpleElement         { return newSEString("gx:altitudeMode", value) }
+func GxTrack(children ...Element) *CompoundElement       { return newCE("gx:Track", children) }
 func Heading(value float64) *SimpleElement               { return newSEFloat("heading", value) }
 func HotSpot(value Vec2) *SimpleElement                  { return newSEPosition("hotSpot", value) }
 func Href(value *url.URL) *SimpleElement                 { return newSEString("href", value.String()) }
@@ -192,6 +194,17 @@ func Coordinates(value ...Coordinate) *SimpleElement {
 	}
 }
 
+func GxCoord(value Coordinate) *SimpleElement {
+	return &SimpleElement{
+		StartElement: xml.StartElement{
+			Name: xml.Name{Local: "gx:coord"},
+		},
+		value: strconv.FormatFloat(value.Lon, 'f', -1, 64) + " " +
+			strconv.FormatFloat(value.Lat, 'f', -1, 64) + " " +
+			strconv.FormatFloat(value.Alt, 'f', -1, 64),
+	}
+}
+
 func HrefMustParse(value string) *SimpleElement {
 	url, err := url.Parse(value)
 	if err != nil {
@@ -207,6 +220,13 @@ func KML(children ...Element) *CompoundElement {
 		},
 		children: children,
 	}
+}
+
+func GxKML(children ...Element) *CompoundElement {
+	kml := KML(children...)
+	// FIXME find a more correct way to do this
+	kml.Attr = append(kml.Attr, xml.Attr{Name: xml.Name{Local: "xmlns:gx"}, Value: NS_GX})
+	return kml
 }
 
 func stringXML(m xml.Marshaler) (string, error) {
