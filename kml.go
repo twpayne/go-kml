@@ -84,80 +84,6 @@ func (se *SimpleElement) MarshalXML(e *xml.Encoder, start xml.StartElement) erro
 func (se *SimpleElement) StringXML() (string, error) { return stringXML(se) }
 func (se *SimpleElement) Write(w io.Writer) error    { return write(w, se) }
 
-func newSEBool(name string, value bool) *SimpleElement {
-	var v string
-	if value {
-		v = "1"
-	} else {
-		v = "0"
-	}
-	return &SimpleElement{
-		StartElement: xml.StartElement{Name: xml.Name{Local: name}},
-		value:        v,
-	}
-}
-
-func newSEColor(name string, value color.Color) *SimpleElement {
-	r, g, b, a := value.RGBA()
-	return &SimpleElement{
-		StartElement: xml.StartElement{Name: xml.Name{Local: name}},
-		value:        fmt.Sprintf("%02x%02x%02x%02x", a/256, b/256, g/256, r/256),
-	}
-}
-
-func newSEFloat(name string, value float64) *SimpleElement {
-	return &SimpleElement{
-		StartElement: xml.StartElement{Name: xml.Name{Local: name}},
-		value:        strconv.FormatFloat(value, 'f', -1, 64),
-	}
-}
-
-func newSEInt(name string, value int) *SimpleElement {
-	return &SimpleElement{
-		StartElement: xml.StartElement{Name: xml.Name{Local: name}},
-		value:        strconv.Itoa(value),
-	}
-}
-
-func newSEPosition(name string, value Vec2) *SimpleElement {
-	return &SimpleElement{
-		StartElement: xml.StartElement{
-			Name: xml.Name{Local: name},
-			Attr: value.Attr(),
-		},
-	}
-}
-
-func newSEString(name string, value string) *SimpleElement {
-	return &SimpleElement{
-		StartElement: xml.StartElement{Name: xml.Name{Local: name}},
-		value:        value,
-	}
-}
-
-func newSETime(name string, value time.Time) *SimpleElement {
-	return &SimpleElement{
-		StartElement: xml.StartElement{Name: xml.Name{Local: name}},
-		value:        value.Format(time.RFC3339),
-	}
-}
-
-func newSEVoid(name string) *SimpleElement {
-	return &SimpleElement{
-		StartElement: xml.StartElement{Name: xml.Name{Local: name}},
-	}
-}
-
-func newCE(name string, children []Element) *CompoundElement {
-	return &CompoundElement{
-		StartElement: xml.StartElement{
-			Name: xml.Name{Local: name},
-		},
-		children: children,
-		id:       getId(),
-	}
-}
-
 func (ce *CompoundElement) Add(children ...Element) *CompoundElement {
 	ce.children = append(ce.children, children...)
 	return ce
@@ -287,4 +213,78 @@ func write(w io.Writer, m xml.Marshaler) error {
 		return err
 	}
 	return nil
+}
+
+func newSEBool(name string, value bool) *SimpleElement {
+	var v string
+	if value {
+		v = "1"
+	} else {
+		v = "0"
+	}
+	return &SimpleElement{
+		StartElement: xml.StartElement{Name: xml.Name{Local: name}},
+		value:        v,
+	}
+}
+
+func newSEColor(name string, value color.Color) *SimpleElement {
+	r, g, b, a := value.RGBA()
+	return &SimpleElement{
+		StartElement: xml.StartElement{Name: xml.Name{Local: name}},
+		value:        fmt.Sprintf("%02x%02x%02x%02x", a/256, b/256, g/256, r/256),
+	}
+}
+
+func newSEFloat(name string, value float64) *SimpleElement {
+	return &SimpleElement{
+		StartElement: xml.StartElement{Name: xml.Name{Local: name}},
+		value:        strconv.FormatFloat(value, 'f', -1, 64),
+	}
+}
+
+func newSEInt(name string, value int) *SimpleElement {
+	return &SimpleElement{
+		StartElement: xml.StartElement{Name: xml.Name{Local: name}},
+		value:        strconv.Itoa(value),
+	}
+}
+
+func newSEPosition(name string, value Vec2) *SimpleElement {
+	return &SimpleElement{
+		StartElement: xml.StartElement{
+			Name: xml.Name{Local: name},
+			Attr: value.Attr(),
+		},
+	}
+}
+
+func newSEString(name string, value string) *SimpleElement {
+	return &SimpleElement{
+		StartElement: xml.StartElement{Name: xml.Name{Local: name}},
+		value:        value,
+	}
+}
+
+func newSETime(name string, value time.Time) *SimpleElement {
+	return &SimpleElement{
+		StartElement: xml.StartElement{Name: xml.Name{Local: name}},
+		value:        value.Format(time.RFC3339),
+	}
+}
+
+func newSEVoid(name string) *SimpleElement {
+	return &SimpleElement{
+		StartElement: xml.StartElement{Name: xml.Name{Local: name}},
+	}
+}
+
+func newCE(name string, children []Element) *CompoundElement {
+	return &CompoundElement{
+		StartElement: xml.StartElement{
+			Name: xml.Name{Local: name},
+		},
+		children: children,
+		id:       getId(),
+	}
 }
