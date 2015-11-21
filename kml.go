@@ -183,6 +183,7 @@ func ScreenXY(value Vec2) *SimpleElement                 { return newSEVec2("scr
 func Snippet(value string) *SimpleElement                { return newSEString("snippet", value) }
 func South(value float64) *SimpleElement                 { return newSEFloat("south", value) }
 func Style(children ...Element) *CompoundElement         { return newCE("Style", children) }
+func StyleURL(style *SharedElement) *SimpleElement       { return newSEString("styleUrl", "#"+style.Id()) }
 func Tesselate(value bool) *SimpleElement                { return newSEBool("tesselate", value) }
 func Text(value string) *SimpleElement                   { return newSEString("text", value) }
 func Tilt(value float64) *SimpleElement                  { return newSEFloat("tilt", value) }
@@ -229,10 +230,6 @@ func HrefMustParse(value string) *SimpleElement {
 
 func SharedStyle(id string, children ...Element) *SharedElement {
 	return newSharedE("Style", id, children)
-}
-
-func StyleURL(style *SharedElement) *SimpleElement {
-	return newSEString("styleUrl", "#"+style.Id())
 }
 
 func KML(children ...Element) *CompoundElement {
