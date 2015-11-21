@@ -111,13 +111,40 @@ func TestSimpleElements(t *testing.T) {
 }
 
 func TestSharedStyles(t *testing.T) {
-	sharedStyle := SharedStyle("0")
+	sharedStyle0 := SharedStyle("0")
+	highlightPlacemarkStyle := SharedStyle(
+		"highlightPlacemark",
+		IconStyle(
+			Icon(
+				HrefMustParse("http://maps.google.com/mapfiles/kml/paddle/red-stars.png"),
+			),
+		),
+	)
+	normalPlacemarkStyle := SharedStyle(
+		"normalPlacemark",
+		IconStyle(
+			Icon(
+				HrefMustParse("http://maps.google.com/mapfiles/kml/paddle/wht-blank.png"),
+			),
+		),
+	)
+	exampleStyleMap := SharedStyleMap(
+		"exampleStyleMap",
+		Pair(
+			Key("normal"),
+			StyleURL(normalPlacemarkStyle),
+		),
+		Pair(
+			Key("highlight"),
+			StyleURL(highlightPlacemarkStyle),
+		),
+	)
 	for _, tc := range []testCase{
 		{
 			e: Folder(
-				sharedStyle,
+				sharedStyle0,
 				Placemark(
-					StyleURL(sharedStyle),
+					StyleURL(sharedStyle0),
 				),
 			),
 			want: `<Folder>` +
@@ -127,6 +154,61 @@ func TestSharedStyles(t *testing.T) {
 				`<styleUrl>#0</styleUrl>` +
 				`</Placemark>` +
 				`</Folder>`,
+		},
+		{
+			e: KML(
+				Document(
+					Name("Highlighted Icon"),
+					Description("Place your mouse over the icon to see it display the new icon"),
+					highlightPlacemarkStyle,
+					normalPlacemarkStyle,
+					exampleStyleMap,
+					Placemark(
+						Name("Roll over this icon"),
+						StyleURL(exampleStyleMap),
+						Point(
+							Coordinates(Coordinate{-122.0856545755255, 37.42243077405461, 0}),
+						),
+					),
+				),
+			),
+			want: `<kml xmlns="http://www.opengis.net/kml/2.2">` +
+				`<Document>` +
+				`<name>Highlighted Icon</name>` +
+				`<description>Place your mouse over the icon to see it display the new icon</description>` +
+				`<Style id="highlightPlacemark">` +
+				`<IconStyle>` +
+				`<Icon>` +
+				`<href>http://maps.google.com/mapfiles/kml/paddle/red-stars.png</href>` +
+				`</Icon>` +
+				`</IconStyle>` +
+				`</Style>` +
+				`<Style id="normalPlacemark">` +
+				`<IconStyle>` +
+				`<Icon>` +
+				`<href>http://maps.google.com/mapfiles/kml/paddle/wht-blank.png</href>` +
+				`</Icon>` +
+				`</IconStyle>` +
+				`</Style>` +
+				`<StyleMap id="exampleStyleMap">` +
+				`<Pair>` +
+				`<key>normal</key>` +
+				`<styleUrl>#normalPlacemark</styleUrl>` +
+				`</Pair>` +
+				`<Pair>` +
+				`<key>highlight</key>` +
+				`<styleUrl>#highlightPlacemark</styleUrl>` +
+				`</Pair>` +
+				`</StyleMap>` +
+				`<Placemark>` +
+				`<name>Roll over this icon</name>` +
+				`<styleUrl>#exampleStyleMap</styleUrl>` +
+				`<Point>` +
+				`<coordinates>-122.0856545755255,37.42243077405461,0</coordinates>` +
+				`</Point>` +
+				`</Placemark>` +
+				`</Document>` +
+				`</kml>`,
 		},
 	} {
 		tc.testStringXML(t)

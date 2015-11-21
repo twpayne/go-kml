@@ -165,12 +165,14 @@ func LinearRing(children ...Element) *CompoundElement    { return newCE("LinearR
 func ListItemType(value string) *SimpleElement           { return newSEString("listItemType", value) }
 func ListStyle(children ...Element) *CompoundElement     { return newCE("ListStyle", children) }
 func Longitude(value float64) *SimpleElement             { return newSEFloat("longitude", value) }
+func Key(value string) *SimpleElement                    { return newSEString("key", value) }
 func MultiGeometry(children ...Element) *CompoundElement { return newCE("MultiGeometry", children) }
 func Name(value string) *SimpleElement                   { return newSEString("name", value) }
 func North(value float64) *SimpleElement                 { return newSEFloat("north", value) }
 func Open(value bool) *SimpleElement                     { return newSEBool("open", value) }
 func OuterBoundaryIs(value Element) *CompoundElement     { return newCEElement("outerBoundaryIs", value) }
 func OverlayXY(value Vec2) *SimpleElement                { return newSEVec2("overlayXY", value) }
+func Pair(children ...Element) *CompoundElement          { return newCE("Pair", children) }
 func Placemark(children ...Element) *CompoundElement     { return newCE("Placemark", children) }
 func Point(children ...Element) *CompoundElement         { return newCE("Point", children) }
 func PolyStyle(children ...Element) *CompoundElement     { return newCE("PolyStyle", children) }
@@ -183,6 +185,7 @@ func ScreenXY(value Vec2) *SimpleElement                 { return newSEVec2("scr
 func Snippet(value string) *SimpleElement                { return newSEString("snippet", value) }
 func South(value float64) *SimpleElement                 { return newSEFloat("south", value) }
 func Style(children ...Element) *CompoundElement         { return newCE("Style", children) }
+func StyleMap(children ...Element) *CompoundElement      { return newCE("StyleMap", children) }
 func StyleURL(style *SharedElement) *SimpleElement       { return newSEString("styleUrl", "#"+style.Id()) }
 func Tesselate(value bool) *SimpleElement                { return newSEBool("tesselate", value) }
 func Text(value string) *SimpleElement                   { return newSEString("text", value) }
@@ -230,6 +233,10 @@ func HrefMustParse(value string) *SimpleElement {
 
 func SharedStyle(id string, children ...Element) *SharedElement {
 	return newSharedE("Style", id, children)
+}
+
+func SharedStyleMap(id string, children ...Element) *SharedElement {
+	return newSharedE("StyleMap", id, children)
 }
 
 func KML(children ...Element) *CompoundElement {
