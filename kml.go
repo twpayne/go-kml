@@ -1,3 +1,4 @@
+// Package kml provides convenince methods for creating and writing KML documents.
 package kml
 
 import (
@@ -24,26 +25,32 @@ var (
 	idMutex sync.Mutex
 )
 
+// A Coordinate represents a single geographical coordinate.
+// Lon and Lat are in degrees, Alt is in meters.
 type Coordinate struct {
 	Lon, Lat, Alt float64
 }
 
+// A Vec2 represents a screen position.
 type Vec2 struct {
 	X, Y           float64
 	XUnits, YUnits string
 }
 
+// An Element represents an abstract KML element.
 type Element interface {
 	xml.Marshaler
 	StringXML() (string, error)
 	Write(io.Writer) error
 }
 
+// A SimpleElement is an Element with a single value.
 type SimpleElement struct {
 	xml.StartElement
 	value string
 }
 
+// A CompoundElement is an Element with children.
 type CompoundElement struct {
 	xml.StartElement
 	id       int
@@ -58,6 +65,7 @@ func getId() int {
 	return result
 }
 
+// Attr returns the XML attributes.
 func (v2 Vec2) Attr() []xml.Attr {
 	return []xml.Attr{
 		{Name: xml.Name{Local: "x"}, Value: strconv.FormatFloat(v2.X, 'f', -1, 64)},
@@ -67,6 +75,7 @@ func (v2 Vec2) Attr() []xml.Attr {
 	}
 }
 
+// MarshalXML marshals se to e. start is ignored.
 func (se *SimpleElement) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	if err := e.EncodeToken(se.StartElement); err != nil {
 		return err
@@ -81,14 +90,23 @@ func (se *SimpleElement) MarshalXML(e *xml.Encoder, start xml.StartElement) erro
 	return nil
 }
 
-func (se *SimpleElement) StringXML() (string, error) { return stringXML(se) }
-func (se *SimpleElement) Write(w io.Writer) error    { return write(w, se) }
+// StringXML returns se encoded in XML.
+func (se *SimpleElement) StringXML() (string, error) {
+	return stringXML(se)
+}
 
+// Write writes an XML header and se to w.
+func (se *SimpleElement) Write(w io.Writer) error {
+	return write(w, se)
+}
+
+// Add adds children to ce.
 func (ce *CompoundElement) Add(children ...Element) *CompoundElement {
 	ce.children = append(ce.children, children...)
 	return ce
 }
 
+// MarshalXML marshals ce to e. start is ignored.
 func (ce *CompoundElement) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	if err := e.EncodeToken(ce.StartElement); err != nil {
 		return err
@@ -105,8 +123,15 @@ func (ce *CompoundElement) MarshalXML(e *xml.Encoder, start xml.StartElement) er
 	return nil
 }
 
-func (ce *CompoundElement) StringXML() (string, error) { return stringXML(ce) }
-func (ce *CompoundElement) Write(w io.Writer) error    { return write(w, ce) }
+// StringXML returns ce encoded in XML.
+func (ce *CompoundElement) StringXML() (string, error) {
+	return stringXML(ce)
+}
+
+// Write writes an XML header and ce to w.
+func (ce *CompoundElement) Write(w io.Writer) error {
+	return write(w, ce)
+}
 
 func Altitude(value int) *SimpleElement                  { return newSEInt("altitude", value) }
 func AltitudeMode(value string) *SimpleElement           { return newSEString("altitudeMode", value) }
