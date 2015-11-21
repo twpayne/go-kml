@@ -1,6 +1,7 @@
 package kml
 
 import (
+	"bytes"
 	"image/color"
 	"testing"
 	"time"
@@ -188,6 +189,28 @@ func TestSimpleElements(t *testing.T) {
 	} {
 		if got, err := tc.e.StringXML(); err != nil || got != tc.want {
 			t.Errorf("%#v.StringXML() == %#v, %#v, want %#v, nil", tc.e, got, err, tc.want)
+		}
+	}
+}
+
+func TestWrite(t *testing.T) {
+	for _, tc := range []struct {
+		e    Element
+		want string
+	}{
+		{
+			KML(),
+			`<?xml version="1.0" encoding="UTF-8"?>` + "\n" +
+				`<kml xmlns="http://www.opengis.net/kml/2.2"></kml>`,
+		},
+	} {
+		b := &bytes.Buffer{}
+		if err := Write(b, tc.e); err != nil {
+			t.Errorf("Write(b, %#v) == %#v, want nil", tc.e, err)
+			continue
+		}
+		if got := b.String(); got != tc.want {
+			t.Errorf("Write(b, %#v) wrote %#v, want %#v", tc.e, got, tc.want)
 		}
 	}
 }

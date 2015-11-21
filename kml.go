@@ -294,3 +294,13 @@ func KML(children ...Element) *CompoundElement {
 		id:       getId(),
 	}
 }
+
+func Write(w io.Writer, root Element) error {
+	if _, err := w.Write([]byte(Header)); err != nil {
+		return err
+	}
+	if err := root.WriteTo(w); err != nil {
+		return err
+	}
+	return nil
+}
