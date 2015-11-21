@@ -10,7 +10,6 @@ import (
 	"net/url"
 	"strconv"
 	"strings"
-	"sync"
 	"time"
 )
 
@@ -18,11 +17,6 @@ const (
 	Header = xml.Header
 	NS     = "http://www.opengis.net/kml/2.2"
 	NS_GX  = "http://www.google.com/kml/ext/2.2"
-)
-
-var (
-	id      int
-	idMutex sync.Mutex
 )
 
 // A Coordinate represents a single geographical coordinate.
@@ -55,14 +49,6 @@ type CompoundElement struct {
 	xml.StartElement
 	id       int
 	children []Element
-}
-
-func getId() int {
-	idMutex.Lock()
-	result := id
-	id++
-	idMutex.Unlock()
-	return result
 }
 
 // Attr returns the XML attributes.
@@ -216,7 +202,6 @@ func KML(children ...Element) *CompoundElement {
 			Name: xml.Name{Space: NS, Local: "kml"},
 		},
 		children: children,
-		id:       getId(),
 	}
 }
 
@@ -310,6 +295,5 @@ func newCE(name string, children []Element) *CompoundElement {
 			Name: xml.Name{Local: name},
 		},
 		children: children,
-		id:       getId(),
 	}
 }
