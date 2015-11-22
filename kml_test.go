@@ -2,6 +2,7 @@ package kml
 
 import (
 	"bytes"
+	"encoding/xml"
 	"image/color"
 	"log"
 	"os"
@@ -20,19 +21,19 @@ func (tc testCase) testWrite(t *testing.T) {
 		t.Errorf("%#v.Write(b) == %#v, want nil", tc.e, err)
 		return
 	}
-	if got := b.String(); got != tc.want {
+	if got := b.Bytes(); string(got) != tc.want {
 		t.Errorf("%#v.Write(b) wrote %#v, want %#v", tc.e, got, tc.want)
 	}
 }
 
-func (tc testCase) testStringXML(t *testing.T) {
-	got, err := tc.e.StringXML()
+func (tc testCase) testMarshal(t *testing.T) {
+	got, err := xml.Marshal(tc.e)
 	if err != nil {
 		t.Errorf("%#v.StringXML() == %#v, %#v, want ..., nil", tc.e, got, err)
 		return
 	}
-	if got != tc.want {
-		t.Errorf("%#v.StringXML() == ..., nil,\n got %#v, nil,\nwant %#v, nil", tc.e, got, tc.want)
+	if string(got) != tc.want {
+		t.Errorf("%#v.StringXML() == ..., nil,\n got %#v, nil,\nwant %#v, nil", tc.e, string(got), tc.want)
 	}
 }
 
@@ -138,7 +139,7 @@ func TestSimpleElements(t *testing.T) {
 		},
 		// FIXME More simple elements
 	} {
-		tc.testStringXML(t)
+		tc.testMarshal(t)
 	}
 }
 
@@ -197,7 +198,7 @@ func TestCompoundElements(t *testing.T) {
 				`</ScreenOverlay>`,
 		},
 	} {
-		tc.testStringXML(t)
+		tc.testMarshal(t)
 	}
 }
 
@@ -334,7 +335,7 @@ func TestSharedStyles(t *testing.T) {
 				`</kml>`,
 		},
 	} {
-		tc.testStringXML(t)
+		tc.testMarshal(t)
 	}
 }
 
