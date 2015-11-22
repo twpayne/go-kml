@@ -32,6 +32,11 @@ func GetId() string {
 	return strconv.Itoa(id)
 }
 
+// A GxAngle represents an angle.
+type GxAngle struct {
+	Heading, Tilt, Roll float64
+}
+
 // A Coordinate represents a single geographical coordinate.
 // Lon and Lat are in degrees, Alt is in meters.
 type Coordinate struct {
@@ -153,6 +158,11 @@ func Fill(value bool) *SimpleElement                     { return newSEBool("fil
 func Folder(children ...Element) *CompoundElement        { return newCE("Folder", children) }
 func GroundOverlay(children ...Element) *CompoundElement { return newCE("GroundOverlay", children) }
 func GxAltitudeMode(value string) *SimpleElement         { return newSEString("gx:altitudeMode", value) }
+func GxAltitudeOffset(value float64) *SimpleElement      { return newSEFloat("gx:altitudeOffset", value) }
+func GxLabelVisibility(value bool) *SimpleElement        { return newSEBool("gx:labelVisibility", value) }
+func GxOuterColor(value color.Color) *SimpleElement      { return newSEColor("gx:outerColor", value) }
+func GxOuterWidth(value float64) *SimpleElement          { return newSEFloat("gx:outerWidth", value) }
+func GxPhysicalWidth(value float64) *SimpleElement       { return newSEFloat("gx:physicalWidth", value) }
 func GxTrack(children ...Element) *CompoundElement       { return newCE("gx:Track", children) }
 func Heading(value float64) *SimpleElement               { return newSEFloat("heading", value) }
 func HotSpot(value Vec2) *SimpleElement                  { return newSEVec2("hotSpot", value) }
@@ -229,6 +239,17 @@ func Coordinates(value ...Coordinate) *SimpleElement {
 	}
 }
 
+func GxAngles(value GxAngle) *SimpleElement {
+	return &SimpleElement{
+		StartElement: xml.StartElement{
+			Name: xml.Name{Local: "gx:angles"},
+		},
+		value: strconv.FormatFloat(value.Heading, 'f', -1, 64) + " " +
+			strconv.FormatFloat(value.Tilt, 'f', -1, 64) + " " +
+			strconv.FormatFloat(value.Roll, 'f', -1, 64),
+	}
+}
+
 func GxCoord(value Coordinate) *SimpleElement {
 	return &SimpleElement{
 		StartElement: xml.StartElement{
@@ -237,6 +258,18 @@ func GxCoord(value Coordinate) *SimpleElement {
 		value: strconv.FormatFloat(value.Lon, 'f', -1, 64) + " " +
 			strconv.FormatFloat(value.Lat, 'f', -1, 64) + " " +
 			strconv.FormatFloat(value.Alt, 'f', -1, 64),
+	}
+}
+
+func GxSimpleArrayField(name, type_ string) *CompoundElement {
+	return &CompoundElement{
+		StartElement: xml.StartElement{
+			Name: xml.Name{Local: "gx:SimpleArrayField"},
+			Attr: []xml.Attr{
+				{Name: xml.Name{Local: "name"}, Value: name},
+				{Name: xml.Name{Local: "type"}, Value: type_},
+			},
+		},
 	}
 }
 
