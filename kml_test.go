@@ -117,6 +117,34 @@ func TestSimpleElements(t *testing.T) {
 func TestCompoundElements(t *testing.T) {
 	for _, tc := range []testCase{
 		{
+			e: Placemark(
+				Name("Easy trail"),
+				ExtendedData(
+					SchemaData("#TrailHeadTypeId",
+						SimpleData("TrailHeadName", "Pi in the sky"),
+						SimpleData("TrailLength", "3.14159"),
+						SimpleData("ElevationGain", "10"),
+					),
+				),
+				Point(
+					Coordinates(Coordinate{Lon: -122.000, Lat: 37.002}),
+				),
+			),
+			want: `<Placemark>` +
+				`<name>Easy trail</name>` +
+				`<ExtendedData>` +
+				`<SchemaData schemaUrl="#TrailHeadTypeId">` +
+				`<SimpleData name="TrailHeadName">Pi in the sky</SimpleData>` +
+				`<SimpleData name="TrailLength">3.14159</SimpleData>` +
+				`<SimpleData name="ElevationGain">10</SimpleData>` +
+				`</SchemaData>` +
+				`</ExtendedData>` +
+				`<Point>` +
+				`<coordinates>-122,37.002</coordinates>` +
+				`</Point>` +
+				`</Placemark>`,
+		},
+		{
 			e: ScreenOverlay(
 				Name("Simple crosshairs"),
 				Description("This screen overlay uses fractional positioning to put the image in the exact center of the screen"),

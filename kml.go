@@ -351,6 +351,30 @@ func Schema(id, name string, children ...Element) *SharedElement {
 	}
 }
 
+func SchemaData(schemaUrl string, children ...Element) *CompoundElement {
+	return &CompoundElement{
+		StartElement: xml.StartElement{
+			Name: xml.Name{Local: "SchemaData"},
+			Attr: []xml.Attr{
+				{Name: xml.Name{Local: "schemaUrl"}, Value: schemaUrl},
+			},
+		},
+		children: children,
+	}
+}
+
+func SimpleData(name, value string) *SimpleElement {
+	return &SimpleElement{
+		StartElement: xml.StartElement{
+			Name: xml.Name{Local: "SimpleData"},
+			Attr: []xml.Attr{
+				{Name: xml.Name{Local: "name"}, Value: name},
+			},
+		},
+		value: value,
+	}
+}
+
 func SimpleField(name, type_ string, children ...Element) *CompoundElement {
 	return &CompoundElement{
 		StartElement: xml.StartElement{
