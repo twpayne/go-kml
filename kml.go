@@ -138,7 +138,7 @@ func (se *SharedElement) Id() string {
 	return se.id
 }
 
-func Altitude(value int) *SimpleElement                  { return newSEInt("altitude", value) }
+func Altitude(value float64) *SimpleElement              { return newSEFloat("altitude", value) }
 func AltitudeMode(value string) *SimpleElement           { return newSEString("altitudeMode", value) }
 func BalloonStyle(children ...Element) *CompoundElement  { return newCE("BalloonStyle", children) }
 func Begin(value time.Time) *SimpleElement               { return newSETime("begin", value) }
