@@ -138,90 +138,89 @@ func (se *SharedElement) Id() string {
 	return se.id
 }
 
-func Altitude(value float64) *SimpleElement              { return newSEFloat("altitude", value) }
-func AltitudeMode(value string) *SimpleElement           { return newSEString("altitudeMode", value) }
-func BalloonStyle(children ...Element) *CompoundElement  { return newCE("BalloonStyle", children) }
-func Begin(value time.Time) *SimpleElement               { return newSETime("begin", value) }
-func BgColor(value color.Color) *SimpleElement           { return newSEColor("bgColor", value) }
-func Camera(children ...Element) *CompoundElement        { return newCE("Camera", children) }
-func Color(value color.Color) *SimpleElement             { return newSEColor("color", value) }
-func ColorMode(value string) *SimpleElement              { return newSEString("colorMode", value) }
-func Data(children ...Element) *CompoundElement          { return newCE("Data", children) }
-func Description(value string) *SimpleElement            { return newSEString("description", value) }
-func DisplayName(value string) *SimpleElement            { return newSEString("displayName", value) }
-func Document(children ...Element) *CompoundElement      { return newCE("Document", children) }
-func East(value float64) *SimpleElement                  { return newSEFloat("east", value) }
-func End(value time.Time) *SimpleElement                 { return newSETime("end", value) }
-func ExtendedData(children ...Element) *CompoundElement  { return newCE("ExtendedData", children) }
-func Extrude(value bool) *SimpleElement                  { return newSEBool("extrude", value) }
-func Fill(value bool) *SimpleElement                     { return newSEBool("fill", value) }
-func Folder(children ...Element) *CompoundElement        { return newCE("Folder", children) }
-func GroundOverlay(children ...Element) *CompoundElement { return newCE("GroundOverlay", children) }
-func GxAltitudeMode(value string) *SimpleElement         { return newSEString("gx:altitudeMode", value) }
-func GxAltitudeOffset(value float64) *SimpleElement      { return newSEFloat("gx:altitudeOffset", value) }
-func GxLabelVisibility(value bool) *SimpleElement        { return newSEBool("gx:labelVisibility", value) }
-func GxOuterColor(value color.Color) *SimpleElement      { return newSEColor("gx:outerColor", value) }
-func GxOuterWidth(value float64) *SimpleElement          { return newSEFloat("gx:outerWidth", value) }
-func GxPhysicalWidth(value float64) *SimpleElement       { return newSEFloat("gx:physicalWidth", value) }
-func GxTrack(children ...Element) *CompoundElement       { return newCE("gx:Track", children) }
-func Heading(value float64) *SimpleElement               { return newSEFloat("heading", value) }
-func HotSpot(value Vec2) *SimpleElement                  { return newSEVec2("hotSpot", value) }
-func Href(value *url.URL) *SimpleElement                 { return newSEString("href", value.String()) }
-func Icon(children ...Element) *CompoundElement          { return newCE("Icon", children) }
-func IconStyle(children ...Element) *CompoundElement     { return newCE("IconStyle", children) }
-func InnerBoundaryIs(value Element) *CompoundElement     { return newCEElement("innerBoundaryIs", value) }
-func Key(value string) *SimpleElement                    { return newSEString("key", value) }
-func LabelStyle(children ...Element) *CompoundElement    { return newCE("LabelStyle", children) }
-func LatLonBox(children ...Element) *CompoundElement     { return newCE("LatLonBox", children) }
-func Latitude(value float64) *SimpleElement              { return newSEFloat("latitude", value) }
-func LineString(children ...Element) *CompoundElement    { return newCE("LineString", children) }
-func LineStyle(children ...Element) *CompoundElement     { return newCE("LineStyle", children) }
-func LinearRing(children ...Element) *CompoundElement    { return newCE("LinearRing", children) }
-func ListItemType(value string) *SimpleElement           { return newSEString("listItemType", value) }
-func ListStyle(children ...Element) *CompoundElement     { return newCE("ListStyle", children) }
-func Longitude(value float64) *SimpleElement             { return newSEFloat("longitude", value) }
-func LookAt(children ...Element) *CompoundElement        { return newCE("LookAt", children) }
-func MaxAltitude(value float64) *SimpleElement           { return newSEFloat("maxAltitude", value) }
-func MaxFadeExtent(value int) *SimpleElement             { return newSEInt("maxFadeExtent", value) }
-func MaxLodPixel(value int) *SimpleElement               { return newSEInt("maxLodPixels", value) }
-func MinAltitude(value float64) *SimpleElement           { return newSEFloat("minAltitude", value) }
-func MinFadeExtent(value int) *SimpleElement             { return newSEInt("minFadeExtent", value) }
-func MinLodPixel(value int) *SimpleElement               { return newSEInt("minLodPixels", value) }
-func Model(children ...Element) *CompoundElement         { return newCE("Model", children) }
-func MultiGeometry(children ...Element) *CompoundElement { return newCE("MultiGeometry", children) }
-func Name(value string) *SimpleElement                   { return newSEString("name", value) }
-func North(value float64) *SimpleElement                 { return newSEFloat("north", value) }
-func Open(value bool) *SimpleElement                     { return newSEBool("open", value) }
-func OuterBoundaryIs(value Element) *CompoundElement     { return newCEElement("outerBoundaryIs", value) }
-func Outline(value bool) *SimpleElement                  { return newSEBool("outline", value) }
-func OverlayXY(value Vec2) *SimpleElement                { return newSEVec2("overlayXY", value) }
-func Pair(children ...Element) *CompoundElement          { return newCE("Pair", children) }
-func Placemark(children ...Element) *CompoundElement     { return newCE("Placemark", children) }
-func Point(children ...Element) *CompoundElement         { return newCE("Point", children) }
-func PolyStyle(children ...Element) *CompoundElement     { return newCE("PolyStyle", children) }
-func Polygon(children ...Element) *CompoundElement       { return newCE("Polygon", children) }
-func Range(value float64) *SimpleElement                 { return newSEFloat("range", value) }
-func Roll(value float64) *SimpleElement                  { return newSEFloat("roll", value) }
-func Rotation(value float64) *SimpleElement              { return newSEFloat("rotation", value) }
-func Scale(value float64) *SimpleElement                 { return newSEFloat("scale", value) }
-func Schema(children ...Element) *CompoundElement        { return newCE("Schema", children) }
-func ScreenOverlay(children ...Element) *CompoundElement { return newCE("ScreenOverlay", children) }
-func ScreenXY(value Vec2) *SimpleElement                 { return newSEVec2("screenXY", value) }
-func Size(value Vec2) *SimpleElement                     { return newSEVec2("size", value) }
-func Snippet(value string) *SimpleElement                { return newSEString("snippet", value) }
-func South(value float64) *SimpleElement                 { return newSEFloat("south", value) }
-func Style(children ...Element) *CompoundElement         { return newCE("Style", children) }
-func StyleMap(children ...Element) *CompoundElement      { return newCE("StyleMap", children) }
-func StyleURL(style *SharedElement) *SimpleElement       { return newSEString("styleUrl", "#"+style.Id()) }
-func Tesselate(value bool) *SimpleElement                { return newSEBool("tesselate", value) }
-func Text(value string) *SimpleElement                   { return newSEString("text", value) }
-func Tilt(value float64) *SimpleElement                  { return newSEFloat("tilt", value) }
-func TimeSpan(children ...Element) *CompoundElement      { return newCE("TimeSpan", children) }
-func Value(value string) *SimpleElement                  { return newSEString("value", value) }
-func Visibility(value bool) *SimpleElement               { return newSEBool("visibility", value) }
-func West(value float64) *SimpleElement                  { return newSEFloat("west", value) }
-func When(value time.Time) *SimpleElement                { return newSETime("when", value) }
-func Width(value float64) *SimpleElement                 { return newSEFloat("width", value) }
+func Altitude(value float64) *SimpleElement               { return newSEFloat("altitude", value) }
+func AltitudeMode(value string) *SimpleElement            { return newSEString("altitudeMode", value) }
+func BalloonStyle(children ...Element) *CompoundElement   { return newCE("BalloonStyle", children) }
+func Begin(value time.Time) *SimpleElement                { return newSETime("begin", value) }
+func BgColor(value color.Color) *SimpleElement            { return newSEColor("bgColor", value) }
+func Camera(children ...Element) *CompoundElement         { return newCE("Camera", children) }
+func Color(value color.Color) *SimpleElement              { return newSEColor("color", value) }
+func ColorMode(value string) *SimpleElement               { return newSEString("colorMode", value) }
+func Data(children ...Element) *CompoundElement           { return newCE("Data", children) }
+func Description(value string) *SimpleElement             { return newSEString("description", value) }
+func DisplayName(value string) *SimpleElement             { return newSEString("displayName", value) }
+func Document(children ...Element) *CompoundElement       { return newCE("Document", children) }
+func East(value float64) *SimpleElement                   { return newSEFloat("east", value) }
+func End(value time.Time) *SimpleElement                  { return newSETime("end", value) }
+func ExtendedData(children ...Element) *CompoundElement   { return newCE("ExtendedData", children) }
+func Extrude(value bool) *SimpleElement                   { return newSEBool("extrude", value) }
+func Fill(value bool) *SimpleElement                      { return newSEBool("fill", value) }
+func Folder(children ...Element) *CompoundElement         { return newCE("Folder", children) }
+func GroundOverlay(children ...Element) *CompoundElement  { return newCE("GroundOverlay", children) }
+func GxAltitudeMode(value string) *SimpleElement          { return newSEString("gx:altitudeMode", value) }
+func GxAltitudeOffset(value float64) *SimpleElement       { return newSEFloat("gx:altitudeOffset", value) }
+func GxLabelVisibility(value bool) *SimpleElement         { return newSEBool("gx:labelVisibility", value) }
+func GxOuterColor(value color.Color) *SimpleElement       { return newSEColor("gx:outerColor", value) }
+func GxOuterWidth(value float64) *SimpleElement           { return newSEFloat("gx:outerWidth", value) }
+func GxPhysicalWidth(value float64) *SimpleElement        { return newSEFloat("gx:physicalWidth", value) }
+func GxTrack(children ...Element) *CompoundElement        { return newCE("gx:Track", children) }
+func Heading(value float64) *SimpleElement                { return newSEFloat("heading", value) }
+func HotSpot(value Vec2) *SimpleElement                   { return newSEVec2("hotSpot", value) }
+func Href(value *url.URL) *SimpleElement                  { return newSEString("href", value.String()) }
+func Icon(children ...Element) *CompoundElement           { return newCE("Icon", children) }
+func IconStyle(children ...Element) *CompoundElement      { return newCE("IconStyle", children) }
+func InnerBoundaryIs(value Element) *CompoundElement      { return newCEElement("innerBoundaryIs", value) }
+func Key(value string) *SimpleElement                     { return newSEString("key", value) }
+func LabelStyle(children ...Element) *CompoundElement     { return newCE("LabelStyle", children) }
+func LatLonBox(children ...Element) *CompoundElement      { return newCE("LatLonBox", children) }
+func Latitude(value float64) *SimpleElement               { return newSEFloat("latitude", value) }
+func LineString(children ...Element) *CompoundElement     { return newCE("LineString", children) }
+func LineStyle(children ...Element) *CompoundElement      { return newCE("LineStyle", children) }
+func LinearRing(children ...Element) *CompoundElement     { return newCE("LinearRing", children) }
+func ListItemType(value string) *SimpleElement            { return newSEString("listItemType", value) }
+func ListStyle(children ...Element) *CompoundElement      { return newCE("ListStyle", children) }
+func Longitude(value float64) *SimpleElement              { return newSEFloat("longitude", value) }
+func LookAt(children ...Element) *CompoundElement         { return newCE("LookAt", children) }
+func MaxAltitude(value float64) *SimpleElement            { return newSEFloat("maxAltitude", value) }
+func MaxFadeExtent(value int) *SimpleElement              { return newSEInt("maxFadeExtent", value) }
+func MaxLodPixel(value int) *SimpleElement                { return newSEInt("maxLodPixels", value) }
+func MinAltitude(value float64) *SimpleElement            { return newSEFloat("minAltitude", value) }
+func MinFadeExtent(value int) *SimpleElement              { return newSEInt("minFadeExtent", value) }
+func MinLodPixel(value int) *SimpleElement                { return newSEInt("minLodPixels", value) }
+func Model(children ...Element) *CompoundElement          { return newCE("Model", children) }
+func MultiGeometry(children ...Element) *CompoundElement  { return newCE("MultiGeometry", children) }
+func Name(value string) *SimpleElement                    { return newSEString("name", value) }
+func North(value float64) *SimpleElement                  { return newSEFloat("north", value) }
+func Open(value bool) *SimpleElement                      { return newSEBool("open", value) }
+func OuterBoundaryIs(value Element) *CompoundElement      { return newCEElement("outerBoundaryIs", value) }
+func Outline(value bool) *SimpleElement                   { return newSEBool("outline", value) }
+func OverlayXY(value Vec2) *SimpleElement                 { return newSEVec2("overlayXY", value) }
+func Pair(children ...Element) *CompoundElement           { return newCE("Pair", children) }
+func Placemark(children ...Element) *CompoundElement      { return newCE("Placemark", children) }
+func Point(children ...Element) *CompoundElement          { return newCE("Point", children) }
+func PolyStyle(children ...Element) *CompoundElement      { return newCE("PolyStyle", children) }
+func Polygon(children ...Element) *CompoundElement        { return newCE("Polygon", children) }
+func Range(value float64) *SimpleElement                  { return newSEFloat("range", value) }
+func Roll(value float64) *SimpleElement                   { return newSEFloat("roll", value) }
+func Rotation(value float64) *SimpleElement               { return newSEFloat("rotation", value) }
+func Scale(value float64) *SimpleElement                  { return newSEFloat("scale", value) }
+func Schema(children ...Element) *CompoundElement         { return newCE("Schema", children) }
+func ScreenOverlay(children ...Element) *CompoundElement  { return newCE("ScreenOverlay", children) }
+func ScreenXY(value Vec2) *SimpleElement                  { return newSEVec2("screenXY", value) }
+func Size(value Vec2) *SimpleElement                      { return newSEVec2("size", value) }
+func Snippet(value string) *SimpleElement                 { return newSEString("snippet", value) }
+func South(value float64) *SimpleElement                  { return newSEFloat("south", value) }
+func Style(id string, children ...Element) *SharedElement { return newSharedE("Style", id, children) }
+func StyleURL(style *SharedElement) *SimpleElement        { return newSEString("styleUrl", "#"+style.Id()) }
+func Tesselate(value bool) *SimpleElement                 { return newSEBool("tesselate", value) }
+func Text(value string) *SimpleElement                    { return newSEString("text", value) }
+func Tilt(value float64) *SimpleElement                   { return newSEFloat("tilt", value) }
+func TimeSpan(children ...Element) *CompoundElement       { return newCE("TimeSpan", children) }
+func Value(value string) *SimpleElement                   { return newSEString("value", value) }
+func Visibility(value bool) *SimpleElement                { return newSEBool("visibility", value) }
+func West(value float64) *SimpleElement                   { return newSEFloat("west", value) }
+func When(value time.Time) *SimpleElement                 { return newSETime("when", value) }
+func Width(value float64) *SimpleElement                  { return newSEFloat("width", value) }
 
 func Coordinates(value ...Coordinate) *SimpleElement {
 	cs := make([]string, len(value))
@@ -281,11 +280,7 @@ func HrefMustParse(value string) *SimpleElement {
 	return Href(url)
 }
 
-func SharedStyle(id string, children ...Element) *SharedElement {
-	return newSharedE("Style", id, children)
-}
-
-func SharedStyleMap(id string, children ...Element) *SharedElement {
+func StyleMap(id string, children ...Element) *SharedElement {
 	return newSharedE("StyleMap", id, children)
 }
 

@@ -111,8 +111,8 @@ func TestSimpleElements(t *testing.T) {
 }
 
 func TestSharedStyles(t *testing.T) {
-	sharedStyle0 := SharedStyle("0")
-	highlightPlacemarkStyle := SharedStyle(
+	style0 := Style("0")
+	highlightPlacemarkStyle := Style(
 		"highlightPlacemark",
 		IconStyle(
 			Icon(
@@ -120,7 +120,7 @@ func TestSharedStyles(t *testing.T) {
 			),
 		),
 	)
-	normalPlacemarkStyle := SharedStyle(
+	normalPlacemarkStyle := Style(
 		"normalPlacemark",
 		IconStyle(
 			Icon(
@@ -128,7 +128,7 @@ func TestSharedStyles(t *testing.T) {
 			),
 		),
 	)
-	exampleStyleMap := SharedStyleMap(
+	exampleStyleMap := StyleMap(
 		"exampleStyleMap",
 		Pair(
 			Key("normal"),
@@ -142,9 +142,9 @@ func TestSharedStyles(t *testing.T) {
 	for _, tc := range []testCase{
 		{
 			e: Folder(
-				sharedStyle0,
+				style0,
 				Placemark(
-					StyleURL(sharedStyle0),
+					StyleURL(style0),
 				),
 			),
 			want: `<Folder>` +
