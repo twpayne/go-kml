@@ -4,14 +4,14 @@
 //
 // Goals
 //
-//   * Convenient API for creating both simple and complex KML documents.
-//   * 1:1 mapping between functions and KML elements.
+//   - Convenient API for creating both simple and complex KML documents.
+//   - 1:1 mapping between functions and KML elements.
 //
 // Non-goals
 //
-//   * Protection against generating invalid documents.
-//   * Concealment of KML complexity.
-//   * Fine-grained control over generated XML.
+//   - Protection against generating invalid documents.
+//   - Concealment of KML complexity.
+//   - Fine-grained control over generated XML.
 package kml
 
 import (
