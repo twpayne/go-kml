@@ -97,6 +97,10 @@ func TestSimpleElements(t *testing.T) {
 			`<latitude>0</latitude>`,
 		},
 		{
+			LinkSnippet(2, "snippet"),
+			`<linkSnippet maxLines="2">snippet</linkSnippet>`,
+		},
+		{
 			ListItemType("check"),
 			`<listItemType>check</listItemType>`,
 		},
@@ -105,6 +109,37 @@ func TestSimpleElements(t *testing.T) {
 			`<overlayXY x="0" y="0" xunits="fraction" yunits="fraction"></overlayXY>`,
 		},
 		// FIXME More simple elements
+	} {
+		tc.testStringXML(t)
+	}
+}
+
+func TestCompoundElements(t *testing.T) {
+	for _, tc := range []testCase{
+		{
+			e: ScreenOverlay(
+				Name("Simple crosshairs"),
+				Description("This screen overlay uses fractional positioning to put the image in the exact center of the screen"),
+				Icon(
+					HrefMustParse("http://myserver/myimage.jpg"),
+				),
+				OverlayXY(Vec2{X: 0.5, Y: 0.5, XUnits: "fraction", YUnits: "fraction"}),
+				ScreenXY(Vec2{X: 0.5, Y: 0.5, XUnits: "fraction", YUnits: "fraction"}),
+				Rotation(39.37878630116985),
+				Size(Vec2{X: 0, Y: 0, XUnits: "pixels", YUnits: "pixels"}),
+			),
+			want: `<ScreenOverlay>` +
+				`<name>Simple crosshairs</name>` +
+				`<description>This screen overlay uses fractional positioning to put the image in the exact center of the screen</description>` +
+				`<Icon>` +
+				`<href>http://myserver/myimage.jpg</href>` +
+				`</Icon>` +
+				`<overlayXY x="0.5" y="0.5" xunits="fraction" yunits="fraction"></overlayXY>` +
+				`<screenXY x="0.5" y="0.5" xunits="fraction" yunits="fraction"></screenXY>` +
+				`<rotation>39.37878630116985</rotation>` +
+				`<size x="0" y="0" xunits="pixels" yunits="pixels"></size>` +
+				`</ScreenOverlay>`,
+		},
 	} {
 		tc.testStringXML(t)
 	}
