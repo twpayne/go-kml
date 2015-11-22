@@ -66,6 +66,7 @@ type Element interface {
 	xml.Marshaler
 	StringXML() (string, error)
 	Write(io.Writer) error
+	WriteIndent(io.Writer, string, string) error
 }
 
 // A SimpleElement is an Element with a single value.
@@ -108,7 +109,12 @@ func (se *SimpleElement) StringXML() (string, error) {
 
 // Write writes an XML header and se to w.
 func (se *SimpleElement) Write(w io.Writer) error {
-	return write(w, se)
+	return write(w, "", "", se)
+}
+
+// WriteIndent writes an XML and se to w.
+func (se *SimpleElement) WriteIndent(w io.Writer, prefix, indent string) error {
+	return write(w, prefix, indent, se)
 }
 
 // Add adds children to ce.
@@ -141,7 +147,12 @@ func (ce *CompoundElement) StringXML() (string, error) {
 
 // Write writes an XML header and ce to w.
 func (ce *CompoundElement) Write(w io.Writer) error {
-	return write(w, ce)
+	return write(w, "", "", ce)
+}
+
+// WriteIndent writes an XML and se to w.
+func (ce *CompoundElement) WriteIndent(w io.Writer, prefix, indent string) error {
+	return write(w, prefix, indent, ce)
 }
 
 // Id returns se's id.
@@ -420,11 +431,12 @@ func stringXML(m xml.Marshaler) (string, error) {
 	return b.String(), nil
 }
 
-func write(w io.Writer, m xml.Marshaler) error {
+func write(w io.Writer, prefix, indent string, m xml.Marshaler) error {
 	if _, err := w.Write([]byte(xml.Header)); err != nil {
 		return err
 	}
 	e := xml.NewEncoder(w)
+	e.Indent(prefix, indent)
 	if err := e.Encode(m); err != nil {
 		return err
 	}
