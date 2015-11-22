@@ -200,9 +200,10 @@ func Width(value float64) *SimpleElement                 { return newSEFloat("wi
 func Coordinates(value ...Coordinate) *SimpleElement {
 	cs := make([]string, len(value))
 	for i, c := range value {
-		cs[i] = strconv.FormatFloat(c.Lon, 'f', -1, 64) + "," +
-			strconv.FormatFloat(c.Lat, 'f', -1, 64) + "," +
-			strconv.FormatFloat(c.Alt, 'f', -1, 64)
+		cs[i] = strconv.FormatFloat(c.Lon, 'f', -1, 64) + "," + strconv.FormatFloat(c.Lat, 'f', -1, 64)
+		if c.Alt != 0 {
+			cs[i] += "," + strconv.FormatFloat(c.Alt, 'f', -1, 64)
+		}
 	}
 	return &SimpleElement{
 		StartElement: xml.StartElement{

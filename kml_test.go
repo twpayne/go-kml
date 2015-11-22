@@ -167,7 +167,7 @@ func TestSharedStyles(t *testing.T) {
 						Name("Roll over this icon"),
 						StyleURL(exampleStyleMap),
 						Point(
-							Coordinates(Coordinate{-122.0856545755255, 37.42243077405461, 0}),
+							Coordinates(Coordinate{Lon: -122.0856545755255, Lat: 37.42243077405461}),
 						),
 					),
 				),
@@ -204,7 +204,7 @@ func TestSharedStyles(t *testing.T) {
 				`<name>Roll over this icon</name>` +
 				`<styleUrl>#exampleStyleMap</styleUrl>` +
 				`<Point>` +
-				`<coordinates>-122.0856545755255,37.42243077405461,0</coordinates>` +
+				`<coordinates>-122.0856545755255,37.42243077405461</coordinates>` +
 				`</Point>` +
 				`</Placemark>` +
 				`</Document>` +
@@ -228,7 +228,7 @@ func TestWrite(t *testing.T) {
 					Name("Simple placemark"),
 					Description("Attached to the ground. Intelligently places itself at the height of the underlying terrain."),
 					Point(
-						Coordinates(Coordinate{Lon: -122.0822035425683, Lat: 37.42228990140251, Alt: 0}),
+						Coordinates(Coordinate{Lon: -122.0822035425683, Lat: 37.42228990140251}),
 					),
 				),
 			),
@@ -238,7 +238,7 @@ func TestWrite(t *testing.T) {
 				`<name>Simple placemark</name>` +
 				`<description>Attached to the ground. Intelligently places itself at the height of the underlying terrain.</description>` +
 				`<Point>` +
-				`<coordinates>-122.0822035425683,37.42228990140251,0</coordinates>` +
+				`<coordinates>-122.0822035425683,37.42228990140251</coordinates>` +
 				`</Point>` +
 				`</Placemark>` +
 				`</kml>`,
@@ -273,7 +273,7 @@ func TestWrite(t *testing.T) {
 				`when you can avoid using entity references.&lt;/font&gt;&lt;/p&gt;` +
 				`</description>` +
 				`<Point>` +
-				`<coordinates>102.594411,14.998518,0</coordinates>` +
+				`<coordinates>102.594411,14.998518</coordinates>` +
 				`</Point>` +
 				`</Placemark>` +
 				`</Document>` +
