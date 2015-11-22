@@ -3,6 +3,8 @@ package kml
 import (
 	"bytes"
 	"image/color"
+	"log"
+	"os"
 	"testing"
 	"time"
 )
@@ -31,6 +33,21 @@ func (tc testCase) testStringXML(t *testing.T) {
 	}
 	if got != tc.want {
 		t.Errorf("%#v.StringXML() == ..., nil,\n got %#v, nil,\nwant %#v, nil", tc.e, got, tc.want)
+	}
+}
+
+func ExampleKML() {
+	k := KML(
+		Placemark(
+			Name("Simple placemark"),
+			Description("Attached to the ground. Intelligently places itself at the height of the underlying terrain."),
+			Point(
+				Coordinates(Coordinate{Lon: -122.0822035425683, Lat: 37.42228990140251}),
+			),
+		),
+	)
+	if err := k.Write(os.Stdout); err != nil {
+		log.Fatal(err)
 	}
 }
 
