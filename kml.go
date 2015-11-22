@@ -64,7 +64,6 @@ type SimpleElement struct {
 // A CompoundElement is an Element with children.
 type CompoundElement struct {
 	xml.StartElement
-	id       int
 	children []Element
 }
 
