@@ -505,13 +505,15 @@ func newCEElement(name string, child Element) *CompoundElement {
 }
 
 func newSharedE(name, id string, children []Element) *SharedElement {
+	var attr []xml.Attr
+	if id != "" {
+		attr = append(attr, xml.Attr{Name: xml.Name{Local: "id"}, Value: id})
+	}
 	return &SharedElement{
 		CompoundElement: CompoundElement{
 			StartElement: xml.StartElement{
 				Name: xml.Name{Local: name},
-				Attr: []xml.Attr{
-					{Name: xml.Name{Local: "id"}, Value: id},
-				},
+				Attr: attr,
 			},
 			children: children,
 		},

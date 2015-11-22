@@ -137,6 +137,10 @@ func TestSimpleElements(t *testing.T) {
 			OverlayXY(Vec2{X: 0, Y: 0, XUnits: "fraction", YUnits: "fraction"}),
 			`<overlayXY x="0" y="0" xunits="fraction" yunits="fraction"></overlayXY>`,
 		},
+		{
+			Style(""),
+			`<Style></Style>`,
+		},
 		// FIXME More simple elements
 	} {
 		tc.testMarshal(t)
