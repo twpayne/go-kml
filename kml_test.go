@@ -89,7 +89,7 @@ func TestSimpleElements(t *testing.T) {
 			`<hotSpot x="0.5" y="0.5" xunits="pixels" yunits="pixels"></hotSpot>`,
 		},
 		{
-			HrefMustParse("https://www.google.com/"),
+			Href("https://www.google.com/"),
 			`<href>https://www.google.com/</href>`,
 		},
 		{
@@ -149,7 +149,7 @@ func TestCompoundElements(t *testing.T) {
 				Name("Simple crosshairs"),
 				Description("This screen overlay uses fractional positioning to put the image in the exact center of the screen"),
 				Icon(
-					HrefMustParse("http://myserver/myimage.jpg"),
+					Href("http://myserver/myimage.jpg"),
 				),
 				OverlayXY(Vec2{X: 0.5, Y: 0.5, XUnits: "fraction", YUnits: "fraction"}),
 				ScreenXY(Vec2{X: 0.5, Y: 0.5, XUnits: "fraction", YUnits: "fraction"}),
@@ -179,7 +179,7 @@ func TestSharedStyles(t *testing.T) {
 		"highlightPlacemark",
 		IconStyle(
 			Icon(
-				HrefMustParse("http://maps.google.com/mapfiles/kml/paddle/red-stars.png"),
+				Href("http://maps.google.com/mapfiles/kml/paddle/red-stars.png"),
 			),
 		),
 	)
@@ -187,7 +187,7 @@ func TestSharedStyles(t *testing.T) {
 		"normalPlacemark",
 		IconStyle(
 			Icon(
-				HrefMustParse("http://maps.google.com/mapfiles/kml/paddle/wht-blank.png"),
+				Href("http://maps.google.com/mapfiles/kml/paddle/wht-blank.png"),
 			),
 		),
 	)
@@ -383,7 +383,7 @@ func TestWrite(t *testing.T) {
 						Name("Large-scale overlay on terrain"),
 						Description("Overlay shows Mount Etna erupting on July 13th, 2001."),
 						Icon(
-							HrefMustParse("http://developers.google.com/kml/documentation/images/etna.jpg"),
+							Href("http://developers.google.com/kml/documentation/images/etna.jpg"),
 						),
 						LatLonBox(
 							North(37.91904192681665),

@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"image/color"
 	"io"
-	"net/url"
 	"strconv"
 	"strings"
 	"sync"
@@ -186,7 +185,7 @@ func GxWait(children ...Element) *CompoundElement          { return newCE("gx:Wa
 func HTTPQuery(value string) *SimpleElement                { return newSEString("httpQuery", value) }
 func Heading(value float64) *SimpleElement                 { return newSEFloat("heading", value) }
 func HotSpot(value Vec2) *SimpleElement                    { return newSEVec2("hotSpot", value) }
-func Href(value *url.URL) *SimpleElement                   { return newSEString("href", value.String()) }
+func Href(value string) *SimpleElement                     { return newSEString("href", value) }
 func Icon(children ...Element) *CompoundElement            { return newCE("Icon", children) }
 func IconStyle(children ...Element) *CompoundElement       { return newCE("IconStyle", children) }
 func InnerBoundaryIs(value Element) *CompoundElement       { return newCEElement("innerBoundaryIs", value) }
@@ -241,7 +240,7 @@ func Snippet(value string) *SimpleElement                  { return newSEString(
 func South(value float64) *SimpleElement                   { return newSEFloat("south", value) }
 func Style(id string, children ...Element) *SharedElement  { return newSharedE("Style", id, children) }
 func StyleURL(style *SharedElement) *SimpleElement         { return newSEString("styleUrl", "#"+style.Id()) }
-func TargetHref(value *url.URL) *SimpleElement             { return newSEString("targetHref", value.String()) }
+func TargetHref(value string) *SimpleElement               { return newSEString("targetHref", value) }
 func Tesselate(value bool) *SimpleElement                  { return newSEBool("tesselate", value) }
 func Text(value string) *SimpleElement                     { return newSEString("text", value) }
 func Tilt(value float64) *SimpleElement                    { return newSEFloat("tilt", value) }
@@ -309,14 +308,6 @@ func GxSimpleArrayField(name, type_ string) *CompoundElement {
 			},
 		},
 	}
-}
-
-func HrefMustParse(value string) *SimpleElement {
-	url, err := url.Parse(value)
-	if err != nil {
-		panic(err)
-	}
-	return Href(url)
 }
 
 func LinkSnippet(maxLines int, value string) *SimpleElement {
