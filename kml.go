@@ -204,7 +204,6 @@ func Range(value float64) *SimpleElement                  { return newSEFloat("r
 func Roll(value float64) *SimpleElement                   { return newSEFloat("roll", value) }
 func Rotation(value float64) *SimpleElement               { return newSEFloat("rotation", value) }
 func Scale(value float64) *SimpleElement                  { return newSEFloat("scale", value) }
-func Schema(children ...Element) *CompoundElement         { return newCE("Schema", children) }
 func ScreenOverlay(children ...Element) *CompoundElement  { return newCE("ScreenOverlay", children) }
 func ScreenXY(value Vec2) *SimpleElement                  { return newSEVec2("screenXY", value) }
 func Size(value Vec2) *SimpleElement                      { return newSEVec2("size", value) }
@@ -278,6 +277,35 @@ func HrefMustParse(value string) *SimpleElement {
 		panic(err)
 	}
 	return Href(url)
+}
+
+func Schema(id, name string, children ...Element) *SharedElement {
+	return &SharedElement{
+		CompoundElement: CompoundElement{
+			StartElement: xml.StartElement{
+				Name: xml.Name{Local: "Schema"},
+				Attr: []xml.Attr{
+					{Name: xml.Name{Local: "id"}, Value: id},
+					{Name: xml.Name{Local: "name"}, Value: name},
+				},
+			},
+			children: children,
+		},
+		id: id,
+	}
+}
+
+func SimpleField(name, type_ string, children ...Element) *CompoundElement {
+	return &CompoundElement{
+		StartElement: xml.StartElement{
+			Name: xml.Name{Local: "SimpleField"},
+			Attr: []xml.Attr{
+				{Name: xml.Name{Local: "name"}, Value: name},
+				{Name: xml.Name{Local: "type"}, Value: type_},
+			},
+		},
+		children: children,
+	}
 }
 
 func StyleMap(id string, children ...Element) *SharedElement {

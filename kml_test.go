@@ -210,6 +210,38 @@ func TestSharedStyles(t *testing.T) {
 				`</Document>` +
 				`</kml>`,
 		},
+		{
+			e: KML(
+				Document(
+					Schema("TrailHeadTypeId", "TrailHeadType",
+						SimpleField("TrailHeadName", "string",
+							DisplayName("<b>Trail Head Name</b>"),
+						),
+						SimpleField("TrailLength", "double",
+							DisplayName("<i>The length in miles</i>"),
+						),
+						SimpleField("ElevationGain", "int",
+							DisplayName("<i>change in altitude</i>"),
+						),
+					),
+				),
+			),
+			want: `<kml xmlns="http://www.opengis.net/kml/2.2">` +
+				`<Document>` +
+				`<Schema id="TrailHeadTypeId" name="TrailHeadType">` +
+				`<SimpleField name="TrailHeadName" type="string">` +
+				`<displayName>&lt;b&gt;Trail Head Name&lt;/b&gt;</displayName>` +
+				`</SimpleField>` +
+				`<SimpleField name="TrailLength" type="double">` +
+				`<displayName>&lt;i&gt;The length in miles&lt;/i&gt;</displayName>` +
+				`</SimpleField>` +
+				`<SimpleField name="ElevationGain" type="int">` +
+				`<displayName>&lt;i&gt;change in altitude&lt;/i&gt;</displayName>` +
+				`</SimpleField>` +
+				`</Schema>` +
+				`</Document>` +
+				`</kml>`,
+		},
 	} {
 		tc.testStringXML(t)
 	}
