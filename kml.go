@@ -15,7 +15,6 @@
 package kml
 
 import (
-	"bytes"
 	"encoding/xml"
 	"fmt"
 	"image/color"
@@ -64,7 +63,6 @@ type Vec2 struct {
 // An Element represents an abstract KML element.
 type Element interface {
 	xml.Marshaler
-	StringXML() (string, error)
 	Write(io.Writer) error
 	WriteIndent(io.Writer, string, string) error
 }
@@ -102,11 +100,6 @@ func (se *SimpleElement) MarshalXML(e *xml.Encoder, start xml.StartElement) erro
 	return nil
 }
 
-// StringXML returns se encoded in XML.
-func (se *SimpleElement) StringXML() (string, error) {
-	return stringXML(se)
-}
-
 // Write writes an XML header and se to w.
 func (se *SimpleElement) Write(w io.Writer) error {
 	return write(w, "", "", se)
@@ -138,11 +131,6 @@ func (ce *CompoundElement) MarshalXML(e *xml.Encoder, start xml.StartElement) er
 		return err
 	}
 	return nil
-}
-
-// StringXML returns ce encoded in XML.
-func (ce *CompoundElement) StringXML() (string, error) {
-	return stringXML(ce)
 }
 
 // Write writes an XML header and ce to w.
@@ -420,15 +408,6 @@ func GxKML(children ...Element) *CompoundElement {
 	// FIXME find a more correct way to do this
 	kml.Attr = append(kml.Attr, xml.Attr{Name: xml.Name{Local: "xmlns:gx"}, Value: NS_GX})
 	return kml
-}
-
-func stringXML(m xml.Marshaler) (string, error) {
-	b := &bytes.Buffer{}
-	e := xml.NewEncoder(b)
-	if err := e.Encode(m); err != nil {
-		return "", err
-	}
-	return b.String(), nil
 }
 
 func write(w io.Writer, prefix, indent string, m xml.Marshaler) error {
