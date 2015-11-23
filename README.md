@@ -34,4 +34,4 @@ func ExampleKML() {
 }
 ```
 
-[Licence](LICENCE)
+[License](LICENSE)
