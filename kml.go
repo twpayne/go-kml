@@ -267,6 +267,15 @@ func West(value float64) *SimpleElement                    { return newSEFloat("
 func When(value time.Time) *SimpleElement                  { return newSETime("when", value) }
 func Width(value float64) *SimpleElement                   { return newSEFloat("width", value) }
 
+func coordinates(value string) *SimpleElement {
+	return &SimpleElement{
+		StartElement: xml.StartElement{
+			Name: xml.Name{Local: "coordinates"},
+		},
+		value: value,
+	}
+}
+
 func Coordinates(value ...Coordinate) *SimpleElement {
 	cs := make([]string, len(value))
 	for i, c := range value {
@@ -275,12 +284,7 @@ func Coordinates(value ...Coordinate) *SimpleElement {
 			cs[i] += "," + strconv.FormatFloat(c.Alt, 'f', -1, 64)
 		}
 	}
-	return &SimpleElement{
-		StartElement: xml.StartElement{
-			Name: xml.Name{Local: "coordinates"},
-		},
-		value: strings.Join(cs, " "),
-	}
+	return coordinates(strings.Join(cs, " "))
 }
 
 func CoordinatesArray(value ...[]float64) *SimpleElement {
@@ -294,12 +298,7 @@ func CoordinatesArray(value ...[]float64) *SimpleElement {
 			cs[i] += "," + strconv.FormatFloat(c[2], 'f', -1, 64)
 		}
 	}
-	return &SimpleElement{
-		StartElement: xml.StartElement{
-			Name: xml.Name{Local: "coordinates"},
-		},
-		value: strings.Join(cs, " "),
-	}
+	return coordinates(strings.Join(cs, " "))
 }
 
 func CoordinatesFlat(flatCoords []float64, offset, end, stride, dim int) *SimpleElement {
@@ -312,12 +311,7 @@ func CoordinatesFlat(flatCoords []float64, offset, end, stride, dim int) *Simple
 		}
 		src += stride
 	}
-	return &SimpleElement{
-		StartElement: xml.StartElement{
-			Name: xml.Name{Local: "coordinates"},
-		},
-		value: strings.Join(cs, " "),
-	}
+	return coordinates(strings.Join(cs, " "))
 }
 
 func GxAngles(value GxAngle) *SimpleElement {
