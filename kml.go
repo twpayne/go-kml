@@ -283,6 +283,25 @@ func Coordinates(value ...Coordinate) *SimpleElement {
 	}
 }
 
+func CoordinatesArray(value ...[]float64) *SimpleElement {
+	cs := make([]string, len(value))
+	for i, c := range value {
+		if len(c) < 2 {
+			continue
+		}
+		cs[i] = strconv.FormatFloat(c[0], 'f', -1, 64) + "," + strconv.FormatFloat(c[1], 'f', -1, 64)
+		if len(c) >= 3 && c[2] != 0 {
+			cs[i] += "," + strconv.FormatFloat(c[2], 'f', -1, 64)
+		}
+	}
+	return &SimpleElement{
+		StartElement: xml.StartElement{
+			Name: xml.Name{Local: "coordinates"},
+		},
+		value: strings.Join(cs, " "),
+	}
+}
+
 func GxAngles(value GxAngle) *SimpleElement {
 	return &SimpleElement{
 		StartElement: xml.StartElement{

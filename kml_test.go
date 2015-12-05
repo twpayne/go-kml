@@ -90,6 +90,18 @@ func TestSimpleElements(t *testing.T) {
 			`<coordinates>1.23,4.56,7.89</coordinates>`,
 		},
 		{
+			CoordinatesArray([]float64{1.23, 4.56}),
+			`<coordinates>1.23,4.56</coordinates>`,
+		},
+		{
+			CoordinatesArray([]float64{1.23, 4.56, 7.89}),
+			`<coordinates>1.23,4.56,7.89</coordinates>`,
+		},
+		{
+			CoordinatesArray([][]float64{{1.23, 4.56}, {7.89, 0.12}}...),
+			`<coordinates>1.23,4.56 7.89,0.12</coordinates>`,
+		},
+		{
 			Description("text"),
 			`<description>text</description>`,
 		},
