@@ -29,11 +29,11 @@ func (tc testCase) testWrite(t *testing.T) {
 func (tc testCase) testMarshal(t *testing.T) {
 	got, err := xml.Marshal(tc.e)
 	if err != nil {
-		t.Errorf("%#v.StringXML() == %#v, %#v, want ..., nil", tc.e, got, err)
+		t.Errorf("xml.Marshal(%#v) == %#v, %#v, want ..., nil", tc.e, got, err)
 		return
 	}
 	if string(got) != tc.want {
-		t.Errorf("%#v.StringXML() == ..., nil,\n got %#v, nil,\nwant %#v, nil", tc.e, string(got), tc.want)
+		t.Errorf("xml.Marshal(%#v)\nwrote %#v\n want %#v", tc.e, string(got), tc.want)
 	}
 }
 
