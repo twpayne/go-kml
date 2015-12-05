@@ -302,6 +302,24 @@ func CoordinatesArray(value ...[]float64) *SimpleElement {
 	}
 }
 
+func CoordinatesFlat(flatCoords []float64, offset, end, stride, dim int) *SimpleElement {
+	cs := make([]string, (end-offset)/stride)
+	src := offset
+	for dst := range cs {
+		cs[dst] = strconv.FormatFloat(flatCoords[src], 'f', -1, 64) + "," + strconv.FormatFloat(flatCoords[src+1], 'f', -1, 64)
+		if dim > 2 && flatCoords[src+2] != 0 {
+			cs[dst] += "," + strconv.FormatFloat(flatCoords[src+2], 'f', -1, 64)
+		}
+		src += stride
+	}
+	return &SimpleElement{
+		StartElement: xml.StartElement{
+			Name: xml.Name{Local: "coordinates"},
+		},
+		value: strings.Join(cs, " "),
+	}
+}
+
 func GxAngles(value GxAngle) *SimpleElement {
 	return &SimpleElement{
 		StartElement: xml.StartElement{

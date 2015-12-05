@@ -102,6 +102,18 @@ func TestSimpleElements(t *testing.T) {
 			`<coordinates>1.23,4.56 7.89,0.12</coordinates>`,
 		},
 		{
+			CoordinatesFlat([]float64{1.23, 4.56, 7.89, 0.12}, 0, 4, 2, 2),
+			`<coordinates>1.23,4.56 7.89,0.12</coordinates>`,
+		},
+		{
+			CoordinatesFlat([]float64{1.23, 4.56, 0, 7.89, 0.12, 0}, 0, 6, 3, 3),
+			`<coordinates>1.23,4.56 7.89,0.12</coordinates>`,
+		},
+		{
+			CoordinatesFlat([]float64{1.23, 4.56, 7.89, 0.12, 3.45, 6.78}, 0, 6, 3, 3),
+			`<coordinates>1.23,4.56,7.89 0.12,3.45,6.78</coordinates>`,
+		},
+		{
 			Description("text"),
 			`<description>text</description>`,
 		},
