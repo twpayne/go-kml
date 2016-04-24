@@ -31,15 +31,15 @@ const (
 )
 
 var (
-	lastId      int
-	lastIdMutex sync.Mutex
+	lastID      int
+	lastIDMutex sync.Mutex
 )
 
-func GetId() string {
-	lastIdMutex.Lock()
-	lastId++
-	id := lastId
-	lastIdMutex.Unlock()
+func GetID() string {
+	lastIDMutex.Lock()
+	lastID++
+	id := lastID
+	lastIDMutex.Unlock()
 	return strconv.Itoa(id)
 }
 
@@ -132,8 +132,8 @@ func (ce *CompoundElement) WriteIndent(w io.Writer, prefix, indent string) error
 	return write(w, prefix, indent, ce)
 }
 
-// Id returns se's id.
-func (se *SharedElement) Id() string {
+// ID returns se's id.
+func (se *SharedElement) ID() string {
 	return se.id
 }
 
@@ -239,7 +239,7 @@ func Size(value Vec2) *SimpleElement                       { return newSEVec2("s
 func Snippet(value string) *SimpleElement                  { return newSEString("snippet", value) }
 func South(value float64) *SimpleElement                   { return newSEFloat("south", value) }
 func Style(id string, children ...Element) *SharedElement  { return newSharedE("Style", id, children) }
-func StyleURL(style *SharedElement) *SimpleElement         { return newSEString("styleUrl", "#"+style.Id()) }
+func StyleURL(style *SharedElement) *SimpleElement         { return newSEString("styleUrl", "#"+style.ID()) }
 func TargetHref(value string) *SimpleElement               { return newSEString("targetHref", value) }
 func Tesselate(value bool) *SimpleElement                  { return newSEBool("tesselate", value) }
 func Text(value string) *SimpleElement                     { return newSEString("text", value) }
