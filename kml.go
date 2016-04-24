@@ -87,16 +87,7 @@ type SharedElement struct {
 
 // MarshalXML marshals se to e. start is ignored.
 func (se *SimpleElement) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
-	if err := e.EncodeToken(se.StartElement); err != nil {
-		return err
-	}
-	if err := e.EncodeToken(xml.CharData(se.value)); err != nil {
-		return err
-	}
-	if err := e.EncodeToken(se.End()); err != nil {
-		return err
-	}
-	return nil
+	return e.EncodeElement(xml.CharData(se.value), se.StartElement)
 }
 
 // Write writes an XML header and se to w.
