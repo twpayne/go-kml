@@ -373,12 +373,12 @@ func Schema(id, name string, children ...Element) *SharedElement {
 	}
 }
 
-func SchemaData(schemaUrl string, children ...Element) *CompoundElement {
+func SchemaData(schemaURL string, children ...Element) *CompoundElement {
 	return &CompoundElement{
 		StartElement: xml.StartElement{
 			Name: xml.Name{Local: "SchemaData"},
 			Attr: []xml.Attr{
-				{Name: xml.Name{Local: "schemaUrl"}, Value: schemaUrl},
+				{Name: xml.Name{Local: "schemaUrl"}, Value: schemaURL},
 			},
 		},
 		children: children,
