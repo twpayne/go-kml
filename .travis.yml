@@ -1,9 +1,16 @@
 language: go
 
+go:
+        - 1.6.2
+
+install:
+        - go get github.com/golang/lint/golint
+
 script:
         - go test -v ./...
         - go test -cover -race ./...
         - go vet ./...
         - test -z "$(go fmt -s ./...)"
+        - golint ./...
 
 sudo: false
