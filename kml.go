@@ -26,8 +26,8 @@ import (
 )
 
 const (
-	NS    = "http://www.opengis.net/kml/2.2"
-	NS_GX = "http://www.google.com/kml/ext/2.2"
+	Namespace   = "http://www.opengis.net/kml/2.2"
+	GxNamespace = "http://www.google.com/kml/ext/2.2"
 )
 
 var (
@@ -417,7 +417,7 @@ func StyleMap(id string, children ...Element) *SharedElement {
 func KML(children ...Element) *CompoundElement {
 	return &CompoundElement{
 		StartElement: xml.StartElement{
-			Name: xml.Name{Space: NS, Local: "kml"},
+			Name: xml.Name{Space: Namespace, Local: "kml"},
 		},
 		children: children,
 	}
@@ -426,7 +426,7 @@ func KML(children ...Element) *CompoundElement {
 func GxKML(children ...Element) *CompoundElement {
 	kml := KML(children...)
 	// FIXME find a more correct way to do this
-	kml.Attr = append(kml.Attr, xml.Attr{Name: xml.Name{Local: "xmlns:gx"}, Value: NS_GX})
+	kml.Attr = append(kml.Attr, xml.Attr{Name: xml.Name{Local: "xmlns:gx"}, Value: GxNamespace})
 	return kml
 }
 
