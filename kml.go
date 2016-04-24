@@ -93,8 +93,7 @@ func (se *SimpleElement) MarshalXML(e *xml.Encoder, start xml.StartElement) erro
 	if err := e.EncodeToken(xml.CharData(se.value)); err != nil {
 		return err
 	}
-	endElement := xml.EndElement{Name: se.Name}
-	if err := e.EncodeToken(endElement); err != nil {
+	if err := e.EncodeToken(se.End()); err != nil {
 		return err
 	}
 	return nil
@@ -126,8 +125,7 @@ func (ce *CompoundElement) MarshalXML(e *xml.Encoder, start xml.StartElement) er
 			return err
 		}
 	}
-	endElement := xml.EndElement{Name: ce.Name}
-	if err := e.EncodeToken(endElement); err != nil {
+	if err := e.EncodeToken(ce.End()); err != nil {
 		return err
 	}
 	return nil
