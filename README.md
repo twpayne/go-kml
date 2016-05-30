@@ -1,6 +1,7 @@
 # go-kml
 
 [![Build Status](https://travis-ci.org/twpayne/go-kml.svg?branch=master)](https://travis-ci.org/twpayne/go-kml)
+[![GoDoc](https://godoc.org/github.com/twpayne/go-kml?status.svg)](https://godoc.org/github.com/twpayne/go-kml)
 
 Package go-kml provides convenince methods for creating and writing KML documents.
 
