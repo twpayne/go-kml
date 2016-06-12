@@ -119,10 +119,7 @@ func (ce *CompoundElement) MarshalXML(e *xml.Encoder, start xml.StartElement) er
 			return err
 		}
 	}
-	if err := e.EncodeToken(ce.End()); err != nil {
-		return err
-	}
-	return nil
+	return e.EncodeToken(ce.End())
 }
 
 // Write writes an XML header and ce to w.
@@ -690,10 +687,7 @@ func write(w io.Writer, prefix, indent string, m xml.Marshaler) error {
 	}
 	e := xml.NewEncoder(w)
 	e.Indent(prefix, indent)
-	if err := e.Encode(m); err != nil {
-		return err
-	}
-	return nil
+	return e.Encode(m)
 }
 
 func newSEBool(name string, value bool) *SimpleElement {
