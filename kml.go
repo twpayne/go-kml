@@ -753,12 +753,6 @@ func newSETime(name string, value time.Time) *SimpleElement {
 	}
 }
 
-func newSEVoid(name string) *SimpleElement {
-	return &SimpleElement{
-		StartElement: xml.StartElement{Name: xml.Name{Local: name}},
-	}
-}
-
 func newCE(name string, children []Element) *CompoundElement {
 	return &CompoundElement{
 		StartElement: xml.StartElement{
