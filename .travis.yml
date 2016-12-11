@@ -6,14 +6,10 @@ go:
         - 1.6.x
         - 1.5.x
 
-install:
-        - go get github.com/golang/lint/golint
-
 script:
         - go test -v ./...
         - go test -cover -race ./...
         - go vet ./...
         - test -z "$(go fmt ./...)"
-        - golint ./...
 
 sudo: false
