@@ -321,3 +321,88 @@ func ExampleStyle() {
 	//   </Document>
 	// </kml>
 }
+
+func ExampleSharedStyleMap() {
+	k := KML(
+		Document(
+			Name("Highlighted Icon"),
+			Description("Place your mouse over the icon to see it display the new icon"),
+			SharedStyle(
+				"highlightPlacemark",
+				IconStyle(
+					Icon(
+						Href("http://maps.google.com/mapfiles/kml/paddle/red-stars.png"),
+					),
+				),
+			),
+			SharedStyle(
+				"normalPlacemark",
+				IconStyle(
+					Icon(
+						Href("http://maps.google.com/mapfiles/kml/paddle/wht-blank.png"),
+					),
+				),
+			),
+			SharedStyleMap(
+				"exampleStyleMap",
+				Pair(
+					Key("normal"),
+					StyleURL("#normalPlacemark"),
+				),
+				Pair(
+					Key("highlight"),
+					StyleURL("#highlightPlacemark"),
+				),
+			),
+			Placemark(
+				Name("Roll over this icon"),
+				StyleURL("#exampleStyleMap"),
+				Point(
+					Coordinates(Coordinate{Lon: -122.0856545755255, Lat: 37.42243077405461}),
+				),
+			),
+		),
+	)
+	if err := k.WriteIndent(os.Stdout, "", "  "); err != nil {
+		log.Fatal(err)
+	}
+	// Output:
+	// <?xml version="1.0" encoding="UTF-8"?>
+	// <kml xmlns="http://www.opengis.net/kml/2.2">
+	//   <Document>
+	//     <name>Highlighted Icon</name>
+	//     <description>Place your mouse over the icon to see it display the new icon</description>
+	//     <Style id="highlightPlacemark">
+	//       <IconStyle>
+	//         <Icon>
+	//           <href>http://maps.google.com/mapfiles/kml/paddle/red-stars.png</href>
+	//         </Icon>
+	//       </IconStyle>
+	//     </Style>
+	//     <Style id="normalPlacemark">
+	//       <IconStyle>
+	//         <Icon>
+	//           <href>http://maps.google.com/mapfiles/kml/paddle/wht-blank.png</href>
+	//         </Icon>
+	//       </IconStyle>
+	//     </Style>
+	//     <StyleMap id="exampleStyleMap">
+	//       <Pair>
+	//         <key>normal</key>
+	//         <styleUrl>#normalPlacemark</styleUrl>
+	//       </Pair>
+	//       <Pair>
+	//         <key>highlight</key>
+	//         <styleUrl>#highlightPlacemark</styleUrl>
+	//       </Pair>
+	//     </StyleMap>
+	//     <Placemark>
+	//       <name>Roll over this icon</name>
+	//       <styleUrl>#exampleStyleMap</styleUrl>
+	//       <Point>
+	//         <coordinates>-122.0856545755255,37.42243077405461</coordinates>
+	//       </Point>
+	//     </Placemark>
+	//   </Document>
+	// </kml>
+}
