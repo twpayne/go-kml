@@ -452,7 +452,7 @@ func StyleURL(style *SharedElement) *SimpleElement { return newSEString("styleUr
 // TargetHref returns a new TargetHref element.
 func TargetHref(value string) *SimpleElement { return newSEString("targetHref", value) }
 
-// Tessellate returns a new Tesselate element.
+// Tessellate returns a new Tessellate element.
 func Tessellate(value bool) *SimpleElement { return newSEBool("tessellate", value) }
 
 // Text returns a new Text element.
