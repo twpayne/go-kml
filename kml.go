@@ -421,6 +421,9 @@ func RefreshInterval(value float64) *SimpleElement { return newSEFloat("refreshI
 // RefreshMode returns a new RefreshMode element.
 func RefreshMode(value string) *SimpleElement { return newSEString("refreshMode", value) }
 
+// RefreshVisibility returns a new RefreshVisibility element.
+func RefreshVisibility(value bool) *SimpleElement { return newSEBool("refreshVisibility", value) }
+
 // Region returns a new Region element.
 func Region(children ...Element) *CompoundElement { return newCE("Region", children) }
 
