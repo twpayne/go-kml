@@ -6,8 +6,6 @@
 
 Package go-kml provides convenience methods for creating and writing KML documents.
 
-See https://godoc.org/github.com/twpayne/go-kml.
-
 Example:
 
 ```go
