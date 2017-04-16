@@ -1,4 +1,4 @@
-// Package kml provides convenince methods for creating and writing KML documents.
+// Package kml provides convenience methods for creating and writing KML documents.
 //
 // See https://developers.google.com/kml/
 //
