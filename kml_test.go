@@ -224,11 +224,11 @@ func TestSharedStyles(t *testing.T) {
 		"exampleStyleMap",
 		Pair(
 			Key("normal"),
-			StyleURL(normalPlacemarkStyle),
+			StyleURL(normalPlacemarkStyle.URL()),
 		),
 		Pair(
 			Key("highlight"),
-			StyleURL(highlightPlacemarkStyle),
+			StyleURL(highlightPlacemarkStyle.URL()),
 		),
 	)
 	for _, tc := range []testCase{
@@ -236,7 +236,7 @@ func TestSharedStyles(t *testing.T) {
 			e: Folder(
 				style0,
 				Placemark(
-					StyleURL(style0),
+					StyleURL(style0.URL()),
 				),
 			),
 			want: `<Folder>` +
@@ -257,7 +257,7 @@ func TestSharedStyles(t *testing.T) {
 					exampleStyleMap,
 					Placemark(
 						Name("Roll over this icon"),
-						StyleURL(exampleStyleMap),
+						StyleURL(exampleStyleMap.URL()),
 						Point(
 							Coordinates(Coordinate{Lon: -122.0856545755255, Lat: 37.42243077405461}),
 						),

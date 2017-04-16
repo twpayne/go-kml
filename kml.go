@@ -137,6 +137,11 @@ func (se *SharedElement) ID() string {
 	return se.id
 }
 
+// URL returns se's URL.
+func (se *SharedElement) URL() string {
+	return "#" + se.ID()
+}
+
 // Address returns a new Address element.
 func Address(value string) *SimpleElement { return newSEString("address", value) }
 
@@ -447,7 +452,7 @@ func Style(children ...Element) *CompoundElement { return newCE("Style", childre
 func StyleMap(children ...Element) *CompoundElement { return newCE("StyleMap", children) }
 
 // StyleURL returns a new StyleURL element.
-func StyleURL(style *SharedElement) *SimpleElement { return newSEString("styleUrl", "#"+style.ID()) }
+func StyleURL(value string) *SimpleElement { return newSEString("styleUrl", value) }
 
 // TargetHref returns a new TargetHref element.
 func TargetHref(value string) *SimpleElement { return newSEString("targetHref", value) }
