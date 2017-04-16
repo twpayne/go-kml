@@ -214,6 +214,9 @@ func Extrude(value bool) *SimpleElement { return newSEBool("extrude", value) }
 // Fill returns a new Fill element.
 func Fill(value bool) *SimpleElement { return newSEBool("fill", value) }
 
+// FlyToView returns a new FlyToView element.
+func FlyToView(value bool) *SimpleElement { return newSEBool("flyToView", value) }
+
 // Folder returns a new Folder element.
 func Folder(children ...Element) *CompoundElement { return newCE("Folder", children) }
 
