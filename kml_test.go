@@ -162,7 +162,7 @@ func TestSimpleElements(t *testing.T) {
 			`<overlayXY x="0" y="0" xunits="fraction" yunits="fraction"></overlayXY>`,
 		},
 		{
-			Style(""),
+			Style(),
 			`<Style></Style>`,
 		},
 		// FIXME More simple elements
@@ -231,8 +231,8 @@ func TestCompoundElements(t *testing.T) {
 }
 
 func TestSharedStyles(t *testing.T) {
-	style0 := Style("0")
-	highlightPlacemarkStyle := Style(
+	style0 := SharedStyle("0")
+	highlightPlacemarkStyle := SharedStyle(
 		"highlightPlacemark",
 		IconStyle(
 			Icon(
@@ -240,7 +240,7 @@ func TestSharedStyles(t *testing.T) {
 			),
 		),
 	)
-	normalPlacemarkStyle := Style(
+	normalPlacemarkStyle := SharedStyle(
 		"normalPlacemark",
 		IconStyle(
 			Icon(
@@ -248,7 +248,7 @@ func TestSharedStyles(t *testing.T) {
 			),
 		),
 	)
-	exampleStyleMap := StyleMap(
+	exampleStyleMap := SharedStyleMap(
 		"exampleStyleMap",
 		Pair(
 			Key("normal"),

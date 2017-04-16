@@ -441,7 +441,10 @@ func Snippet(value string) *SimpleElement { return newSEString("snippet", value)
 func South(value float64) *SimpleElement { return newSEFloat("south", value) }
 
 // Style returns a new Style element.
-func Style(id string, children ...Element) *SharedElement { return newSharedE("Style", id, children) }
+func Style(children ...Element) *CompoundElement { return newCE("Style", children) }
+
+// StyleMap returns a new StyleMap element.
+func StyleMap(children ...Element) *CompoundElement { return newCE("StyleMap", children) }
 
 // StyleURL returns a new StyleURL element.
 func StyleURL(style *SharedElement) *SimpleElement { return newSEString("styleUrl", "#"+style.ID()) }
@@ -631,6 +634,16 @@ func SchemaData(schemaURL string, children ...Element) *CompoundElement {
 	}
 }
 
+// SharedStyle returns a new shared Style element.
+func SharedStyle(id string, children ...Element) *SharedElement {
+	return newSharedE("Style", id, children)
+}
+
+// SharedStyleMap returns a new shared StyleMap element.
+func SharedStyleMap(id string, children ...Element) *SharedElement {
+	return newSharedE("StyleMap", id, children)
+}
+
 // SimpleData returns a new SimpleData element.
 func SimpleData(name, value string) *SimpleElement {
 	return &SimpleElement{
@@ -656,11 +669,6 @@ func SimpleField(name, typ string, children ...Element) *CompoundElement {
 		},
 		children: children,
 	}
-}
-
-// StyleMap returns a new StyleMap element.
-func StyleMap(id string, children ...Element) *SharedElement {
-	return newSharedE("StyleMap", id, children)
 }
 
 // KML returns a new kml element.
