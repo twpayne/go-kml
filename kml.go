@@ -250,6 +250,9 @@ func GxLatLonQuad(children ...Element) *CompoundElement { return newCE("gx:LatLo
 // GxMultiTrack returns a new gx:MultiTrack element.
 func GxMultiTrack(children ...Element) *CompoundElement { return newCE("gx:MultiTrack", children) }
 
+// GxNetworkLink returns a new GxNetworkLink element.
+func GxNetworkLink(children ...Element) *CompoundElement { return newCE("gx:NetworkLink", children) }
+
 // GxOuterColor returns a new gx:OuterColor element.
 func GxOuterColor(value color.Color) *SimpleElement { return newSEColor("gx:outerColor", value) }
 
@@ -374,7 +377,7 @@ func MultiGeometry(children ...Element) *CompoundElement { return newCE("MultiGe
 func Name(value string) *SimpleElement { return newSEString("name", value) }
 
 // NetworkLink returns a new NetworkLink element.
-func NetworkLink(children ...Element) *CompoundElement { return newCE("gx:NetworkLink", children) }
+func NetworkLink(children ...Element) *CompoundElement { return newCE("NetworkLink", children) }
 
 // North returns a new North element.
 func North(value float64) *SimpleElement { return newSEFloat("north", value) }
