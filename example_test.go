@@ -406,3 +406,35 @@ func ExampleSharedStyleMap() {
 	//   </Document>
 	// </kml>
 }
+
+func ExampleScreenOverlay() {
+	k := KML(
+		ScreenOverlay(
+			Name("Absolute Positioning: Top left"),
+			Icon(
+				Href("http://developers.google.com/kml/documentation/images/top_left.jpg"),
+			),
+			OverlayXY(Vec2{X: 0, Y: 1, XUnits: "fraction", YUnits: "fraction"}),
+			ScreenXY(Vec2{X: 0, Y: 1, XUnits: "fraction", YUnits: "fraction"}),
+			RotationXY(Vec2{X: 0, Y: 0, XUnits: "fraction", YUnits: "fraction"}),
+			Size(Vec2{X: 0, Y: 0, XUnits: "fraction", YUnits: "fraction"}),
+		),
+	)
+	if err := k.WriteIndent(os.Stdout, "", "  "); err != nil {
+		log.Fatal(err)
+	}
+	// Output:
+	// <?xml version="1.0" encoding="UTF-8"?>
+	// <kml xmlns="http://www.opengis.net/kml/2.2">
+	//   <ScreenOverlay>
+	//     <name>Absolute Positioning: Top left</name>
+	//     <Icon>
+	//       <href>http://developers.google.com/kml/documentation/images/top_left.jpg</href>
+	//     </Icon>
+	//     <overlayXY x="0" y="1" xunits="fraction" yunits="fraction"></overlayXY>
+	//     <screenXY x="0" y="1" xunits="fraction" yunits="fraction"></screenXY>
+	//     <rotationXY x="0" y="0" xunits="fraction" yunits="fraction"></rotationXY>
+	//     <size x="0" y="0" xunits="fraction" yunits="fraction"></size>
+	//   </ScreenOverlay>
+	// </kml>
+}
