@@ -60,3 +60,51 @@ func ExampleDescription() {
 	//   </Document>
 	// </kml>
 }
+
+func ExampleGroundOverlay() {
+	k := KML(
+		Folder(
+			Name("Ground Overlays"),
+			Description("Examples of ground overlays"),
+			GroundOverlay(
+				Name("Large-scale overlay on terrain"),
+				Description("Overlay shows Mount Etna erupting on July 13th, 2001."),
+				Icon(
+					Href("https://developers.google.com/kml/documentation/images/etna.jpg"),
+				),
+				LatLonBox(
+					North(37.91904192681665),
+					South(37.46543388598137),
+					East(15.35832653742206),
+					West(14.60128369746704),
+					Rotation(-0.1556640799496235),
+				),
+			),
+		),
+	)
+	if err := k.WriteIndent(os.Stdout, "", "  "); err != nil {
+		log.Fatal(err)
+	}
+	// Output:
+	// <?xml version="1.0" encoding="UTF-8"?>
+	// <kml xmlns="http://www.opengis.net/kml/2.2">
+	//   <Folder>
+	//     <name>Ground Overlays</name>
+	//     <description>Examples of ground overlays</description>
+	//     <GroundOverlay>
+	//       <name>Large-scale overlay on terrain</name>
+	//       <description>Overlay shows Mount Etna erupting on July 13th, 2001.</description>
+	//       <Icon>
+	//         <href>https://developers.google.com/kml/documentation/images/etna.jpg</href>
+	//       </Icon>
+	//       <LatLonBox>
+	//         <north>37.91904192681665</north>
+	//         <south>37.46543388598137</south>
+	//         <east>15.35832653742206</east>
+	//         <west>14.60128369746704</west>
+	//         <rotation>-0.1556640799496235</rotation>
+	//       </LatLonBox>
+	//     </GroundOverlay>
+	//   </Folder>
+	// </kml>
+}
