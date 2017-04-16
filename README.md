@@ -4,7 +4,7 @@
 [![GoDoc](https://godoc.org/github.com/twpayne/go-kml?status.svg)](https://godoc.org/github.com/twpayne/go-kml)
 [![Report Card](https://goreportcard.com/badge/github.com/twpayne/go-kml)](https://goreportcard.com/report/github.com/twpayne/go-kml)
 
-Package go-kml provides convenince methods for creating and writing KML documents.
+Package go-kml provides convenience methods for creating and writing KML documents.
 
 See https://godoc.org/github.com/twpayne/go-kml.
 
