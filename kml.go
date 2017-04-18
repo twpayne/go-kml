@@ -20,7 +20,6 @@ import (
 	"image/color"
 	"io"
 	"strconv"
-	"strings"
 	"time"
 )
 
@@ -90,6 +89,12 @@ type CoordinatesElement struct {
 // CoordinatesArrayElement is a coordinates element.
 type CoordinatesArrayElement struct {
 	coordinates [][]float64
+}
+
+// CoordinatesFlatElement is a coordinates element.
+type CoordinatesFlatElement struct {
+	flatCoords               []float64
+	offset, end, stride, dim int
 }
 
 // MarshalXML marshals se to e. start is ignored.
@@ -206,6 +211,37 @@ func (cae *CoordinatesArrayElement) Write(w io.Writer) error {
 // WriteIndent writes an XML and se to w.
 func (cae *CoordinatesArrayElement) WriteIndent(w io.Writer, prefix, indent string) error {
 	return write(w, prefix, indent, cae)
+}
+
+// MarshalXML marshals ee to e. start is ignored.
+func (cfe *CoordinatesFlatElement) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	if err := e.EncodeToken(coordinatesStartElement); err != nil {
+		return err
+	}
+	for i := cfe.offset; i < cfe.end; i += cfe.stride {
+		s := ""
+		if i != cfe.offset {
+			s = " "
+		}
+		s += strconv.FormatFloat(cfe.flatCoords[i], 'f', -1, 64) + "," + strconv.FormatFloat(cfe.flatCoords[i+1], 'f', -1, 64)
+		if cfe.dim > 2 && cfe.flatCoords[i+2] != 0 {
+			s += "," + strconv.FormatFloat(cfe.flatCoords[i+2], 'f', -1, 64)
+		}
+		if err := e.EncodeToken(xml.CharData([]byte(s))); err != nil {
+			return err
+		}
+	}
+	return e.EncodeToken(coordinatesEndElement)
+}
+
+// Write writes an XML header and cfe to w.
+func (cfe *CoordinatesFlatElement) Write(w io.Writer) error {
+	return write(w, "", "  ", cfe)
+}
+
+// WriteIndent writes an XML and se to w.
+func (cfe *CoordinatesFlatElement) WriteIndent(w io.Writer, prefix, indent string) error {
+	return write(w, prefix, indent, cfe)
 }
 
 // Address returns a new Address element.
@@ -592,17 +628,14 @@ func CoordinatesArray(value ...[]float64) *CoordinatesArrayElement {
 }
 
 // CoordinatesFlat returns a new Coordinates element from flat coordinates.
-func CoordinatesFlat(flatCoords []float64, offset, end, stride, dim int) *SimpleElement {
-	cs := make([]string, (end-offset)/stride)
-	src := offset
-	for dst := range cs {
-		cs[dst] = strconv.FormatFloat(flatCoords[src], 'f', -1, 64) + "," + strconv.FormatFloat(flatCoords[src+1], 'f', -1, 64)
-		if dim > 2 && flatCoords[src+2] != 0 {
-			cs[dst] += "," + strconv.FormatFloat(flatCoords[src+2], 'f', -1, 64)
-		}
-		src += stride
+func CoordinatesFlat(flatCoords []float64, offset, end, stride, dim int) *CoordinatesFlatElement {
+	return &CoordinatesFlatElement{
+		flatCoords: flatCoords,
+		offset:     offset,
+		end:        end,
+		stride:     stride,
+		dim:        dim,
 	}
-	return coordinates(strings.Join(cs, " "))
 }
 
 // GxAngles returns a new gx:Angles element.
