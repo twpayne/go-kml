@@ -87,6 +87,11 @@ type CoordinatesElement struct {
 	coordinates []Coordinate
 }
 
+// CoordinatesArrayElement is a coordinates element.
+type CoordinatesArrayElement struct {
+	coordinates [][]float64
+}
+
 // MarshalXML marshals se to e. start is ignored.
 func (se *SimpleElement) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	return e.EncodeElement(xml.CharData(se.value), se.StartElement)
@@ -170,6 +175,37 @@ func (ce *CoordinatesElement) Write(w io.Writer) error {
 // WriteIndent writes an XML and se to w.
 func (ce *CoordinatesElement) WriteIndent(w io.Writer, prefix, indent string) error {
 	return write(w, prefix, indent, ce)
+}
+
+// MarshalXML marshals ee to e. start is ignored.
+func (cae *CoordinatesArrayElement) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	if err := e.EncodeToken(coordinatesStartElement); err != nil {
+		return err
+	}
+	for i, c := range cae.coordinates {
+		s := ""
+		if i != 0 {
+			s = " "
+		}
+		s += strconv.FormatFloat(c[0], 'f', -1, 64) + "," + strconv.FormatFloat(c[1], 'f', -1, 64)
+		if len(c) > 2 && c[2] != 0 {
+			s += "," + strconv.FormatFloat(c[2], 'f', -1, 64)
+		}
+		if err := e.EncodeToken(xml.CharData([]byte(s))); err != nil {
+			return err
+		}
+	}
+	return e.EncodeToken(coordinatesEndElement)
+}
+
+// Write writes an XML header and cae to w.
+func (cae *CoordinatesArrayElement) Write(w io.Writer) error {
+	return write(w, "", "  ", cae)
+}
+
+// WriteIndent writes an XML and se to w.
+func (cae *CoordinatesArrayElement) WriteIndent(w io.Writer, prefix, indent string) error {
+	return write(w, prefix, indent, cae)
 }
 
 // Address returns a new Address element.
@@ -550,19 +586,9 @@ func Coordinates(value ...Coordinate) *CoordinatesElement {
 	return &CoordinatesElement{coordinates: value}
 }
 
-// CoordinatesArray returns a new Coordinates element from an array of coordinates.
-func CoordinatesArray(value ...[]float64) *SimpleElement {
-	cs := make([]string, len(value))
-	for i, c := range value {
-		if len(c) < 2 {
-			continue
-		}
-		cs[i] = strconv.FormatFloat(c[0], 'f', -1, 64) + "," + strconv.FormatFloat(c[1], 'f', -1, 64)
-		if len(c) >= 3 && c[2] != 0 {
-			cs[i] += "," + strconv.FormatFloat(c[2], 'f', -1, 64)
-		}
-	}
-	return coordinates(strings.Join(cs, " "))
+// CoordinatesArray returns a new CoordinatesArrayElement.
+func CoordinatesArray(value ...[]float64) *CoordinatesArrayElement {
+	return &CoordinatesArrayElement{coordinates: value}
 }
 
 // CoordinatesFlat returns a new Coordinates element from flat coordinates.
