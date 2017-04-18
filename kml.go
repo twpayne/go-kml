@@ -21,7 +21,6 @@ import (
 	"io"
 	"strconv"
 	"strings"
-	"sync"
 	"time"
 )
 
@@ -31,20 +30,6 @@ const (
 	// GxNamespace is the default namespace for Google Earth extensions.
 	GxNamespace = "http://www.google.com/kml/ext/2.2"
 )
-
-var (
-	lastID      int
-	lastIDMutex sync.Mutex
-)
-
-// GetID returns a new, unique id.
-func GetID() string {
-	lastIDMutex.Lock()
-	lastID++
-	id := lastID
-	lastIDMutex.Unlock()
-	return strconv.Itoa(id)
-}
 
 // A GxAngle represents an angle.
 type GxAngle struct {
