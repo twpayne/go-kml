@@ -37,6 +37,7 @@ var (
 			Local: "coordinates",
 		},
 	}
+	coordinatesEndElement = coordinatesStartElement.End()
 )
 
 // A GxAngle represents an angle.
@@ -79,6 +80,11 @@ type CompoundElement struct {
 type SharedElement struct {
 	CompoundElement
 	id string
+}
+
+// CoordinatesElement is a coordinates element.
+type CoordinatesElement struct {
+	coordinates []Coordinate
 }
 
 // MarshalXML marshals se to e. start is ignored.
@@ -133,6 +139,37 @@ func (se *SharedElement) ID() string {
 // URL returns se's URL.
 func (se *SharedElement) URL() string {
 	return "#" + se.ID()
+}
+
+// MarshalXML marshals ee to e. start is ignored.
+func (ce *CoordinatesElement) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	if err := e.EncodeToken(coordinatesStartElement); err != nil {
+		return err
+	}
+	for i, c := range ce.coordinates {
+		s := ""
+		if i != 0 {
+			s = " "
+		}
+		s += strconv.FormatFloat(c.Lon, 'f', -1, 64) + "," + strconv.FormatFloat(c.Lat, 'f', -1, 64)
+		if c.Alt != 0 {
+			s += "," + strconv.FormatFloat(c.Alt, 'f', -1, 64)
+		}
+		if err := e.EncodeToken(xml.CharData([]byte(s))); err != nil {
+			return err
+		}
+	}
+	return e.EncodeToken(coordinatesEndElement)
+}
+
+// Write writes an XML header and ce to w.
+func (ce *CoordinatesElement) Write(w io.Writer) error {
+	return write(w, "", "  ", ce)
+}
+
+// WriteIndent writes an XML and se to w.
+func (ce *CoordinatesElement) WriteIndent(w io.Writer, prefix, indent string) error {
+	return write(w, prefix, indent, ce)
 }
 
 // Address returns a new Address element.
@@ -508,16 +545,9 @@ func coordinates(value string) *SimpleElement {
 	}
 }
 
-// Coordinates returns a new Coordinates element.
-func Coordinates(value ...Coordinate) *SimpleElement {
-	cs := make([]string, len(value))
-	for i, c := range value {
-		cs[i] = strconv.FormatFloat(c.Lon, 'f', -1, 64) + "," + strconv.FormatFloat(c.Lat, 'f', -1, 64)
-		if c.Alt != 0 {
-			cs[i] += "," + strconv.FormatFloat(c.Alt, 'f', -1, 64)
-		}
-	}
-	return coordinates(strings.Join(cs, " "))
+// Coordinates returns a new CoordinatesElement.
+func Coordinates(value ...Coordinate) *CoordinatesElement {
+	return &CoordinatesElement{coordinates: value}
 }
 
 // CoordinatesArray returns a new Coordinates element from an array of coordinates.
