@@ -31,6 +31,14 @@ const (
 	GxNamespace = "http://www.google.com/kml/ext/2.2"
 )
 
+var (
+	coordinatesStartElement = xml.StartElement{
+		Name: xml.Name{
+			Local: "coordinates",
+		},
+	}
+)
+
 // A GxAngle represents an angle.
 type GxAngle struct {
 	Heading, Tilt, Roll float64
@@ -495,10 +503,8 @@ func Width(value float64) *SimpleElement { return newSEFloat("width", value) }
 
 func coordinates(value string) *SimpleElement {
 	return &SimpleElement{
-		StartElement: xml.StartElement{
-			Name: xml.Name{Local: "coordinates"},
-		},
-		value: value,
+		StartElement: coordinatesStartElement,
+		value:        value,
 	}
 }
 
