@@ -668,13 +668,13 @@ func GxCoord(value Coordinate) *SimpleElement {
 }
 
 // GxSimpleArrayField returns a new gx:SimpleArrayField element.
-func GxSimpleArrayField(name, typ string) *CompoundElement {
+func GxSimpleArrayField(name, _type string) *CompoundElement {
 	return &CompoundElement{
 		StartElement: xml.StartElement{
 			Name: xml.Name{Local: "gx:SimpleArrayField"},
 			Attr: []xml.Attr{
 				{Name: xml.Name{Local: "name"}, Value: name},
-				{Name: xml.Name{Local: "type"}, Value: typ},
+				{Name: xml.Name{Local: "type"}, Value: _type},
 			},
 		},
 	}
@@ -752,13 +752,13 @@ func SimpleData(name, value string) *SimpleElement {
 }
 
 // SimpleField returns a new SimpleField element.
-func SimpleField(name, typ string, children ...Element) *CompoundElement {
+func SimpleField(name, _type string, children ...Element) *CompoundElement {
 	return &CompoundElement{
 		StartElement: xml.StartElement{
 			Name: xml.Name{Local: "SimpleField"},
 			Attr: []xml.Attr{
 				{Name: xml.Name{Local: "name"}, Value: name},
-				{Name: xml.Name{Local: "type"}, Value: typ},
+				{Name: xml.Name{Local: "type"}, Value: _type},
 			},
 		},
 		children: children,
