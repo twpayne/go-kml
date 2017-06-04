@@ -4,9 +4,19 @@
 [![GoDoc](https://godoc.org/github.com/twpayne/go-kml?status.svg)](https://godoc.org/github.com/twpayne/go-kml)
 [![Report Card](https://goreportcard.com/badge/github.com/twpayne/go-kml)](https://goreportcard.com/report/github.com/twpayne/go-kml)
 
-Package go-kml provides convenience methods for creating and writing KML documents.
+Package kml provides convenience methods for creating and writing KML documents.
 
-Example:
+## Key Features
+
+ * Simple API for building arbitrarily complex KML documents.
+ * Support for all KML elements, including Google Earth `gx:` extensions.
+ * Compatibilty with the standard library [`encoding/xml`](https://godoc.org/encoding/xml) package.
+ * Pretty (neatly indented) and compact (minimum size) output formats.
+ * Support for shared `Style` and `StyleMap` elements.
+ * Simple mapping between functions and KML elements.
+
+
+## Example
 
 ```go
 func ExampleKML() {
