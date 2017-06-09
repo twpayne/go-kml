@@ -107,7 +107,7 @@ func (se *SimpleElement) Write(w io.Writer) error {
 	return write(w, "", "", se)
 }
 
-// WriteIndent writes an XML and se to w.
+// WriteIndent writes an XML header and se to w.
 func (se *SimpleElement) WriteIndent(w io.Writer, prefix, indent string) error {
 	return write(w, prefix, indent, se)
 }
@@ -136,7 +136,7 @@ func (ce *CompoundElement) Write(w io.Writer) error {
 	return write(w, "", "", ce)
 }
 
-// WriteIndent writes an XML and se to w.
+// WriteIndent writes an XML header and ce to w.
 func (ce *CompoundElement) WriteIndent(w io.Writer, prefix, indent string) error {
 	return write(w, prefix, indent, ce)
 }
@@ -151,7 +151,7 @@ func (se *SharedElement) URL() string {
 	return "#" + se.ID()
 }
 
-// MarshalXML marshals ee to e. start is ignored.
+// MarshalXML marshals ce to e. start is ignored.
 func (ce *CoordinatesElement) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	if err := e.EncodeToken(coordinatesStartElement); err != nil {
 		return err
@@ -177,12 +177,12 @@ func (ce *CoordinatesElement) Write(w io.Writer) error {
 	return write(w, "", "  ", ce)
 }
 
-// WriteIndent writes an XML and se to w.
+// WriteIndent writes an XML header and ce to w.
 func (ce *CoordinatesElement) WriteIndent(w io.Writer, prefix, indent string) error {
 	return write(w, prefix, indent, ce)
 }
 
-// MarshalXML marshals ee to e. start is ignored.
+// MarshalXML marshals cae to e. start is ignored.
 func (cae *CoordinatesArrayElement) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	if err := e.EncodeToken(coordinatesStartElement); err != nil {
 		return err
@@ -208,12 +208,12 @@ func (cae *CoordinatesArrayElement) Write(w io.Writer) error {
 	return write(w, "", "  ", cae)
 }
 
-// WriteIndent writes an XML and se to w.
+// WriteIndent writes an XML header and cae to w.
 func (cae *CoordinatesArrayElement) WriteIndent(w io.Writer, prefix, indent string) error {
 	return write(w, prefix, indent, cae)
 }
 
-// MarshalXML marshals ee to e. start is ignored.
+// MarshalXML marshals cfe to e. start is ignored.
 func (cfe *CoordinatesFlatElement) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	if err := e.EncodeToken(coordinatesStartElement); err != nil {
 		return err
@@ -239,7 +239,7 @@ func (cfe *CoordinatesFlatElement) Write(w io.Writer) error {
 	return write(w, "", "  ", cfe)
 }
 
-// WriteIndent writes an XML and se to w.
+// WriteIndent writes an XML header and cfe to w.
 func (cfe *CoordinatesFlatElement) WriteIndent(w io.Writer, prefix, indent string) error {
 	return write(w, prefix, indent, cfe)
 }
