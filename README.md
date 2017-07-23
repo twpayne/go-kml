@@ -20,12 +20,12 @@ Package kml provides convenience methods for creating and writing KML documents.
 
 ```go
 func ExampleKML() {
-	k := KML(
-		Placemark(
-			Name("Simple placemark"),
-			Description("Attached to the ground. Intelligently places itself at the height of the underlying terrain."),
-			Point(
-				Coordinates(Coordinate{Lon: -122.0822035425683, Lat: 37.42228990140251}),
+	k := kml.KML(
+		kml.Placemark(
+			kml.Name("Simple placemark"),
+			kml.Description("Attached to the ground. Intelligently places itself at the height of the underlying terrain."),
+			kml.Point(
+				kml.Coordinates(kml.Coordinate{Lon: -122.0822035425683, Lat: 37.42228990140251}),
 			),
 		),
 	)

@@ -1,18 +1,20 @@
-package kml
+package kml_test
 
 import (
 	"image/color"
 	"log"
 	"os"
+
+	"github.com/twpayne/go-kml"
 )
 
 func ExamplePlacemark() {
-	k := KML(
-		Placemark(
-			Name("Simple placemark"),
-			Description("Attached to the ground. Intelligently places itself at the height of the underlying terrain."),
-			Point(
-				Coordinates(Coordinate{Lon: -122.0822035425683, Lat: 37.42228990140251}),
+	k := kml.KML(
+		kml.Placemark(
+			kml.Name("Simple placemark"),
+			kml.Description("Attached to the ground. Intelligently places itself at the height of the underlying terrain."),
+			kml.Point(
+				kml.Coordinates(kml.Coordinate{Lon: -122.0822035425683, Lat: 37.42228990140251}),
 			),
 		),
 	)
@@ -33,13 +35,13 @@ func ExamplePlacemark() {
 }
 
 func ExampleDescription() {
-	k := KML(
-		Document(
-			Placemark(
-				Name("CDATA example"),
-				Description(`<h1>CDATA Tags are useful!</h1> <p><font color="red">Text is <i>more readable</i> and <b>easier to write</b> when you can avoid using entity references.</font></p>`),
-				Point(
-					Coordinates(Coordinate{Lon: 102.595626, Lat: 14.996729}),
+	k := kml.KML(
+		kml.Document(
+			kml.Placemark(
+				kml.Name("CDATA example"),
+				kml.Description(`<h1>CDATA Tags are useful!</h1> <p><font color="red">Text is <i>more readable</i> and <b>easier to write</b> when you can avoid using entity references.</font></p>`),
+				kml.Point(
+					kml.Coordinates(kml.Coordinate{Lon: 102.595626, Lat: 14.996729}),
 				),
 			),
 		),
@@ -63,22 +65,22 @@ func ExampleDescription() {
 }
 
 func ExampleGroundOverlay() {
-	k := KML(
-		Folder(
-			Name("Ground Overlays"),
-			Description("Examples of ground overlays"),
-			GroundOverlay(
-				Name("Large-scale overlay on terrain"),
-				Description("Overlay shows Mount Etna erupting on July 13th, 2001."),
-				Icon(
-					Href("https://developers.google.com/kml/documentation/images/etna.jpg"),
+	k := kml.KML(
+		kml.Folder(
+			kml.Name("Ground Overlays"),
+			kml.Description("Examples of ground overlays"),
+			kml.GroundOverlay(
+				kml.Name("Large-scale overlay on terrain"),
+				kml.Description("Overlay shows Mount Etna erupting on July 13th, 2001."),
+				kml.Icon(
+					kml.Href("https://developers.google.com/kml/documentation/images/etna.jpg"),
 				),
-				LatLonBox(
-					North(37.91904192681665),
-					South(37.46543388598137),
-					East(15.35832653742206),
-					West(14.60128369746704),
-					Rotation(-0.1556640799496235),
+				kml.LatLonBox(
+					kml.North(37.91904192681665),
+					kml.South(37.46543388598137),
+					kml.East(15.35832653742206),
+					kml.West(14.60128369746704),
+					kml.Rotation(-0.1556640799496235),
 				),
 			),
 		),
@@ -111,29 +113,29 @@ func ExampleGroundOverlay() {
 }
 
 func ExampleLineString() {
-	k := KML(
-		Document(
-			Name("Paths"),
-			Description("Examples of paths. Note that the tessellate tag is by default set to 0. If you want to create tessellated lines, they must be authored (or edited) directly in KML."),
-			SharedStyle(
+	k := kml.KML(
+		kml.Document(
+			kml.Name("Paths"),
+			kml.Description("Examples of paths. Note that the tessellate tag is by default set to 0. If you want to create tessellated lines, they must be authored (or edited) directly in KML."),
+			kml.SharedStyle(
 				"yellowLineGreenPoly",
-				LineStyle(
-					Color(color.RGBA{R: 255, G: 255, B: 0, A: 127}),
-					Width(4),
+				kml.LineStyle(
+					kml.Color(color.RGBA{R: 255, G: 255, B: 0, A: 127}),
+					kml.Width(4),
 				),
-				PolyStyle(
-					Color(color.RGBA{R: 0, G: 255, B: 0, A: 127}),
+				kml.PolyStyle(
+					kml.Color(color.RGBA{R: 0, G: 255, B: 0, A: 127}),
 				),
 			),
-			Placemark(
-				Name("Absolute Extruded"),
-				Description("Transparent green wall with yellow outlines"),
-				StyleURL("#yellowLineGreenPoly"),
-				LineString(
-					Extrude(true),
-					Tessellate(true),
-					AltitudeMode("absolute"),
-					Coordinates([]Coordinate{
+			kml.Placemark(
+				kml.Name("Absolute Extruded"),
+				kml.Description("Transparent green wall with yellow outlines"),
+				kml.StyleURL("#yellowLineGreenPoly"),
+				kml.LineString(
+					kml.Extrude(true),
+					kml.Tessellate(true),
+					kml.AltitudeMode("absolute"),
+					kml.Coordinates([]kml.Coordinate{
 						{-112.2550785337791, 36.07954952145647, 2357},
 						{-112.2549277039738, 36.08117083492122, 2357},
 						{-112.2552505069063, 36.08260761307279, 2357},
@@ -184,15 +186,15 @@ func ExampleLineString() {
 }
 
 func ExamplePolygon() {
-	k := KML(
-		Placemark(
-			Name("The Pentagon"),
-			Polygon(
-				Extrude(true),
-				AltitudeMode("relativeToGround"),
-				OuterBoundaryIs(
-					LinearRing(
-						Coordinates([]Coordinate{
+	k := kml.KML(
+		kml.Placemark(
+			kml.Name("The Pentagon"),
+			kml.Polygon(
+				kml.Extrude(true),
+				kml.AltitudeMode("relativeToGround"),
+				kml.OuterBoundaryIs(
+					kml.LinearRing(
+						kml.Coordinates([]kml.Coordinate{
 							{-77.05788457660967, 38.87253259892824, 100},
 							{-77.05465973756702, 38.87291016281703, 100},
 							{-77.0531553685479, 38.87053267794386, 100},
@@ -202,9 +204,9 @@ func ExamplePolygon() {
 						}...),
 					),
 				),
-				InnerBoundaryIs(
-					LinearRing(
-						Coordinates([]Coordinate{
+				kml.InnerBoundaryIs(
+					kml.LinearRing(
+						kml.Coordinates([]kml.Coordinate{
 							{-77.05668055019126, 38.87154239798456, 100},
 							{-77.05542625960818, 38.87167890344077, 100},
 							{-77.05485125901023, 38.87076535397792, 100},
@@ -244,26 +246,26 @@ func ExamplePolygon() {
 }
 
 func ExampleStyle() {
-	k := KML(
-		Document(
-			SharedStyle(
+	k := kml.KML(
+		kml.Document(
+			kml.SharedStyle(
 				"transBluePoly",
-				LineStyle(
-					Width(1.5),
+				kml.LineStyle(
+					kml.Width(1.5),
 				),
-				PolyStyle(
-					Color(color.RGBA{R: 0, G: 0, B: 255, A: 125}),
+				kml.PolyStyle(
+					kml.Color(color.RGBA{R: 0, G: 0, B: 255, A: 125}),
 				),
 			),
-			Placemark(
-				Name("Building 41"),
-				StyleURL("#transBluePoly"),
-				Polygon(
-					Extrude(true),
-					AltitudeMode("relativeToGround"),
-					OuterBoundaryIs(
-						LinearRing(
-							Coordinates([]Coordinate{
+			kml.Placemark(
+				kml.Name("Building 41"),
+				kml.StyleURL("#transBluePoly"),
+				kml.Polygon(
+					kml.Extrude(true),
+					kml.AltitudeMode("relativeToGround"),
+					kml.OuterBoundaryIs(
+						kml.LinearRing(
+							kml.Coordinates([]kml.Coordinate{
 								{-122.0857412771483, 37.42227033155257, 17},
 								{-122.0858169768481, 37.42231408832346, 17},
 								{-122.085852582875, 37.42230337469744, 17},
@@ -323,42 +325,42 @@ func ExampleStyle() {
 }
 
 func ExampleSharedStyleMap() {
-	k := KML(
-		Document(
-			Name("Highlighted Icon"),
-			Description("Place your mouse over the icon to see it display the new icon"),
-			SharedStyle(
+	k := kml.KML(
+		kml.Document(
+			kml.Name("Highlighted Icon"),
+			kml.Description("Place your mouse over the icon to see it display the new icon"),
+			kml.SharedStyle(
 				"highlightPlacemark",
-				IconStyle(
-					Icon(
-						Href("http://maps.google.com/mapfiles/kml/paddle/red-stars.png"),
+				kml.IconStyle(
+					kml.Icon(
+						kml.Href("http://maps.google.com/mapfiles/kml/paddle/red-stars.png"),
 					),
 				),
 			),
-			SharedStyle(
+			kml.SharedStyle(
 				"normalPlacemark",
-				IconStyle(
-					Icon(
-						Href("http://maps.google.com/mapfiles/kml/paddle/wht-blank.png"),
+				kml.IconStyle(
+					kml.Icon(
+						kml.Href("http://maps.google.com/mapfiles/kml/paddle/wht-blank.png"),
 					),
 				),
 			),
-			SharedStyleMap(
+			kml.SharedStyleMap(
 				"exampleStyleMap",
-				Pair(
-					Key("normal"),
-					StyleURL("#normalPlacemark"),
+				kml.Pair(
+					kml.Key("normal"),
+					kml.StyleURL("#normalPlacemark"),
 				),
-				Pair(
-					Key("highlight"),
-					StyleURL("#highlightPlacemark"),
+				kml.Pair(
+					kml.Key("highlight"),
+					kml.StyleURL("#highlightPlacemark"),
 				),
 			),
-			Placemark(
-				Name("Roll over this icon"),
-				StyleURL("#exampleStyleMap"),
-				Point(
-					Coordinates(Coordinate{Lon: -122.0856545755255, Lat: 37.42243077405461}),
+			kml.Placemark(
+				kml.Name("Roll over this icon"),
+				kml.StyleURL("#exampleStyleMap"),
+				kml.Point(
+					kml.Coordinates(kml.Coordinate{Lon: -122.0856545755255, Lat: 37.42243077405461}),
 				),
 			),
 		),
@@ -408,16 +410,16 @@ func ExampleSharedStyleMap() {
 }
 
 func ExampleScreenOverlay() {
-	k := KML(
-		ScreenOverlay(
-			Name("Absolute Positioning: Top left"),
-			Icon(
-				Href("http://developers.google.com/kml/documentation/images/top_left.jpg"),
+	k := kml.KML(
+		kml.ScreenOverlay(
+			kml.Name("Absolute Positioning: Top left"),
+			kml.Icon(
+				kml.Href("http://developers.google.com/kml/documentation/images/top_left.jpg"),
 			),
-			OverlayXY(Vec2{X: 0, Y: 1, XUnits: "fraction", YUnits: "fraction"}),
-			ScreenXY(Vec2{X: 0, Y: 1, XUnits: "fraction", YUnits: "fraction"}),
-			RotationXY(Vec2{X: 0, Y: 0, XUnits: "fraction", YUnits: "fraction"}),
-			Size(Vec2{X: 0, Y: 0, XUnits: "fraction", YUnits: "fraction"}),
+			kml.OverlayXY(kml.Vec2{X: 0, Y: 1, XUnits: "fraction", YUnits: "fraction"}),
+			kml.ScreenXY(kml.Vec2{X: 0, Y: 1, XUnits: "fraction", YUnits: "fraction"}),
+			kml.RotationXY(kml.Vec2{X: 0, Y: 0, XUnits: "fraction", YUnits: "fraction"}),
+			kml.Size(kml.Vec2{X: 0, Y: 0, XUnits: "fraction", YUnits: "fraction"}),
 		),
 	)
 	if err := k.WriteIndent(os.Stdout, "", "  "); err != nil {
@@ -440,21 +442,21 @@ func ExampleScreenOverlay() {
 }
 
 func ExampleNetworkLink() {
-	k := KML(
-		Folder(
-			Name("Network Links"),
-			Visibility(false),
-			Open(false),
-			Description("Network link example 1"),
-			NetworkLink(
-				Name("Random Placemark"),
-				Visibility(false),
-				Open(false),
-				Description("A simple server-side script that generates a new random placemark on each call"),
-				RefreshVisibility(false),
-				FlyToView(false),
-				Link(
-					Href("http://yourserver.com/cgi-bin/randomPlacemark.py"),
+	k := kml.KML(
+		kml.Folder(
+			kml.Name("Network Links"),
+			kml.Visibility(false),
+			kml.Open(false),
+			kml.Description("Network link example 1"),
+			kml.NetworkLink(
+				kml.Name("Random Placemark"),
+				kml.Visibility(false),
+				kml.Open(false),
+				kml.Description("A simple server-side script that generates a new random placemark on each call"),
+				kml.RefreshVisibility(false),
+				kml.FlyToView(false),
+				kml.Link(
+					kml.Href("http://yourserver.com/cgi-bin/randomPlacemark.py"),
 				),
 			),
 		),
