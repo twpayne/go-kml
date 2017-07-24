@@ -20,18 +20,19 @@ Package kml provides convenience methods for creating and writing KML documents.
 
 ```go
 func ExampleKML() {
-	k := kml.KML(
-		kml.Placemark(
-			kml.Name("Simple placemark"),
-			kml.Description("Attached to the ground. Intelligently places itself at the height of the underlying terrain."),
-			kml.Point(
-				kml.Coordinates(kml.Coordinate{Lon: -122.0822035425683, Lat: 37.42228990140251}),
-			),
-		),
-	)
-	if err := k.WriteIndent(os.Stdout, "", "  "); err != nil {
-		log.Fatal(err)
-	}
+    k := kml.KML(
+        kml.Placemark(
+            kml.Name("Simple placemark"),
+            kml.Description("Attached to the ground. Intelligently places itself at the height of the underlying terrain."),
+            kml.Point(
+                kml.Coordinates(kml.Coordinate{Lon: -122.0822035425683, Lat: 37.42228990140251}),
+            ),
+        ),
+    )
+    if err := k.WriteIndent(os.Stdout, "", "  "); err != nil {
+        log.Fatal(err)
+    }
+}
 ```
 
 Output:
@@ -39,13 +40,13 @@ Output:
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <kml xmlns="http://www.opengis.net/kml/2.2">
-	<Placemark>
-		<name>Simple placemark</name>
-		<description>Attached to the ground. Intelligently places itself at the height of the underlying terrain.</description>
-		<Point>
-			<coordinates>-122.0822035425683,37.42228990140251</coordinates>
-		</Point>
-	</Placemark>
+  <Placemark>
+    <name>Simple placemark</name>
+    <description>Attached to the ground. Intelligently places itself at the height of the underlying terrain.</description>
+    <Point>
+      <coordinates>-122.0822035425683,37.42228990140251</coordinates>
+    </Point>
+  </Placemark>
 </kml>
 ```
 
