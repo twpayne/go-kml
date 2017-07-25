@@ -52,7 +52,7 @@ Output:
 
 There are more [examples in the
 documentation](https://godoc.org/github.com/twpayne/go-kml#pkg-examples)
-corresponding to the examples in the [KML
+corresponding to the [examples in the KML
 tutorial](https://developers.google.com/kml/documentation/kml_tut).
 
 [License](LICENSE)
