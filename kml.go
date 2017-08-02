@@ -610,13 +610,6 @@ func When(value time.Time) *SimpleElement { return newSETime("when", value) }
 // Width returns a new Width element.
 func Width(value float64) *SimpleElement { return newSEFloat("width", value) }
 
-func coordinates(value string) *SimpleElement {
-	return &SimpleElement{
-		StartElement: coordinatesStartElement,
-		value:        value,
-	}
-}
-
 // Coordinates returns a new CoordinatesElement.
 func Coordinates(value ...Coordinate) *CoordinatesElement {
 	return &CoordinatesElement{coordinates: value}
