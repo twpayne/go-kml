@@ -71,6 +71,12 @@ func PushpinHref(color string) string {
 	return "https://maps.google.com/mapfiles/kml/pushpin/" + color + "-pushpin.png"
 }
 
+// ShapeHref returns the href of the icon with the specified shape. See
+// http://kml4earth.appspot.com/icons.html#shapes.
+func ShapeHref(shape string) string {
+	return "http://maps.google.com/mapfiles/kml/shapes/" + shape + ".png"
+}
+
 // TrackHref returns the href of the ith track icon. See
 // http://kml4earth.appspot.com/icons.html#kml-icons.
 func TrackHref(i int) string {
