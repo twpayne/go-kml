@@ -6,15 +6,19 @@ import (
 	"fmt"
 	"image/color"
 	"log"
+	"net/url"
 	"os"
+	"strconv"
 
 	"github.com/twpayne/go-kml"
 	"github.com/twpayne/go-kml/icon"
 	"github.com/twpayne/go-kml/sphere"
+	"github.com/twpayne/go-polyline"
 )
 
 var (
-	raceFlag = flag.String("race", "x-pyr-2016", "race")
+	formatFlag = flag.String("format", "kml", "format")
+	raceFlag   = flag.String("race", "x-pyr-2016", "race")
 )
 
 type turnpoint struct {
@@ -112,7 +116,7 @@ var (
 	}
 )
 
-func (tp turnpoint) folder() kml.Element {
+func (tp turnpoint) kmlFolder() kml.Element {
 	center := kml.Coordinate{Lon: tp.lon, Lat: tp.lat}
 	var radiusPlacemark kml.Element
 	if tp.radius != 0 {
@@ -154,7 +158,7 @@ func (tp turnpoint) folder() kml.Element {
 	)
 }
 
-func (r race) routeFolder() kml.Element {
+func (r race) kmlRouteFolder() kml.Element {
 	var coordinates []kml.Coordinate
 	for _, tp := range r.turnpoints {
 		coordinates = append(coordinates, kml.Coordinate{Lon: tp.lon, Lat: tp.lat})
@@ -181,11 +185,11 @@ func (r race) routeFolder() kml.Element {
 	)
 }
 
-func (r race) document() kml.Element {
+func (r race) kmlDocument() kml.Element {
 	var folders []kml.Element
-	folders = append(folders, r.routeFolder())
+	folders = append(folders, r.kmlRouteFolder())
 	for _, tp := range r.turnpoints {
-		folders = append(folders, tp.folder())
+		folders = append(folders, tp.kmlFolder())
 	}
 	return kml.KML(
 		kml.Document(append([]kml.Element{
@@ -196,12 +200,38 @@ func (r race) document() kml.Element {
 	)
 }
 
+func (r race) xcPlannerURL() *url.URL {
+	var coords [][]float64
+	for _, tp := range r.turnpoints {
+		coords = append(coords, []float64{tp.lat, tp.lon})
+	}
+	vs := url.Values{}
+	vs.Set("l", "free")
+	vs.Set("p", string(polyline.EncodeCoords(coords)))
+	vs.Set("s", strconv.Itoa(5))
+	vs.Set("a", strconv.Itoa(2000))
+	return &url.URL{
+		Scheme:   "https",
+		Host:     "xcplanner.appspot.com",
+		RawQuery: vs.Encode(),
+	}
+}
+
 func run() error {
+	flag.Parse()
 	r, ok := races[*raceFlag]
 	if !ok {
 		return fmt.Errorf("unknown race: %q", *raceFlag)
 	}
-	return r.document().WriteIndent(os.Stdout, "", "  ")
+	switch *formatFlag {
+	case "kml":
+		return r.kmlDocument().WriteIndent(os.Stdout, "", "  ")
+	case "xcplanner":
+		_, err := os.Stdout.WriteString(r.xcPlannerURL().String() + "\n")
+		return err
+	default:
+		return fmt.Errorf("unknown format: %q", *formatFlag)
+	}
 }
 
 func main() {
