@@ -8,15 +8,14 @@ Package kml provides convenience methods for creating and writing KML documents.
 
 ## Key Features
 
- * Simple API for building arbitrarily complex KML documents.
- * Support for all KML elements, including Google Earth `gx:` extensions.
- * Compatibilty with the standard library [`encoding/xml`](https://godoc.org/encoding/xml) package.
- * Pretty (neatly indented) and compact (minimum size) output formats.
- * Support for shared `Style` and `StyleMap` elements.
- * Simple mapping between functions and KML elements.
- * Convenience functions for using standard KML icons.
- * Convenience functions for spherical geometry.
-
+* Simple API for building arbitrarily complex KML documents.
+* Support for all KML elements, including Google Earth `gx:` extensions.
+* Compatibilty with the standard library [`encoding/xml`](https://godoc.org/encoding/xml) package.
+* Pretty (neatly indented) and compact (minimum size) output formats.
+* Support for shared `Style` and `StyleMap` elements.
+* Simple mapping between functions and KML elements.
+* Convenience functions for using standard KML icons.
+* Convenience functions for spherical geometry.
 
 ## Example
 
@@ -57,10 +56,11 @@ documentation](https://godoc.org/github.com/twpayne/go-kml#pkg-examples)
 corresponding to the [examples in the KML
 tutorial](https://developers.google.com/kml/documentation/kml_tut).
 
-
 ## Subpackages
 
- * [`icon`](https://godoc.org/github.com/twpayne/go-kml/icon) Convenience functions for using standard KML icons.
- * [`sphere`](https://godoc.org/github.com/twpayne/go-kml/sphere) Convenience functions for spherical geometry.
+* [`icon`](https://godoc.org/github.com/twpayne/go-kml/icon) Convenience functions for using standard KML icons.
+* [`sphere`](https://godoc.org/github.com/twpayne/go-kml/sphere) Convenience functions for spherical geometry.
 
-[License](LICENSE)
+## License
+
+MIT
