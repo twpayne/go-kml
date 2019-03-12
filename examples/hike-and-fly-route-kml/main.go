@@ -18,7 +18,7 @@ import (
 
 var (
 	formatFlag = flag.String("format", "kml", "format")
-	raceFlag   = flag.String("race", "x-pyr-2016", "race")
+	raceFlag   = flag.String("race", "x-pyr-2018", "race")
 )
 
 type turnpoint struct {
@@ -108,6 +108,72 @@ var (
 				{
 					name:   "Finish: El Port de la Selva",
 					lat:    42.336152,
+					lon:    3.201039,
+					paddle: "ylw-stars",
+				},
+			},
+		},
+		"x-pyr-2018": {
+			name:    "X-Pyr 2018",
+			snippet: "http://www.x-pyr.com/",
+			turnpoints: []turnpoint{
+				{
+					name:   "Hondarribia",
+					lat:    43.379469,
+					lon:    -1.796731,
+					paddle: "go",
+				},
+				{
+					name:   "La Rhune",
+					lat:    43.309039,
+					lon:    -1.635419,
+					paddle: "1",
+				},
+				{
+					name:   "Orhi",
+					lat:    42.988111,
+					lon:    -1.005939,
+					paddle: "2",
+				},
+				{
+					name:   "Midi d-Ossau",
+					lat:    42.843250,
+					lon:    -0.438069,
+					paddle: "3",
+				},
+				{
+					name:   "Turbon",
+					lat:    42.416931,
+					lon:    0.505181,
+					paddle: "4",
+				},
+				{
+					name:   "Midi de Bigorre",
+					lat:    42.937019,
+					lon:    0.140761,
+					paddle: "5",
+				},
+				{
+					name:   "Pedraforca",
+					lat:    42.239869,
+					lon:    1.702950,
+					paddle: "6",
+				},
+				{
+					name:   "Canigo",
+					lat:    42.519161,
+					lon:    2.456150,
+					paddle: "7",
+				},
+				{
+					name:   "Santa Helena de Rodes",
+					lat:    42.326469,
+					lon:    3.160181,
+					paddle: "stop",
+				},
+				{
+					name:   "El Port de la Selva",
+					lat:    42.336150,
 					lon:    3.201039,
 					paddle: "ylw-stars",
 				},
