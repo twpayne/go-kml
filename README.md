@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/twpayne/go-kml.svg?branch=master)](https://travis-ci.org/twpayne/go-kml)
 [![GoDoc](https://godoc.org/github.com/twpayne/go-kml?status.svg)](https://godoc.org/github.com/twpayne/go-kml)
 [![Report Card](https://goreportcard.com/badge/github.com/twpayne/go-kml)](https://goreportcard.com/report/github.com/twpayne/go-kml)
+[![Coverage Status](https://coveralls.io/repos/github/twpayne/go-kml/badge.svg?branch=master)](https://coveralls.io/github/twpayne/go-kml?branch=master)
 
 Package `kml` provides convenience methods for creating and writing KML documents.
 
