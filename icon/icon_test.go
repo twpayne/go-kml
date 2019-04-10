@@ -1,8 +1,6 @@
 package icon
 
-import (
-	"testing"
-)
+import "testing"
 
 func TestHref(t *testing.T) {
 	for _, tc := range []struct {
