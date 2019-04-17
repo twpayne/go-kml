@@ -98,7 +98,7 @@ func TestCircle(t *testing.T) {
 		}
 		for _, c := range tc.want {
 			if delta, threshold := WGS84.HaversineDistance(tc.center, c)-tc.radius, 1e-5; delta > threshold {
-				t.Errorf("WGS84.Distance(%v, %v)-%f == %f, want <=%f", tc.center, c, tc.radius, delta, threshold)
+				t.Errorf("WGS84.HaversineDistance(%v, %v)-%f == %f, want <=%f", tc.center, c, tc.radius, delta, threshold)
 			}
 		}
 	}
