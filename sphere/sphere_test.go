@@ -103,3 +103,23 @@ func TestCircle(t *testing.T) {
 		}
 	}
 }
+
+func TestSphereHaversineDistance(t *testing.T) {
+	for _, tc := range []struct {
+		sphere T
+		c1     kml.Coordinate
+		c2     kml.Coordinate
+		want   float64
+	}{
+		{
+			sphere: WGS84,
+			c1:     kml.Coordinate{Lon: -108.6180554, Lat: 35.4325002},
+			c2:     kml.Coordinate{Lon: -108.61, Lat: 35.43},
+			want:   781,
+		},
+	} {
+		if delta, threshold := tc.sphere.HaversineDistance(tc.c1, tc.c2)-tc.want, 1e-5; delta > threshold {
+			t.Errorf("tc.sphere.HaversineDistance(%v, %v)-%f == %f, want <=%f", tc.c1, tc.c2, tc.want, delta, threshold)
+		}
+	}
+}
