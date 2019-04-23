@@ -1,6 +1,7 @@
 package sphere
 
 import (
+	"math"
 	"reflect"
 	"testing"
 
@@ -97,8 +98,11 @@ func TestCircle(t *testing.T) {
 			t.Errorf("WGS84.Circle(%v, %v, %v) == %+v, want %+v", tc.center, tc.radius, tc.maxErr, got, tc.want)
 		}
 		for _, c := range tc.want {
-			if delta, threshold := WGS84.HaversineDistance(tc.center, c)-tc.radius, 1e-5; delta > threshold {
-				t.Errorf("WGS84.HaversineDistance(%v, %v)-%f == %f, want <=%f", tc.center, c, tc.radius, delta, threshold)
+			distance := WGS84.HaversineDistance(tc.center, c)
+			delta := math.Abs(distance - tc.radius)
+			threshold := 1e-5
+			if math.Abs(delta) > threshold {
+				t.Errorf("math.Abs(WGS84.HaversineDistance(%v, %v)-%f) == %f, want <=%f", tc.center, c, tc.radius, delta, threshold)
 			}
 		}
 	}
@@ -106,20 +110,24 @@ func TestCircle(t *testing.T) {
 
 func TestSphereHaversineDistance(t *testing.T) {
 	for _, tc := range []struct {
-		sphere T
-		c1     kml.Coordinate
-		c2     kml.Coordinate
-		want   float64
+		sphere    T
+		c1        kml.Coordinate
+		c2        kml.Coordinate
+		want      float64
+		threshold float64
 	}{
 		{
-			sphere: WGS84,
-			c1:     kml.Coordinate{Lon: -108.6180554, Lat: 35.4325002},
-			c2:     kml.Coordinate{Lon: -108.61, Lat: 35.43},
-			want:   781,
+			sphere:    FAI,
+			c1:        kml.Coordinate{Lon: -108.6180554, Lat: 35.4325002},
+			c2:        kml.Coordinate{Lon: -108.61, Lat: 35.43},
+			want:      781,
+			threshold: 1e-3,
 		},
 	} {
-		if delta, threshold := tc.sphere.HaversineDistance(tc.c1, tc.c2)-tc.want, 1e-5; delta > threshold {
-			t.Errorf("tc.sphere.HaversineDistance(%v, %v)-%f == %f, want <=%f", tc.c1, tc.c2, tc.want, delta, threshold)
+		distance := tc.sphere.HaversineDistance(tc.c1, tc.c2)
+		delta := math.Abs(distance - tc.want)
+		if delta > tc.threshold {
+			t.Errorf("math.Abs(tc.sphere.HaversineDistance(%v, %v)-%f) == %f, want <=%f", tc.c1, tc.c2, tc.want, delta, tc.threshold)
 		}
 	}
 }
