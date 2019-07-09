@@ -18,7 +18,7 @@ import (
 
 var (
 	formatFlag = flag.String("format", "kml", "format")
-	raceFlag   = flag.String("race", "red-bull-x-alps-2019", "race")
+	raceFlag   = flag.String("race", "eigertour-2019-challenge", "race")
 )
 
 type turnpoint struct {
@@ -39,7 +39,100 @@ type race struct {
 	turnpoints []turnpoint
 }
 
+var (
+	berghausBaregg   = kml.Coordinate{Lat: 46.60046, Lon: 8.060011}
+	berghausBareggNW = sphere.FAI.Offset(berghausBaregg, 100, 315)
+	berghausBareggSE = sphere.FAI.Offset(berghausBaregg, 100, 135)
+
+	lobhornhutte   = kml.Coordinate{Lat: 46.618514, Lon: 7.868981}
+	lobhornhutteNW = sphere.FAI.Offset(lobhornhutte, 100, 315)
+	lobhornhutteSE = sphere.FAI.Offset(lobhornhutte, 100, 135)
+)
+
 var races = map[string]race{
+	"eigertour-2019-challenge": {
+		name:    "Eigertour 2019 Challenge",
+		snippet: "https://eigertour.rocks/ Created by twpayne@gmail.com",
+		turnpoints: []turnpoint{
+			{
+				name:   "Eigerplatz",
+				lat:    dms(46, 37, 25.4),
+				lon:    dms(8, 2, 6.7),
+				paddle: "ylw-stars",
+			},
+			{
+				name:   "First",
+				lat:    dms(46, 39, 31.5),
+				lon:    dms(8, 3, 15.4),
+				paddle: "A",
+			},
+			{
+				name:   "Tierberglihütte",
+				lat:    46.702018,
+				lon:    8.41421,
+				paddle: "B",
+			},
+			{
+				name:   "Gaulihütte",
+				lat:    46.623778,
+				lon:    8.216637,
+				paddle: "C",
+			},
+			{
+				name:   "Lobhornhütte",
+				lat:    lobhornhutteNW.Lat,
+				lon:    lobhornhutteNW.Lon,
+				paddle: "D",
+			},
+			{
+				name:   "Niesen",
+				lat:    46.644999,
+				lon:    7.651387,
+				paddle: "E",
+			},
+			{
+				name:   "Doldehornhütte",
+				lat:    46.486806,
+				lon:    7.697366,
+				paddle: "F",
+			},
+			{
+				name:   "Schmadrihütte",
+				lat:    46.499159,
+				lon:    7.892225,
+				paddle: "G",
+			},
+			{
+				name:   "Berghaus Bäregg",
+				lat:    berghausBareggSE.Lat,
+				lon:    berghausBareggSE.Lon,
+				paddle: "H",
+			},
+			{
+				name:   "Glecksteinhütte",
+				lat:    46.625129,
+				lon:    8.096503,
+				paddle: "I",
+			},
+			{
+				name:   "Lobhornhütte",
+				lat:    lobhornhutteSE.Lat,
+				lon:    lobhornhutteSE.Lon,
+				paddle: "J",
+			},
+			{
+				name:   "Berghaus Bäregg",
+				lat:    berghausBareggNW.Lat,
+				lon:    berghausBareggNW.Lon,
+				paddle: "K",
+			},
+			{
+				name: "Eigerplatz",
+				lat:  dms(46, 37, 25.4),
+				lon:  dms(8, 2, 6.7),
+			},
+		},
+	},
 	"red-bull-x-alps-2019": {
 		name:    "Red Bull X-Alps 2019",
 		snippet: "https://www.redbullxalps.com/ Created by twpayne@gmail.com",
@@ -457,6 +550,10 @@ func (r race) xcPlannerURL() *url.URL {
 		Host:     "xcplanner.appspot.com",
 		RawQuery: vs.Encode(),
 	}
+}
+
+func dms(d, m, s float64) float64 {
+	return d + m/60 + s/3600
 }
 
 func run() error {
