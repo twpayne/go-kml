@@ -53,7 +53,7 @@ func (t T) Circle(center kml.Coordinate, radius, maxErr float64) []kml.Coordinat
 	return cs
 }
 
-// HaversineDistance returns the great circle distance beween c1 and c2 using
+// HaversineDistance returns the great circle distance between c1 and c2 using
 // the Haversine formula. Altitude is ignored.
 func (t T) HaversineDistance(c1, c2 kml.Coordinate) float64 {
 	lat1 := c1.Lat * radians
