@@ -8,15 +8,13 @@ env:
   - GO111MODULE=on
 
 install:
-  - go get golang.org/x/lint/golint
-  - go get golang.org/x/tools/cmd/cover
-  - go get github.com/mattn/goveralls
+  - make install-tools
 
 script:
-  - go test -covermode=count -coverprofile=coverage.out ./...
-  - test -z "$(go fmt ./...)"
-  - go vet ./...
-  - golint ./...
+  - make coverage.out
+  - make lint
+  - make format
+  - git diff --exit-code
   - if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then goveralls -coverprofile=coverage.out -service=travis-ci -repotoken $COVERALLS_TOKEN; fi
 
 sudo: false
