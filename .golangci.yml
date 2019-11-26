@@ -5,3 +5,4 @@ linters:
     - gochecknoglobals
     - godox
     - lll
+    - wsl
