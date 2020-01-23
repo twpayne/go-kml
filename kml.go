@@ -462,7 +462,9 @@ func GxTour(children ...Element) *CompoundElement { return newCE("gx:Tour", chil
 func GxTourControl(children ...Element) *CompoundElement { return newCE("gx:TourControl", children) }
 
 // GxTourPrimitive returns a new gx:TourPrimitive element.
-func GxTourPrimitive(children ...Element) *CompoundElement { return newCE("gx:TourPrimitive", children) }
+func GxTourPrimitive(children ...Element) *CompoundElement {
+	return newCE("gx:TourPrimitive", children)
+}
 
 // GxTrack returns a new gx:Track element.
 func GxTrack(children ...Element) *CompoundElement { return newCE("gx:Track", children) }
