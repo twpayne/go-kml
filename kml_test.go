@@ -42,7 +42,7 @@ func TestSimpleElements(t *testing.T) {
 			`<altitude>0</altitude>`,
 		},
 		{
-			AltitudeMode("absolute"),
+			AltitudeMode(AltitudeModeAbsolute),
 			`<altitudeMode>absolute</altitudeMode>`,
 		},
 		{
@@ -110,7 +110,7 @@ func TestSimpleElements(t *testing.T) {
 			`<heading>0</heading>`,
 		},
 		{
-			HotSpot(Vec2{X: 0.5, Y: 0.5, XUnits: "pixels", YUnits: "pixels"}),
+			HotSpot(Vec2{X: 0.5, Y: 0.5, XUnits: UnitsPixels, YUnits: UnitsPixels}),
 			`<hotSpot x="0.5" y="0.5" xunits="pixels" yunits="pixels"></hotSpot>`,
 		},
 		{
@@ -126,11 +126,11 @@ func TestSimpleElements(t *testing.T) {
 			`<linkSnippet maxLines="2">snippet</linkSnippet>`,
 		},
 		{
-			ListItemType("check"),
+			ListItemType(ListItemTypeCheck),
 			`<listItemType>check</listItemType>`,
 		},
 		{
-			OverlayXY(Vec2{X: 0, Y: 0, XUnits: "fraction", YUnits: "fraction"}),
+			OverlayXY(Vec2{X: 0, Y: 0, XUnits: UnitsFraction, YUnits: UnitsFraction}),
 			`<overlayXY x="0" y="0" xunits="fraction" yunits="fraction"></overlayXY>`,
 		},
 		{
@@ -180,10 +180,10 @@ func TestCompoundElements(t *testing.T) {
 				Icon(
 					Href("http://myserver/myimage.jpg"),
 				),
-				OverlayXY(Vec2{X: 0.5, Y: 0.5, XUnits: "fraction", YUnits: "fraction"}),
-				ScreenXY(Vec2{X: 0.5, Y: 0.5, XUnits: "fraction", YUnits: "fraction"}),
+				OverlayXY(Vec2{X: 0.5, Y: 0.5, XUnits: UnitsFraction, YUnits: UnitsFraction}),
+				ScreenXY(Vec2{X: 0.5, Y: 0.5, XUnits: UnitsFraction, YUnits: UnitsFraction}),
 				Rotation(39.37878630116985),
-				Size(Vec2{X: 0, Y: 0, XUnits: "pixels", YUnits: "pixels"}),
+				Size(Vec2{X: 0, Y: 0, XUnits: UnitsPixels, YUnits: UnitsPixels}),
 			),
 			want: `<ScreenOverlay>` +
 				`<name>Simple crosshairs</name>` +
@@ -223,11 +223,11 @@ func TestSharedStyles(t *testing.T) {
 	exampleStyleMap := SharedStyleMap(
 		"exampleStyleMap",
 		Pair(
-			Key("normal"),
+			Key(StyleStateNormal),
 			StyleURL(normalPlacemarkStyle.URL()),
 		),
 		Pair(
-			Key("highlight"),
+			Key(StyleStateHighlight),
 			StyleURL(highlightPlacemarkStyle.URL()),
 		),
 	)
@@ -452,7 +452,7 @@ func TestWrite(t *testing.T) {
 					Name("The Pentagon"),
 					Polygon(
 						Extrude(true),
-						AltitudeMode("relativeToGround"),
+						AltitudeMode(AltitudeModeRelativeToGround),
 						OuterBoundaryIs(
 							LinearRing(
 								Coordinates([]Coordinate{

@@ -134,7 +134,7 @@ func ExampleLineString() {
 				kml.LineString(
 					kml.Extrude(true),
 					kml.Tessellate(true),
-					kml.AltitudeMode("absolute"),
+					kml.AltitudeMode(kml.AltitudeModeAbsolute),
 					kml.Coordinates([]kml.Coordinate{
 						{Lon: -112.2550785337791, Lat: 36.07954952145647, Alt: 2357},
 						{Lon: -112.2549277039738, Lat: 36.08117083492122, Alt: 2357},
@@ -191,7 +191,7 @@ func ExamplePolygon() {
 			kml.Name("The Pentagon"),
 			kml.Polygon(
 				kml.Extrude(true),
-				kml.AltitudeMode("relativeToGround"),
+				kml.AltitudeMode(kml.AltitudeModeRelativeToGround),
 				kml.OuterBoundaryIs(
 					kml.LinearRing(
 						kml.Coordinates([]kml.Coordinate{
@@ -262,7 +262,7 @@ func ExampleStyle() {
 				kml.StyleURL("#transBluePoly"),
 				kml.Polygon(
 					kml.Extrude(true),
-					kml.AltitudeMode("relativeToGround"),
+					kml.AltitudeMode(kml.AltitudeModeRelativeToGround),
 					kml.OuterBoundaryIs(
 						kml.LinearRing(
 							kml.Coordinates([]kml.Coordinate{
@@ -348,11 +348,11 @@ func ExampleSharedStyleMap() {
 			kml.SharedStyleMap(
 				"exampleStyleMap",
 				kml.Pair(
-					kml.Key("normal"),
+					kml.Key(kml.StyleStateNormal),
 					kml.StyleURL("#normalPlacemark"),
 				),
 				kml.Pair(
-					kml.Key("highlight"),
+					kml.Key(kml.StyleStateHighlight),
 					kml.StyleURL("#highlightPlacemark"),
 				),
 			),
@@ -416,10 +416,10 @@ func ExampleScreenOverlay() {
 			kml.Icon(
 				kml.Href("http://developers.google.com/kml/documentation/images/top_left.jpg"),
 			),
-			kml.OverlayXY(kml.Vec2{X: 0, Y: 1, XUnits: "fraction", YUnits: "fraction"}),
-			kml.ScreenXY(kml.Vec2{X: 0, Y: 1, XUnits: "fraction", YUnits: "fraction"}),
-			kml.RotationXY(kml.Vec2{X: 0, Y: 0, XUnits: "fraction", YUnits: "fraction"}),
-			kml.Size(kml.Vec2{X: 0, Y: 0, XUnits: "fraction", YUnits: "fraction"}),
+			kml.OverlayXY(kml.Vec2{X: 0, Y: 1, XUnits: kml.UnitsFraction, YUnits: kml.UnitsFraction}),
+			kml.ScreenXY(kml.Vec2{X: 0, Y: 1, XUnits: kml.UnitsFraction, YUnits: kml.UnitsFraction}),
+			kml.RotationXY(kml.Vec2{X: 0, Y: 0, XUnits: kml.UnitsFraction, YUnits: kml.UnitsFraction}),
+			kml.Size(kml.Vec2{X: 0, Y: 0, XUnits: kml.UnitsFraction, YUnits: kml.UnitsFraction}),
 		),
 	)
 	if err := k.WriteIndent(os.Stdout, "", "  "); err != nil {

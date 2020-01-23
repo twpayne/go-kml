@@ -52,7 +52,7 @@ func PaddleHref(id string) string {
 // hotspot set. See http://kml4earth.appspot.com/icons.html#paddle.
 func PaddleIconStyle(id string) kml.Element {
 	return kml.IconStyle(
-		kml.HotSpot(kml.Vec2{X: 0.5, Y: 0, XUnits: "fraction", YUnits: "fraction"}),
+		kml.HotSpot(kml.Vec2{X: 0.5, Y: 0, XUnits: kml.UnitsFraction, YUnits: kml.UnitsFraction}),
 		kml.Icon(
 			kml.Href(PaddleHref(id)),
 		),

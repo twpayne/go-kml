@@ -30,6 +30,91 @@ const (
 	GxNamespace = "http://www.google.com/kml/ext/2.2"
 )
 
+// Altitude modes.
+const (
+	AltitudeModeAbsolute           = "absolute"
+	AltitudeModeClampToGround      = "clampToGround"
+	AltitudeModeClampToSeaFloor    = "clampToSeaFloor"
+	AltitudeModeRelativeToGround   = "relativeToGround"
+	AltitudeModeRelativeToSeaFloor = "relativeToSeaFloor"
+)
+
+// Color modes.
+const (
+	ColorModeNormal = "normal"
+	ColorModeRandom = "random"
+)
+
+// Display modes.
+const (
+	DisplayModeDefault = "default"
+	DisplayModeHide    = "hide"
+)
+
+// Grid origins.
+const (
+	GridOriginLowerLeft = "lowerLeft"
+	GridOriginUpperLeft = "upperLeft"
+)
+
+// Icon modes.
+const (
+	IconModeClosed    = "closed"
+	IconModeError     = "error"
+	IconModeFetching0 = "fetching0"
+	IconModeFetching1 = "fetching1"
+	IconModeFetching2 = "fetching2"
+	IconModeOpen      = "open"
+)
+
+// List item types.
+const (
+	ListItemTypeCheck             = "check"
+	ListItemTypeCheckHideChildren = "checkHideChildren"
+	ListItemTypeCheckOffOnly      = "checkOffOnly"
+	ListItemTypeRadioFolder       = "radioFolder"
+)
+
+// Play modes.
+const (
+	PlayModePause = "pause"
+)
+
+// Refresh modes.
+const (
+	RefreshModeOnChange   = "onChange"
+	RefreshModeOnInterval = "onInterval"
+	RefreshModeOnExpire   = "onExpire"
+)
+
+// Shapes.
+const (
+	ShapeCylinder  = "cylinder"
+	ShapeRectangle = "rectangle"
+	ShapeSphere    = "sphere"
+)
+
+// Style states.
+const (
+	StyleStateHighlight = "highlight"
+	StyleStateNormal    = "normal"
+)
+
+// Units.
+const (
+	UnitsFraction    = "fraction"
+	UnitsInsetPixels = "insetPixels"
+	UnitsPixels      = "pixels"
+)
+
+// View refreshes.
+const (
+	ViewRefreshNever     = "never"
+	ViewRefreshOnRegion  = "onRegion"
+	ViewRefreshOnRequest = "onRequest"
+	ViewRefreshOnStop    = "onStop"
+)
+
 var (
 	coordinatesStartElement = xml.StartElement{
 		Name: xml.Name{
