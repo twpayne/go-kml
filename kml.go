@@ -30,89 +30,125 @@ const (
 	GxNamespace = "http://www.google.com/kml/ext/2.2"
 )
 
+// An AltitudeModeEnum is an altitude mode.
+type AltitudeModeEnum string
+
 // Altitude modes.
 const (
-	AltitudeModeAbsolute           = "absolute"
-	AltitudeModeClampToGround      = "clampToGround"
-	AltitudeModeClampToSeaFloor    = "clampToSeaFloor"
-	AltitudeModeRelativeToGround   = "relativeToGround"
-	AltitudeModeRelativeToSeaFloor = "relativeToSeaFloor"
+	AltitudeModeAbsolute           AltitudeModeEnum = "absolute"
+	AltitudeModeClampToGround      AltitudeModeEnum = "clampToGround"
+	AltitudeModeClampToSeaFloor    AltitudeModeEnum = "clampToSeaFloor"
+	AltitudeModeRelativeToGround   AltitudeModeEnum = "relativeToGround"
+	AltitudeModeRelativeToSeaFloor AltitudeModeEnum = "relativeToSeaFloor"
 )
+
+// A ColorModeEnum is a color mode.
+type ColorModeEnum string
 
 // Color modes.
 const (
-	ColorModeNormal = "normal"
-	ColorModeRandom = "random"
+	ColorModeNormal ColorModeEnum = "normal"
+	ColorModeRandom ColorModeEnum = "random"
 )
+
+// A DisplayModeEnum is a display mode.
+type DisplayModeEnum string
 
 // Display modes.
 const (
-	DisplayModeDefault = "default"
-	DisplayModeHide    = "hide"
+	DisplayModeDefault DisplayModeEnum = "default"
+	DisplayModeHide    DisplayModeEnum = "hide"
 )
+
+// A GridOriginEnum is a grid origin.
+type GridOriginEnum string
 
 // Grid origins.
 const (
-	GridOriginLowerLeft = "lowerLeft"
-	GridOriginUpperLeft = "upperLeft"
+	GridOriginLowerLeft GridOriginEnum = "lowerLeft"
+	GridOriginUpperLeft GridOriginEnum = "upperLeft"
 )
+
+// An IconModeEnum is an icon mode.
+type IconModeEnum string
 
 // Icon modes.
 const (
-	IconModeClosed    = "closed"
-	IconModeError     = "error"
-	IconModeFetching0 = "fetching0"
-	IconModeFetching1 = "fetching1"
-	IconModeFetching2 = "fetching2"
-	IconModeOpen      = "open"
+	IconModeClosed    IconModeEnum = "closed"
+	IconModeError     IconModeEnum = "error"
+	IconModeFetching0 IconModeEnum = "fetching0"
+	IconModeFetching1 IconModeEnum = "fetching1"
+	IconModeFetching2 IconModeEnum = "fetching2"
+	IconModeOpen      IconModeEnum = "open"
 )
+
+// A ListItemTypeEnum is a list item type.
+type ListItemTypeEnum string
 
 // List item types.
 const (
-	ListItemTypeCheck             = "check"
-	ListItemTypeCheckHideChildren = "checkHideChildren"
-	ListItemTypeCheckOffOnly      = "checkOffOnly"
-	ListItemTypeRadioFolder       = "radioFolder"
+	ListItemTypeCheck             ListItemTypeEnum = "check"
+	ListItemTypeCheckHideChildren ListItemTypeEnum = "checkHideChildren"
+	ListItemTypeCheckOffOnly      ListItemTypeEnum = "checkOffOnly"
+	ListItemTypeRadioFolder       ListItemTypeEnum = "radioFolder"
 )
+
+// A PlayModeEnum is a play mode.
+type PlayModeEnum string
 
 // Play modes.
 const (
-	PlayModePause = "pause"
+	PlayModePause PlayModeEnum = "pause"
 )
+
+// A RefreshModeEnum is a refresh mode.
+type RefreshModeEnum string
 
 // Refresh modes.
 const (
-	RefreshModeOnChange   = "onChange"
-	RefreshModeOnInterval = "onInterval"
-	RefreshModeOnExpire   = "onExpire"
+	RefreshModeOnChange   RefreshModeEnum = "onChange"
+	RefreshModeOnInterval RefreshModeEnum = "onInterval"
+	RefreshModeOnExpire   RefreshModeEnum = "onExpire"
 )
+
+// A ShapeEnum is a shape.
+type ShapeEnum string
 
 // Shapes.
 const (
-	ShapeCylinder  = "cylinder"
-	ShapeRectangle = "rectangle"
-	ShapeSphere    = "sphere"
+	ShapeCylinder  ShapeEnum = "cylinder"
+	ShapeRectangle ShapeEnum = "rectangle"
+	ShapeSphere    ShapeEnum = "sphere"
 )
+
+// A StyleStateEnum is a style state.
+type StyleStateEnum string
 
 // Style states.
 const (
-	StyleStateHighlight = "highlight"
-	StyleStateNormal    = "normal"
+	StyleStateHighlight StyleStateEnum = "highlight"
+	StyleStateNormal    StyleStateEnum = "normal"
 )
+
+// A UnitsEnum is a units.
+type UnitsEnum string
 
 // Units.
 const (
-	UnitsFraction    = "fraction"
-	UnitsInsetPixels = "insetPixels"
-	UnitsPixels      = "pixels"
+	UnitsFraction    UnitsEnum = "fraction"
+	UnitsInsetPixels UnitsEnum = "insetPixels"
+	UnitsPixels      UnitsEnum = "pixels"
 )
+
+// A ViewRefreshModeEnum is a view refresh.
+type ViewRefreshModeEnum string
 
 // View refreshes.
 const (
-	ViewRefreshNever     = "never"
-	ViewRefreshOnRegion  = "onRegion"
-	ViewRefreshOnRequest = "onRequest"
-	ViewRefreshOnStop    = "onStop"
+	ViewRefreshNever     ViewRefreshModeEnum = "never"
+	ViewRefreshOnRegion  ViewRefreshModeEnum = "onRegion"
+	ViewRefreshOnRequest ViewRefreshModeEnum = "onRequest"
+	ViewRefreshOnStop    ViewRefreshModeEnum = "onStop"
 )
 
 var (
@@ -138,7 +174,7 @@ type Coordinate struct {
 // A Vec2 represents a screen position.
 type Vec2 struct {
 	X, Y           float64
-	XUnits, YUnits string
+	XUnits, YUnits UnitsEnum
 }
 
 // An Element represents an abstract KML element.
@@ -336,7 +372,9 @@ func Address(value string) *SimpleElement { return newSEString("address", value)
 func Altitude(value float64) *SimpleElement { return newSEFloat("altitude", value) }
 
 // AltitudeMode returns a new AltitudeMode element.
-func AltitudeMode(value string) *SimpleElement { return newSEString("altitudeMode", value) }
+func AltitudeMode(value AltitudeModeEnum) *SimpleElement {
+	return newSEString("altitudeMode", string(value))
+}
 
 // BalloonStyle returns a new BalloonStyle element.
 func BalloonStyle(children ...Element) *CompoundElement { return newCE("BalloonStyle", children) }
@@ -357,7 +395,7 @@ func Change(children ...Element) *CompoundElement { return newCE("Change", child
 func Color(value color.Color) *SimpleElement { return newSEColor("color", value) }
 
 // ColorMode returns a new ColorMode element.
-func ColorMode(value string) *SimpleElement { return newSEString("colorMode", value) }
+func ColorMode(value ColorModeEnum) *SimpleElement { return newSEString("colorMode", string(value)) }
 
 // Cookie returns a new Cookie element.
 func Cookie(value string) *SimpleElement { return newSEString("cookie", value) }
@@ -373,6 +411,11 @@ func Delete(children ...Element) *CompoundElement { return newCE("Delete", child
 
 // Description returns a new Description element.
 func Description(value string) *SimpleElement { return newSEString("description", value) }
+
+// DisplayMode returns a new DisplayMode element.
+func DisplayMode(value DisplayModeEnum) *SimpleElement {
+	return newSEString("displayMode", string(value))
+}
 
 // DisplayName returns a new DisplayName element.
 func DisplayName(value string) *SimpleElement { return newSEString("displayName", value) }
@@ -407,11 +450,16 @@ func FlyToView(value bool) *SimpleElement { return newSEBool("flyToView", value)
 // Folder returns a new Folder element.
 func Folder(children ...Element) *CompoundElement { return newCE("Folder", children) }
 
+// GridOrigin returns a new GridOrigin element.
+func GridOrigin(value GridOriginEnum) *SimpleElement { return newSEString("gridOrigin", string(value)) }
+
 // GroundOverlay returns a new GroundOverlay element.
 func GroundOverlay(children ...Element) *CompoundElement { return newCE("GroundOverlay", children) }
 
 // GxAltitudeMode returns a new gx:AltitudeMode element.
-func GxAltitudeMode(value string) *SimpleElement { return newSEString("gx:altitudeMode", value) }
+func GxAltitudeMode(value AltitudeModeEnum) *SimpleElement {
+	return newSEString("gx:altitudeMode", string(value))
+}
 
 // GxAltitudeOffset returns a new gx:AltitudeOffset element.
 func GxAltitudeOffset(value float64) *SimpleElement { return newSEFloat("gx:altitudeOffset", value) }
@@ -448,6 +496,9 @@ func GxOuterWidth(value float64) *SimpleElement { return newSEFloat("gx:outerWid
 
 // GxPhysicalWidth returns a new gx:PhysicalWidth element.
 func GxPhysicalWidth(value float64) *SimpleElement { return newSEFloat("gx:physicalWidth", value) }
+
+// GxPlayMode returns a new gx:playMode element.
+func GxPlayMode(value PlayModeEnum) *SimpleElement { return newSEString("gx:playMode", string(value)) }
 
 // GxPlaylist returns a new gx:Playlist element.
 func GxPlaylist(children ...Element) *CompoundElement { return newCE("gx:Playlist", children) }
@@ -494,7 +545,7 @@ func IconStyle(children ...Element) *CompoundElement { return newCE("IconStyle",
 func InnerBoundaryIs(value Element) *CompoundElement { return newCEElement("innerBoundaryIs", value) }
 
 // Key returns a new Key element.
-func Key(value string) *SimpleElement { return newSEString("key", value) }
+func Key(value StyleStateEnum) *SimpleElement { return newSEString("key", string(value)) }
 
 // LabelStyle returns a new LabelStyle element.
 func LabelStyle(children ...Element) *CompoundElement { return newCE("LabelStyle", children) }
@@ -524,7 +575,9 @@ func LinkDescription(value string) *SimpleElement { return newSEString("linkDesc
 func LinkName(value string) *SimpleElement { return newSEString("linkName", value) }
 
 // ListItemType returns a new ListItemType element.
-func ListItemType(value string) *SimpleElement { return newSEString("listItemType", value) }
+func ListItemType(value ListItemTypeEnum) *SimpleElement {
+	return newSEString("listItemType", string(value))
+}
 
 // ListStyle returns a new ListStyle element.
 func ListStyle(children ...Element) *CompoundElement { return newCE("ListStyle", children) }
@@ -608,7 +661,9 @@ func Range(value float64) *SimpleElement { return newSEFloat("range", value) }
 func RefreshInterval(value float64) *SimpleElement { return newSEFloat("refreshInterval", value) }
 
 // RefreshMode returns a new RefreshMode element.
-func RefreshMode(value string) *SimpleElement { return newSEString("refreshMode", value) }
+func RefreshMode(value RefreshModeEnum) *SimpleElement {
+	return newSEString("refreshMode", string(value))
+}
 
 // RefreshVisibility returns a new RefreshVisibility element.
 func RefreshVisibility(value bool) *SimpleElement { return newSEBool("refreshVisibility", value) }
@@ -634,6 +689,9 @@ func ScreenOverlay(children ...Element) *CompoundElement { return newCE("ScreenO
 // ScreenXY returns a new ScreenXY element.
 func ScreenXY(value Vec2) *SimpleElement { return newSEVec2("screenXY", value) }
 
+// Shape returns a new Shape element.
+func Shape(value ShapeEnum) *SimpleElement { return newSEString("shape", string(value)) }
+
 // Size returns a new Size element.
 func Size(value Vec2) *SimpleElement { return newSEVec2("size", value) }
 
@@ -642,6 +700,9 @@ func Snippet(value string) *SimpleElement { return newSEString("snippet", value)
 
 // South returns a new South element.
 func South(value float64) *SimpleElement { return newSEFloat("south", value) }
+
+// State returns a new State element.
+func State(value IconModeEnum) *SimpleElement { return newSEString("state", string(value)) }
 
 // Style returns a new Style element.
 func Style(children ...Element) *CompoundElement { return newCE("Style", children) }
@@ -680,7 +741,9 @@ func ViewBoundScale(value float64) *SimpleElement { return newSEFloat("viewBound
 func ViewFormat(value string) *SimpleElement { return newSEString("viewFormat", value) }
 
 // ViewRefreshMode returns a new ViewRefreshMode element.
-func ViewRefreshMode(value string) *SimpleElement { return newSEString("viewRefreshMode", value) }
+func ViewRefreshMode(value ViewRefreshModeEnum) *SimpleElement {
+	return newSEString("viewRefreshMode", string(value))
+}
 
 // ViewRefreshTime returns a new ViewRefreshTime element.
 func ViewRefreshTime(value float64) *SimpleElement { return newSEFloat("viewRefreshTime", value) }
@@ -914,8 +977,8 @@ func newSEVec2(name string, value Vec2) *SimpleElement {
 			Attr: []xml.Attr{
 				{Name: xml.Name{Local: "x"}, Value: strconv.FormatFloat(value.X, 'f', -1, 64)},
 				{Name: xml.Name{Local: "y"}, Value: strconv.FormatFloat(value.Y, 'f', -1, 64)},
-				{Name: xml.Name{Local: "xunits"}, Value: value.XUnits},
-				{Name: xml.Name{Local: "yunits"}, Value: value.YUnits},
+				{Name: xml.Name{Local: "xunits"}, Value: string(value.XUnits)},
+				{Name: xml.Name{Local: "yunits"}, Value: string(value.YUnits)},
 			},
 		},
 	}
