@@ -471,7 +471,7 @@ func (tp turnpoint) kmlFolder() kml.Element {
 		blockPlacemark,
 		kml.Style(
 			kml.ListStyle(
-				kml.ListItemType("checkHideChildren"),
+				kml.ListItemType(kml.ListItemTypeCheckHideChildren),
 			),
 		),
 	)
@@ -500,7 +500,7 @@ func (r race) kmlRouteFolder() kml.Element {
 		),
 		kml.Style(
 			kml.ListStyle(
-				kml.ListItemType("checkHideChildren"),
+				kml.ListItemType(kml.ListItemTypeCheckHideChildren),
 			),
 		),
 	)
