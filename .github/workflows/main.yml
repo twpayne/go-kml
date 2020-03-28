@@ -20,6 +20,10 @@ jobs:
         go mod init tmp
         go get github.com/mattn/goveralls
         go get mvdan.cc/gofumpt/gofumports
+    - name: Generate
+      run: |
+        go generate
+        git diff --exit-code
     - name: Build
       run: go build ./...
     - name: Test
