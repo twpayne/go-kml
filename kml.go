@@ -1,3 +1,5 @@
+//go:generate go run ./internal/generate -f -o ogckml22.gen.go xsd/ogckml22.xsd
+
 // Package kml provides convenience methods for creating and writing KML documents.
 //
 // See https://developers.google.com/kml/
@@ -30,125 +32,12 @@ const (
 	GxNamespace = "http://www.google.com/kml/ext/2.2"
 )
 
-// An AltitudeModeEnum is an altitude mode.
-type AltitudeModeEnum string
-
-// Altitude modes.
-const (
-	AltitudeModeAbsolute           AltitudeModeEnum = "absolute"
-	AltitudeModeClampToGround      AltitudeModeEnum = "clampToGround"
-	AltitudeModeClampToSeaFloor    AltitudeModeEnum = "clampToSeaFloor"
-	AltitudeModeRelativeToGround   AltitudeModeEnum = "relativeToGround"
-	AltitudeModeRelativeToSeaFloor AltitudeModeEnum = "relativeToSeaFloor"
-)
-
-// A ColorModeEnum is a color mode.
-type ColorModeEnum string
-
-// Color modes.
-const (
-	ColorModeNormal ColorModeEnum = "normal"
-	ColorModeRandom ColorModeEnum = "random"
-)
-
-// A DisplayModeEnum is a display mode.
-type DisplayModeEnum string
-
-// Display modes.
-const (
-	DisplayModeDefault DisplayModeEnum = "default"
-	DisplayModeHide    DisplayModeEnum = "hide"
-)
-
-// A GridOriginEnum is a grid origin.
-type GridOriginEnum string
-
-// Grid origins.
-const (
-	GridOriginLowerLeft GridOriginEnum = "lowerLeft"
-	GridOriginUpperLeft GridOriginEnum = "upperLeft"
-)
-
-// An IconModeEnum is an icon mode.
-type IconModeEnum string
-
-// Icon modes.
-const (
-	IconModeClosed    IconModeEnum = "closed"
-	IconModeError     IconModeEnum = "error"
-	IconModeFetching0 IconModeEnum = "fetching0"
-	IconModeFetching1 IconModeEnum = "fetching1"
-	IconModeFetching2 IconModeEnum = "fetching2"
-	IconModeOpen      IconModeEnum = "open"
-)
-
-// A ListItemTypeEnum is a list item type.
-type ListItemTypeEnum string
-
-// List item types.
-const (
-	ListItemTypeCheck             ListItemTypeEnum = "check"
-	ListItemTypeCheckHideChildren ListItemTypeEnum = "checkHideChildren"
-	ListItemTypeCheckOffOnly      ListItemTypeEnum = "checkOffOnly"
-	ListItemTypeRadioFolder       ListItemTypeEnum = "radioFolder"
-)
-
 // A PlayModeEnum is a play mode.
 type PlayModeEnum string
 
 // Play modes.
 const (
 	PlayModePause PlayModeEnum = "pause"
-)
-
-// A RefreshModeEnum is a refresh mode.
-type RefreshModeEnum string
-
-// Refresh modes.
-const (
-	RefreshModeOnChange   RefreshModeEnum = "onChange"
-	RefreshModeOnInterval RefreshModeEnum = "onInterval"
-	RefreshModeOnExpire   RefreshModeEnum = "onExpire"
-)
-
-// A ShapeEnum is a shape.
-type ShapeEnum string
-
-// Shapes.
-const (
-	ShapeCylinder  ShapeEnum = "cylinder"
-	ShapeRectangle ShapeEnum = "rectangle"
-	ShapeSphere    ShapeEnum = "sphere"
-)
-
-// A StyleStateEnum is a style state.
-type StyleStateEnum string
-
-// Style states.
-const (
-	StyleStateHighlight StyleStateEnum = "highlight"
-	StyleStateNormal    StyleStateEnum = "normal"
-)
-
-// A UnitsEnum is a units.
-type UnitsEnum string
-
-// Units.
-const (
-	UnitsFraction    UnitsEnum = "fraction"
-	UnitsInsetPixels UnitsEnum = "insetPixels"
-	UnitsPixels      UnitsEnum = "pixels"
-)
-
-// A ViewRefreshModeEnum is a view refresh.
-type ViewRefreshModeEnum string
-
-// View refreshes.
-const (
-	ViewRefreshNever     ViewRefreshModeEnum = "never"
-	ViewRefreshOnRegion  ViewRefreshModeEnum = "onRegion"
-	ViewRefreshOnRequest ViewRefreshModeEnum = "onRequest"
-	ViewRefreshOnStop    ViewRefreshModeEnum = "onStop"
 )
 
 var (
@@ -365,97 +254,6 @@ func (cfe *CoordinatesFlatElement) WriteIndent(w io.Writer, prefix, indent strin
 	return write(w, prefix, indent, cfe)
 }
 
-// Address returns a new address element.
-func Address(value string) *SimpleElement { return newSEString("address", value) }
-
-// Altitude returns a new altitude element.
-func Altitude(value float64) *SimpleElement { return newSEFloat("altitude", value) }
-
-// AltitudeMode returns a new AltitudeMode element.
-func AltitudeMode(value AltitudeModeEnum) *SimpleElement {
-	return newSEString("altitudeMode", string(value))
-}
-
-// BalloonStyle returns a new BalloonStyle element.
-func BalloonStyle(children ...Element) *CompoundElement { return newCE("BalloonStyle", children) }
-
-// Begin returns a new begin element.
-func Begin(value time.Time) *SimpleElement { return newSETime("begin", value) }
-
-// BgColor returns a new bgColor element.
-func BgColor(value color.Color) *SimpleElement { return newSEColor("bgColor", value) }
-
-// Camera returns a new Camera element.
-func Camera(children ...Element) *CompoundElement { return newCE("Camera", children) }
-
-// Change returns a new Change element.
-func Change(children ...Element) *CompoundElement { return newCE("Change", children) }
-
-// Color returns a new color element.
-func Color(value color.Color) *SimpleElement { return newSEColor("color", value) }
-
-// ColorMode returns a new colorMode element.
-func ColorMode(value ColorModeEnum) *SimpleElement { return newSEString("colorMode", string(value)) }
-
-// Cookie returns a new cookie element.
-func Cookie(value string) *SimpleElement { return newSEString("cookie", value) }
-
-// Create returns a new Create element.
-func Create(children ...Element) *CompoundElement { return newCE("Create", children) }
-
-// Data returns a new Data element.
-func Data(children ...Element) *CompoundElement { return newCE("Data", children) }
-
-// Delete returns a new Delete element.
-func Delete(children ...Element) *CompoundElement { return newCE("Delete", children) }
-
-// Description returns a new description element.
-func Description(value string) *SimpleElement { return newSEString("description", value) }
-
-// DisplayMode returns a new displayMode element.
-func DisplayMode(value DisplayModeEnum) *SimpleElement {
-	return newSEString("displayMode", string(value))
-}
-
-// DisplayName returns a new displayName element.
-func DisplayName(value string) *SimpleElement { return newSEString("displayName", value) }
-
-// Document returns a new Document element.
-func Document(children ...Element) *CompoundElement { return newCE("Document", children) }
-
-// DrawOrder returns a new drawOrder element.
-func DrawOrder(value int) *SimpleElement { return newSEInt("drawOrder", value) }
-
-// East returns a new east element.
-func East(value float64) *SimpleElement { return newSEFloat("east", value) }
-
-// End returns a new end element.
-func End(value time.Time) *SimpleElement { return newSETime("end", value) }
-
-// Expires returns a new expires element.
-func Expires(value time.Time) *SimpleElement { return newSETime("expires", value) }
-
-// ExtendedData returns a new ExtendedData element.
-func ExtendedData(children ...Element) *CompoundElement { return newCE("ExtendedData", children) }
-
-// Extrude returns a new extrude element.
-func Extrude(value bool) *SimpleElement { return newSEBool("extrude", value) }
-
-// Fill returns a new fill element.
-func Fill(value bool) *SimpleElement { return newSEBool("fill", value) }
-
-// FlyToView returns a new flyToView element.
-func FlyToView(value bool) *SimpleElement { return newSEBool("flyToView", value) }
-
-// Folder returns a new Folder element.
-func Folder(children ...Element) *CompoundElement { return newCE("Folder", children) }
-
-// GridOrigin returns a new gridOrigin element.
-func GridOrigin(value GridOriginEnum) *SimpleElement { return newSEString("gridOrigin", string(value)) }
-
-// GroundOverlay returns a new GroundOverlay element.
-func GroundOverlay(children ...Element) *CompoundElement { return newCE("GroundOverlay", children) }
-
 // GxAltitudeMode returns a new gx:altitudeMode element.
 func GxAltitudeMode(value AltitudeModeEnum) *SimpleElement {
 	return newSEString("gx:altitudeMode", string(value))
@@ -522,243 +320,6 @@ func GxTrack(children ...Element) *CompoundElement { return newCE("gx:Track", ch
 
 // GxWait returns a new gx:Wait element.
 func GxWait(children ...Element) *CompoundElement { return newCE("gx:Wait", children) }
-
-// HTTPQuery returns a new httpQuery element.
-func HTTPQuery(value string) *SimpleElement { return newSEString("httpQuery", value) }
-
-// Heading returns a new heading element.
-func Heading(value float64) *SimpleElement { return newSEFloat("heading", value) }
-
-// HotSpot returns a new hotSpot element.
-func HotSpot(value Vec2) *SimpleElement { return newSEVec2("hotSpot", value) }
-
-// Href returns a new href element.
-func Href(value string) *SimpleElement { return newSEString("href", value) }
-
-// Icon returns a new Icon element.
-func Icon(children ...Element) *CompoundElement { return newCE("Icon", children) }
-
-// IconStyle returns a new IconStyle element.
-func IconStyle(children ...Element) *CompoundElement { return newCE("IconStyle", children) }
-
-// InnerBoundaryIs returns a new innerBoundaryIs element.
-func InnerBoundaryIs(value Element) *CompoundElement { return newCEElement("innerBoundaryIs", value) }
-
-// Key returns a new key element.
-func Key(value StyleStateEnum) *SimpleElement { return newSEString("key", string(value)) }
-
-// LabelStyle returns a new LabelStyle element.
-func LabelStyle(children ...Element) *CompoundElement { return newCE("LabelStyle", children) }
-
-// LatLonBox returns a new LatLonBox element.
-func LatLonBox(children ...Element) *CompoundElement { return newCE("LatLonBox", children) }
-
-// Latitude returns a new latitude element.
-func Latitude(value float64) *SimpleElement { return newSEFloat("latitude", value) }
-
-// LineString returns a new LineString element.
-func LineString(children ...Element) *CompoundElement { return newCE("LineString", children) }
-
-// LineStyle returns a new LineStyle element.
-func LineStyle(children ...Element) *CompoundElement { return newCE("LineStyle", children) }
-
-// LinearRing returns a new LinearRing element.
-func LinearRing(children ...Element) *CompoundElement { return newCE("LinearRing", children) }
-
-// Link returns a new Link element.
-func Link(children ...Element) *CompoundElement { return newCE("Link", children) }
-
-// LinkDescription returns a new linkDescription element.
-func LinkDescription(value string) *SimpleElement { return newSEString("linkDescription", value) }
-
-// LinkName returns a new linkName element.
-func LinkName(value string) *SimpleElement { return newSEString("linkName", value) }
-
-// ListItemType returns a new listItemType element.
-func ListItemType(value ListItemTypeEnum) *SimpleElement {
-	return newSEString("listItemType", string(value))
-}
-
-// ListStyle returns a new ListStyle element.
-func ListStyle(children ...Element) *CompoundElement { return newCE("ListStyle", children) }
-
-// Longitude returns a new longitude element.
-func Longitude(value float64) *SimpleElement { return newSEFloat("longitude", value) }
-
-// LookAt returns a new LookAt element.
-func LookAt(children ...Element) *CompoundElement { return newCE("LookAt", children) }
-
-// MaxAltitude returns a new maxAltitude element.
-func MaxAltitude(value float64) *SimpleElement { return newSEFloat("maxAltitude", value) }
-
-// MaxFadeExtent returns a new maxFadeExtent element.
-func MaxFadeExtent(value int) *SimpleElement { return newSEInt("maxFadeExtent", value) }
-
-// MaxLodPixel returns a new maxLodPixel element.
-func MaxLodPixel(value int) *SimpleElement { return newSEInt("maxLodPixels", value) }
-
-// Message returns a new message element.
-func Message(value string) *SimpleElement { return newSEString("message", value) }
-
-// MinAltitude returns a new minAltitude element.
-func MinAltitude(value float64) *SimpleElement { return newSEFloat("minAltitude", value) }
-
-// MinFadeExtent returns a new minFadeExtent element.
-func MinFadeExtent(value int) *SimpleElement { return newSEInt("minFadeExtent", value) }
-
-// MinLodPixel returns a new minLodPixel element.
-func MinLodPixel(value int) *SimpleElement { return newSEInt("minLodPixels", value) }
-
-// Model returns a new Model element.
-func Model(children ...Element) *CompoundElement { return newCE("Model", children) }
-
-// MultiGeometry returns a new MultiGeometry element.
-func MultiGeometry(children ...Element) *CompoundElement { return newCE("MultiGeometry", children) }
-
-// Name returns a new name element.
-func Name(value string) *SimpleElement { return newSEString("name", value) }
-
-// NetworkLink returns a new NetworkLink element.
-func NetworkLink(children ...Element) *CompoundElement { return newCE("NetworkLink", children) }
-
-// North returns a new north element.
-func North(value float64) *SimpleElement { return newSEFloat("north", value) }
-
-// Open returns a new open element.
-func Open(value bool) *SimpleElement { return newSEBool("open", value) }
-
-// OuterBoundaryIs returns a new outerBoundaryIs element.
-func OuterBoundaryIs(value Element) *CompoundElement { return newCEElement("outerBoundaryIs", value) }
-
-// Outline returns a new outline element.
-func Outline(value bool) *SimpleElement { return newSEBool("outline", value) }
-
-// OverlayXY returns a new overlayXY element.
-func OverlayXY(value Vec2) *SimpleElement { return newSEVec2("overlayXY", value) }
-
-// Pair returns a new Pair element.
-func Pair(children ...Element) *CompoundElement { return newCE("Pair", children) }
-
-// PhoneNumber returns a new phoneNumber element.
-func PhoneNumber(value string) *SimpleElement { return newSEString("phoneNumber", value) }
-
-// Placemark returns a new Placemark element.
-func Placemark(children ...Element) *CompoundElement { return newCE("Placemark", children) }
-
-// Point returns a new Point element.
-func Point(children ...Element) *CompoundElement { return newCE("Point", children) }
-
-// PolyStyle returns a new PolyStyle element.
-func PolyStyle(children ...Element) *CompoundElement { return newCE("PolyStyle", children) }
-
-// Polygon returns a new Polygon element.
-func Polygon(children ...Element) *CompoundElement { return newCE("Polygon", children) }
-
-// Range returns a new range element.
-func Range(value float64) *SimpleElement { return newSEFloat("range", value) }
-
-// RefreshInterval returns a new refreshInterval element.
-func RefreshInterval(value float64) *SimpleElement { return newSEFloat("refreshInterval", value) }
-
-// RefreshMode returns a new refreshMode element.
-func RefreshMode(value RefreshModeEnum) *SimpleElement {
-	return newSEString("refreshMode", string(value))
-}
-
-// RefreshVisibility returns a new refreshVisibility element.
-func RefreshVisibility(value bool) *SimpleElement { return newSEBool("refreshVisibility", value) }
-
-// Region returns a new Region element.
-func Region(children ...Element) *CompoundElement { return newCE("Region", children) }
-
-// Roll returns a new roll element.
-func Roll(value float64) *SimpleElement { return newSEFloat("roll", value) }
-
-// Rotation returns a new rotation element.
-func Rotation(value float64) *SimpleElement { return newSEFloat("rotation", value) }
-
-// RotationXY returns a new rotationXY element.
-func RotationXY(value Vec2) *SimpleElement { return newSEVec2("rotationXY", value) }
-
-// Scale returns a new scale element.
-func Scale(value float64) *SimpleElement { return newSEFloat("scale", value) }
-
-// ScreenOverlay returns a new ScreenOverlay element.
-func ScreenOverlay(children ...Element) *CompoundElement { return newCE("ScreenOverlay", children) }
-
-// ScreenXY returns a new screenXY element.
-func ScreenXY(value Vec2) *SimpleElement { return newSEVec2("screenXY", value) }
-
-// Shape returns a new shape element.
-func Shape(value ShapeEnum) *SimpleElement { return newSEString("shape", string(value)) }
-
-// Size returns a new size element.
-func Size(value Vec2) *SimpleElement { return newSEVec2("size", value) }
-
-// Snippet returns a new snippet element.
-func Snippet(value string) *SimpleElement { return newSEString("snippet", value) }
-
-// South returns a new south element.
-func South(value float64) *SimpleElement { return newSEFloat("south", value) }
-
-// State returns a new state element.
-func State(value IconModeEnum) *SimpleElement { return newSEString("state", string(value)) }
-
-// Style returns a new Style element.
-func Style(children ...Element) *CompoundElement { return newCE("Style", children) }
-
-// StyleMap returns a new StyleMap element.
-func StyleMap(children ...Element) *CompoundElement { return newCE("StyleMap", children) }
-
-// StyleURL returns a new styleURL element.
-func StyleURL(value string) *SimpleElement { return newSEString("styleUrl", value) }
-
-// TargetHref returns a new targetHref element.
-func TargetHref(value string) *SimpleElement { return newSEString("targetHref", value) }
-
-// Tessellate returns a new tessellate element.
-func Tessellate(value bool) *SimpleElement { return newSEBool("tessellate", value) }
-
-// Text returns a new text element.
-func Text(value string) *SimpleElement { return newSEString("text", value) }
-
-// Tilt returns a new tilt element.
-func Tilt(value float64) *SimpleElement { return newSEFloat("tilt", value) }
-
-// TimeSpan returns a new TimeSpan element.
-func TimeSpan(children ...Element) *CompoundElement { return newCE("TimeSpan", children) }
-
-// TimeStamp returns a new TimeStamp element.
-func TimeStamp(children ...Element) *CompoundElement { return newCE("TimeStamp", children) }
-
-// Value returns a new value element.
-func Value(value string) *SimpleElement { return newSEString("value", value) }
-
-// ViewBoundScale returns a new viewBoundScale element.
-func ViewBoundScale(value float64) *SimpleElement { return newSEFloat("viewBoundScale", value) }
-
-// ViewFormat returns a new viewFormat element.
-func ViewFormat(value string) *SimpleElement { return newSEString("viewFormat", value) }
-
-// ViewRefreshMode returns a new viewRefreshMode element.
-func ViewRefreshMode(value ViewRefreshModeEnum) *SimpleElement {
-	return newSEString("viewRefreshMode", string(value))
-}
-
-// ViewRefreshTime returns a new viewRefreshTime element.
-func ViewRefreshTime(value float64) *SimpleElement { return newSEFloat("viewRefreshTime", value) }
-
-// Visibility returns a new visibility element.
-func Visibility(value bool) *SimpleElement { return newSEBool("visibility", value) }
-
-// West returns a new west element.
-func West(value float64) *SimpleElement { return newSEFloat("west", value) }
-
-// When returns a new when element.
-func When(value time.Time) *SimpleElement { return newSETime("when", value) }
-
-// Width returns a new width element.
-func Width(value float64) *SimpleElement { return newSEFloat("width", value) }
 
 // Coordinates returns a new CoordinatesElement.
 func Coordinates(value ...Coordinate) *CoordinatesElement {
@@ -836,11 +397,6 @@ func LinkSnippet(maxLines int, value string) *SimpleElement {
 	}
 }
 
-// NetworkLinkControl returns a new NetworkLinkControl element.
-func NetworkLinkControl(children ...Element) *CompoundElement {
-	return newCE("gx:NetworkLinkControl", children)
-}
-
 // Schema returns a new Schema element.
 func Schema(id, name string, children ...Element) *SharedElement {
 	return &SharedElement{
@@ -909,18 +465,18 @@ func SimpleField(name, _type string, children ...Element) *CompoundElement {
 }
 
 // KML returns a new kml element.
-func KML(children ...Element) *CompoundElement {
+func KML(child Element) *CompoundElement {
 	return &CompoundElement{
 		StartElement: xml.StartElement{
 			Name: xml.Name{Space: Namespace, Local: "kml"},
 		},
-		children: children,
+		children: []Element{child},
 	}
 }
 
 // GxKML returns a new kml element with Google Earth extensions.
-func GxKML(children ...Element) *CompoundElement {
-	kml := KML(children...)
+func GxKML(child Element) *CompoundElement {
+	kml := KML(child)
 	// FIXME find a more correct way to do this
 	kml.Attr = append(kml.Attr, xml.Attr{Name: xml.Name{Local: "xmlns:gx"}, Value: GxNamespace})
 	return kml
@@ -953,6 +509,15 @@ func newSEColor(name string, value color.Color) *SimpleElement {
 	return &SimpleElement{
 		StartElement: xml.StartElement{Name: xml.Name{Local: name}},
 		value:        fmt.Sprintf("%02x%02x%02x%02x", a/256, b/256, g/256, r/256),
+	}
+}
+
+func newSEElement(name string, value Element) *CompoundElement {
+	return &CompoundElement{
+		StartElement: xml.StartElement{
+			Name: xml.Name{Local: name},
+		},
+		children: []Element{value},
 	}
 }
 
@@ -1005,10 +570,6 @@ func newCE(name string, children []Element) *CompoundElement {
 		},
 		children: children,
 	}
-}
-
-func newCEElement(name string, child Element) *CompoundElement {
-	return newCE(name, []Element{child})
 }
 
 func newSharedE(name, id string, children []Element) *SharedElement {
