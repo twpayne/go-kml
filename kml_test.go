@@ -6,147 +6,161 @@ import (
 	"image/color"
 	"testing"
 	"time"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
-type testCase struct {
-	e    Element
-	want string
-}
-
-func (tc testCase) testWrite(t *testing.T) {
-	b := &bytes.Buffer{}
-	if err := tc.e.Write(b); err != nil {
-		t.Errorf("%#v.Write(b) == %#v, want nil", tc.e, err)
-		return
-	}
-	if got := b.Bytes(); string(got) != tc.want {
-		t.Errorf("%#v.Write(b) wrote %#v, want %#v", tc.e, got, tc.want)
-	}
-}
-
-func (tc testCase) testMarshal(t *testing.T) {
-	got, err := xml.Marshal(tc.e)
-	if err != nil {
-		t.Errorf("xml.Marshal(%#v) == %#v, %#v, want ..., nil", tc.e, got, err)
-		return
-	}
-	if string(got) != tc.want {
-		t.Errorf("xml.Marshal(%#v)\nwrote %#v\n want %#v", tc.e, string(got), tc.want)
-	}
-}
-
 func TestSimpleElements(t *testing.T) {
-	for _, tc := range []testCase{
+	for _, tc := range []struct {
+		name     string
+		element  Element
+		expected string
+	}{
 		{
-			Altitude(0),
-			`<altitude>0</altitude>`,
+			name:     "Altitude",
+			element:  Altitude(0),
+			expected: `<altitude>0</altitude>`,
 		},
 		{
-			AltitudeMode(AltitudeModeAbsolute),
-			`<altitudeMode>absolute</altitudeMode>`,
+			name:     "AltitudeMode",
+			element:  AltitudeMode(AltitudeModeAbsolute),
+			expected: `<altitudeMode>absolute</altitudeMode>`,
 		},
 		{
-			Begin(time.Date(1876, 8, 1, 0, 0, 0, 0, time.UTC)),
-			`<begin>1876-08-01T00:00:00Z</begin>`,
+			name:     "Begin",
+			element:  Begin(time.Date(1876, 8, 1, 0, 0, 0, 0, time.UTC)),
+			expected: `<begin>1876-08-01T00:00:00Z</begin>`,
 		},
 		{
-			BgColor(color.Black),
-			`<bgColor>ff000000</bgColor>`,
+			name:     "BgColor",
+			element:  BgColor(color.Black),
+			expected: `<bgColor>ff000000</bgColor>`,
 		},
 		{
-			Color(color.White),
-			`<color>ffffffff</color>`,
+			name:     "Color",
+			element:  Color(color.White),
+			expected: `<color>ffffffff</color>`,
 		},
 		{
-			Coordinates(Coordinate{Lon: 1.23, Lat: 4.56, Alt: 7.89}),
-			`<coordinates>1.23,4.56,7.89</coordinates>`,
+			name:     "Coordinates",
+			element:  Coordinates(Coordinate{Lon: 1.23, Lat: 4.56, Alt: 7.89}),
+			expected: `<coordinates>1.23,4.56,7.89</coordinates>`,
 		},
 		{
-			CoordinatesArray([]float64{1.23, 4.56}),
-			`<coordinates>1.23,4.56</coordinates>`,
+			name:     "CoordinatesArray0",
+			element:  CoordinatesArray([]float64{1.23, 4.56}),
+			expected: `<coordinates>1.23,4.56</coordinates>`,
 		},
 		{
-			CoordinatesArray([]float64{1.23, 4.56, 7.89}),
-			`<coordinates>1.23,4.56,7.89</coordinates>`,
+			name:     "CoordinatesArray1",
+			element:  CoordinatesArray([]float64{1.23, 4.56, 7.89}),
+			expected: `<coordinates>1.23,4.56,7.89</coordinates>`,
 		},
 		{
-			CoordinatesArray([][]float64{{1.23, 4.56}, {7.89, 0.12}}...),
-			`<coordinates>1.23,4.56 7.89,0.12</coordinates>`,
+			name:     "CoordinatesArray2",
+			element:  CoordinatesArray([][]float64{{1.23, 4.56}, {7.89, 0.12}}...),
+			expected: `<coordinates>1.23,4.56 7.89,0.12</coordinates>`,
 		},
 		{
-			CoordinatesFlat([]float64{1.23, 4.56, 7.89, 0.12}, 0, 4, 2, 2),
-			`<coordinates>1.23,4.56 7.89,0.12</coordinates>`,
+			element:  CoordinatesFlat([]float64{1.23, 4.56, 7.89, 0.12}, 0, 4, 2, 2),
+			expected: `<coordinates>1.23,4.56 7.89,0.12</coordinates>`,
 		},
 		{
-			CoordinatesFlat([]float64{1.23, 4.56, 0, 7.89, 0.12, 0}, 0, 6, 3, 3),
-			`<coordinates>1.23,4.56 7.89,0.12</coordinates>`,
+			name:     "CoordinatesFlat0",
+			element:  CoordinatesFlat([]float64{1.23, 4.56, 0, 7.89, 0.12, 0}, 0, 6, 3, 3),
+			expected: `<coordinates>1.23,4.56 7.89,0.12</coordinates>`,
 		},
 		{
-			CoordinatesFlat([]float64{1.23, 4.56, 7.89, 0.12, 3.45, 6.78}, 0, 6, 3, 3),
-			`<coordinates>1.23,4.56,7.89 0.12,3.45,6.78</coordinates>`,
+			name:     "CoordinatesFlat1",
+			element:  CoordinatesFlat([]float64{1.23, 4.56, 7.89, 0.12, 3.45, 6.78}, 0, 6, 3, 3),
+			expected: `<coordinates>1.23,4.56,7.89 0.12,3.45,6.78</coordinates>`,
 		},
 		{
-			Description("text"),
-			`<description>text</description>`,
+			name:     "Description",
+			element:  Description("text"),
+			expected: `<description>text</description>`,
 		},
 		{
-			End(time.Date(2015, 12, 31, 23, 59, 59, 0, time.UTC)),
-			`<end>2015-12-31T23:59:59Z</end>`,
+			name:     "End",
+			element:  End(time.Date(2015, 12, 31, 23, 59, 59, 0, time.UTC)),
+			expected: `<end>2015-12-31T23:59:59Z</end>`,
 		},
 		{
-			Extrude(false),
-			`<extrude>0</extrude>`,
+			name:     "Extrude",
+			element:  Extrude(false),
+			expected: `<extrude>0</extrude>`,
 		},
 		{
-			Folder(),
-			`<Folder></Folder>`,
+			name:     "Folder",
+			element:  Folder(),
+			expected: `<Folder></Folder>`,
 		},
 		{
-			GxCoord(Coordinate{1.23, 4.56, 7.89}),
-			`<gx:coord>1.23 4.56 7.89</gx:coord>`,
+			name:     "GxCoord",
+			element:  GxCoord(Coordinate{1.23, 4.56, 7.89}),
+			expected: `<gx:coord>1.23 4.56 7.89</gx:coord>`,
 		},
 		{
-			Heading(0),
-			`<heading>0</heading>`,
+			name:     "Heading",
+			element:  Heading(0),
+			expected: `<heading>0</heading>`,
 		},
 		{
-			HotSpot(Vec2{X: 0.5, Y: 0.5, XUnits: UnitsPixels, YUnits: UnitsPixels}),
-			`<hotSpot x="0.5" y="0.5" xunits="pixels" yunits="pixels"></hotSpot>`,
+			name:     "HotSpot",
+			element:  HotSpot(Vec2{X: 0.5, Y: 0.5, XUnits: UnitsPixels, YUnits: UnitsPixels}),
+			expected: `<hotSpot x="0.5" y="0.5" xunits="pixels" yunits="pixels"></hotSpot>`,
 		},
 		{
-			Href("https://www.google.com/"),
-			`<href>https://www.google.com/</href>`,
+			name:     "Href",
+			element:  Href("https://www.google.com/"),
+			expected: `<href>https://www.google.com/</href>`,
 		},
 		{
-			Latitude(0),
-			`<latitude>0</latitude>`,
+			name:     "Latitude",
+			element:  Latitude(0),
+			expected: `<latitude>0</latitude>`,
 		},
 		{
-			LinkSnippet(2, "snippet"),
-			`<linkSnippet maxLines="2">snippet</linkSnippet>`,
+			name:     "LinkSnippet",
+			element:  LinkSnippet(2, "snippet"),
+			expected: `<linkSnippet maxLines="2">snippet</linkSnippet>`,
 		},
 		{
-			ListItemType(ListItemTypeCheck),
-			`<listItemType>check</listItemType>`,
+			name:     "ListItemType",
+			element:  ListItemType(ListItemTypeCheck),
+			expected: `<listItemType>check</listItemType>`,
 		},
 		{
-			OverlayXY(Vec2{X: 0, Y: 0, XUnits: UnitsFraction, YUnits: UnitsFraction}),
-			`<overlayXY x="0" y="0" xunits="fraction" yunits="fraction"></overlayXY>`,
+			name:     "OverlayXY",
+			element:  OverlayXY(Vec2{X: 0, Y: 0, XUnits: UnitsFraction, YUnits: UnitsFraction}),
+			expected: `<overlayXY x="0" y="0" xunits="fraction" yunits="fraction"></overlayXY>`,
 		},
 		{
-			Style(),
-			`<Style></Style>`,
+			name:     "Style",
+			element:  Style(),
+			expected: `<Style></Style>`,
 		},
 		// FIXME More simple elements
 	} {
-		tc.testMarshal(t)
+		t.Run(tc.name, func(t *testing.T) {
+			b := &bytes.Buffer{}
+			e := xml.NewEncoder(b)
+			require.NoError(t, e.Encode(tc.element))
+			assert.Equal(t, tc.expected, b.String())
+		})
 	}
 }
 
 func TestCompoundElements(t *testing.T) {
-	for _, tc := range []testCase{
+	for _, tc := range []struct {
+		name     string
+		element  Element
+		expected string
+	}{
 		{
-			e: Placemark(
+			name: "easy_trail",
+			element: Placemark(
 				Name("Easy trail"),
 				ExtendedData(
 					SchemaData("#TrailHeadTypeId",
@@ -159,7 +173,7 @@ func TestCompoundElements(t *testing.T) {
 					Coordinates(Coordinate{Lon: -122.000, Lat: 37.002}),
 				),
 			),
-			want: `<Placemark>` +
+			expected: `<Placemark>` +
 				`<name>Easy trail</name>` +
 				`<ExtendedData>` +
 				`<SchemaData schemaUrl="#TrailHeadTypeId">` +
@@ -174,7 +188,8 @@ func TestCompoundElements(t *testing.T) {
 				`</Placemark>`,
 		},
 		{
-			e: ScreenOverlay(
+			name: "simple_crosshairs",
+			element: ScreenOverlay(
 				Name("Simple crosshairs"),
 				Description("This screen overlay uses fractional positioning to put the image in the exact center of the screen"),
 				Icon(
@@ -185,7 +200,7 @@ func TestCompoundElements(t *testing.T) {
 				Rotation(39.37878630116985),
 				Size(Vec2{X: 0, Y: 0, XUnits: UnitsPixels, YUnits: UnitsPixels}),
 			),
-			want: `<ScreenOverlay>` +
+			expected: `<ScreenOverlay>` +
 				`<name>Simple crosshairs</name>` +
 				`<description>This screen overlay uses fractional positioning to put the image in the exact center of the screen</description>` +
 				`<Icon>` +
@@ -198,7 +213,12 @@ func TestCompoundElements(t *testing.T) {
 				`</ScreenOverlay>`,
 		},
 	} {
-		tc.testMarshal(t)
+		t.Run(tc.name, func(t *testing.T) {
+			b := &bytes.Buffer{}
+			e := xml.NewEncoder(b)
+			require.NoError(t, e.Encode(tc.element))
+			assert.Equal(t, tc.expected, b.String())
+		})
 	}
 }
 
@@ -231,15 +251,20 @@ func TestSharedStyles(t *testing.T) {
 			StyleURL(highlightPlacemarkStyle.URL()),
 		),
 	)
-	for _, tc := range []testCase{
+	for _, tc := range []struct {
+		name     string
+		element  Element
+		expected string
+	}{
 		{
-			e: Folder(
+			name: "folder",
+			element: Folder(
 				style0,
 				Placemark(
 					StyleURL(style0.URL()),
 				),
 			),
-			want: `<Folder>` +
+			expected: `<Folder>` +
 				`<Style id="0">` +
 				`</Style>` +
 				`<Placemark>` +
@@ -248,7 +273,8 @@ func TestSharedStyles(t *testing.T) {
 				`</Folder>`,
 		},
 		{
-			e: KML(
+			name: "highlighted_icon",
+			element: KML(
 				Document(
 					Name("Highlighted Icon"),
 					Description("Place your mouse over the icon to see it display the new icon"),
@@ -264,7 +290,7 @@ func TestSharedStyles(t *testing.T) {
 					),
 				),
 			),
-			want: `<kml xmlns="http://www.opengis.net/kml/2.2">` +
+			expected: `<kml xmlns="http://www.opengis.net/kml/2.2">` +
 				`<Document>` +
 				`<name>Highlighted Icon</name>` +
 				`<description>Place your mouse over the icon to see it display the new icon</description>` +
@@ -303,7 +329,8 @@ func TestSharedStyles(t *testing.T) {
 				`</kml>`,
 		},
 		{
-			e: KML(
+			name: "trail_head_type",
+			element: KML(
 				Document(
 					Schema("TrailHeadTypeId", "TrailHeadType",
 						SimpleField("TrailHeadName", "string",
@@ -318,7 +345,7 @@ func TestSharedStyles(t *testing.T) {
 					),
 				),
 			),
-			want: `<kml xmlns="http://www.opengis.net/kml/2.2">` +
+			expected: `<kml xmlns="http://www.opengis.net/kml/2.2">` +
 				`<Document>` +
 				`<Schema id="TrailHeadTypeId" name="TrailHeadType">` +
 				`<SimpleField name="TrailHeadName" type="string">` +
@@ -335,19 +362,33 @@ func TestSharedStyles(t *testing.T) {
 				`</kml>`,
 		},
 	} {
-		tc.testMarshal(t)
+		t.Run(tc.name, func(t *testing.T) {
+			b := &bytes.Buffer{}
+			e := xml.NewEncoder(b)
+			require.NoError(t, e.Encode(tc.element))
+			assert.Equal(t, tc.expected, b.String())
+		})
 	}
 }
 
 func TestWrite(t *testing.T) {
-	for _, tc := range []testCase{
+	for _, tc := range []struct {
+		name     string
+		element  Element
+		expected string
+	}{
 		{
-			e: KML(),
-			want: `<?xml version="1.0" encoding="UTF-8"?>` + "\n" +
-				`<kml xmlns="http://www.opengis.net/kml/2.2"></kml>`,
+			name:    "placemark",
+			element: KML(Placemark()),
+			expected: `<?xml version="1.0" encoding="UTF-8"?>` + "\n" +
+				`<kml xmlns="http://www.opengis.net/kml/2.2">` +
+				`<Placemark>` +
+				`</Placemark>` +
+				`</kml>`,
 		},
 		{
-			e: KML(
+			name: "simple_placemark",
+			element: KML(
 				Placemark(
 					Name("Simple placemark"),
 					Description("Attached to the ground. Intelligently places itself at the height of the underlying terrain."),
@@ -356,7 +397,7 @@ func TestWrite(t *testing.T) {
 					),
 				),
 			),
-			want: `<?xml version="1.0" encoding="UTF-8"?>` + "\n" +
+			expected: `<?xml version="1.0" encoding="UTF-8"?>` + "\n" +
 				`<kml xmlns="http://www.opengis.net/kml/2.2">` +
 				`<Placemark>` +
 				`<name>Simple placemark</name>` +
@@ -368,7 +409,8 @@ func TestWrite(t *testing.T) {
 				`</kml>`,
 		},
 		{
-			e: KML(
+			name: "entity_references_example",
+			element: KML(
 				Document(
 					Placemark(
 						Name("Entity references example"),
@@ -384,7 +426,7 @@ func TestWrite(t *testing.T) {
 					),
 				),
 			),
-			want: `<?xml version="1.0" encoding="UTF-8"?>` + "\n" +
+			expected: `<?xml version="1.0" encoding="UTF-8"?>` + "\n" +
 				`<kml xmlns="http://www.opengis.net/kml/2.2">` +
 				`<Document>` +
 				`<Placemark>` +
@@ -404,7 +446,8 @@ func TestWrite(t *testing.T) {
 				`</kml>`,
 		},
 		{
-			e: KML(
+			name: "ground_overlays",
+			element: KML(
 				Folder(
 					Name("Ground Overlays"),
 					Description("Examples of ground overlays"),
@@ -424,7 +467,7 @@ func TestWrite(t *testing.T) {
 					),
 				),
 			),
-			want: `<?xml version="1.0" encoding="UTF-8"?>` + "\n" +
+			expected: `<?xml version="1.0" encoding="UTF-8"?>` + "\n" +
 				`<kml xmlns="http://www.opengis.net/kml/2.2">` +
 				`<Folder>` +
 				`<name>Ground Overlays</name>` +
@@ -447,7 +490,8 @@ func TestWrite(t *testing.T) {
 				`</kml>`,
 		},
 		{
-			e: KML(
+			name: "the_pentagon",
+			element: KML(
 				Placemark(
 					Name("The Pentagon"),
 					Polygon(
@@ -480,7 +524,7 @@ func TestWrite(t *testing.T) {
 					),
 				),
 			),
-			want: `<?xml version="1.0" encoding="UTF-8"?>` + "\n" +
+			expected: `<?xml version="1.0" encoding="UTF-8"?>` + "\n" +
 				`<kml xmlns="http://www.opengis.net/kml/2.2">` +
 				`<Placemark>` +
 				`<name>The Pentagon</name>` +
@@ -516,12 +560,17 @@ func TestWrite(t *testing.T) {
 				`</kml>`,
 		},
 		{
-			e: GxKML(),
-			want: `<?xml version="1.0" encoding="UTF-8"?>` + "\n" +
-				`<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2"></kml>`,
+			name:    "gx_placemark",
+			element: GxKML(Placemark()),
+			expected: `<?xml version="1.0" encoding="UTF-8"?>` + "\n" +
+				`<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2">` +
+				`<Placemark>` +
+				`</Placemark>` +
+				`</kml>`,
 		},
 		{
-			e: GxKML(
+			name: "gx_track",
+			element: GxKML(
 				Folder(
 					Placemark(
 						GxTrack(
@@ -543,7 +592,7 @@ func TestWrite(t *testing.T) {
 					),
 				),
 			),
-			want: `<?xml version="1.0" encoding="UTF-8"?>` + "\n" +
+			expected: `<?xml version="1.0" encoding="UTF-8"?>` + "\n" +
 				`<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2">` +
 				`<Folder>` +
 				`<Placemark>` +
@@ -568,6 +617,10 @@ func TestWrite(t *testing.T) {
 				`</kml>`,
 		},
 	} {
-		tc.testWrite(t)
+		t.Run(tc.name, func(t *testing.T) {
+			b := &bytes.Buffer{}
+			require.NoError(t, tc.element.Write(b))
+			assert.Equal(t, tc.expected, b.String())
+		})
 	}
 }
