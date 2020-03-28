@@ -135,11 +135,6 @@ func GxH(value int) *SimpleElement {
 	return newSEInt("gx:h", value)
 }
 
-// GxAbstractTourPrimitive returns a new AbstractTourPrimitive element.
-func GxAbstractTourPrimitive(children ...Element) *CompoundElement {
-	return newCE("gx:AbstractTourPrimitive", children)
-}
-
 // GxAnimatedUpdate returns a new AnimatedUpdate element.
 func GxAnimatedUpdate(children ...Element) *CompoundElement {
 	return newCE("gx:AnimatedUpdate", children)
