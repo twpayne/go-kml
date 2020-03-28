@@ -14,8 +14,9 @@ import (
 )
 
 var (
-	output = flag.String("o", "/dev/stdout", "output")
-	gofmt  = flag.Bool("f", false, "format")
+	output    = flag.String("o", "/dev/stdout", "output")
+	gofmt     = flag.Bool("f", false, "format")
+	namespace = flag.String("n", "", "namespace")
 )
 
 type stringValue struct {
@@ -54,31 +55,53 @@ type xsd struct {
 	Elements     []element     `xml:"element"`
 }
 
-var outputTemplate = template.Must(template.New("output").Funcs(sprig.HermeticTxtFuncMap()).Parse(`package kml
+type data struct {
+	Namespace string
+	XSD       *xsd
+}
+
+var outputTemplate = template.Must(template.New("output").Funcs(sprig.HermeticTxtFuncMap()).Parse(`
+{{- $namespace := .Namespace -}}
+{{- $gxPrefix := "" -}}
+{{- if eq $namespace "gx:" -}}
+	{{- $gxPrefix = "Gx" -}}
+{{- end -}}
+package kml
 
 import (
 	"image/color"
+{{ if ne $namespace "gx:" -}}
 	"time"
+{{ end -}}
 )
 
-{{ range .SimpleTypes -}}
+{{ range .XSD.SimpleTypes -}}
 {{ if eq .Restriction.Base "string" -}}
-{{ $typeName := .Name | trimSuffix "Type" | title -}}
+{{ $typeName := printf "%s%s" $gxPrefix (.Name | trimSuffix "Type" | title) -}}
 // A{{ if hasPrefix "A" $typeName }}n{{ end }} {{ $typeName }} is a{{ if hasPrefix "a" .Name }}n{{ end }} {{ .Name }}.
 type {{ $typeName }} string
 
 // {{ $typeName }}s.
 const (
-{{- range .Restriction.Enumerations }}
+	{{- if and (eq $namespace "gx:") (eq .Name "altitudeModeEnumType") -}}
+	GxAltitudeModeClampToGround    GxAltitudeModeEnum = "clampToGround"
+	GxAltitudeModeRelativeToGround GxAltitudeModeEnum = "relativeToGround"
+	GxAltitudeModeAbsolute         GxAltitudeModeEnum = "absolute"
+	{{- end -}}
+	{{- range .Restriction.Enumerations }}
 	{{ $typeName | trimSuffix "Enum" }}{{ .Value | title }} {{ $typeName }} = "{{ .Value }}"
 {{- end }}
 )
 {{ end -}}
 {{ end -}}
 
-{{ range .Elements -}}
-{{ if and (not .Abstract) (not (regexMatch "^(coordinates|kml|linkSnippet|Scale|Schema|SchemaData|SimpleData|SimpleField|Snippet)$" .Name)) -}}
-{{ $functionName := .Name | title | replace "Fov" "FOV" | replace "Http" "HTTP" | replace "Kml" "KML" | replace "Lod" "LOD" | replace "Url" "URL" -}}
+{{ range .XSD.Elements -}}
+{{ if and (not .Abstract) (not (regexMatch "^(angles|coord|coordinates|kml|linkSnippet|option|Scale|Schema|SchemaData|SimpleArrayField|SimpleData|SimpleField|Snippet)$" .Name)) -}}
+{{ $functionNamePrefix := "" -}}
+{{ if eq $namespace "gx:" -}}
+	{{ $functionNamePrefix = "Gx" -}}
+{{ end -}}
+{{ $functionName := printf "%s%s" $functionNamePrefix (.Name | title | replace "Fov" "FOV" | replace "Http" "HTTP" | replace "Kml" "KML" | replace "Lod" "LOD" | replace "Url" "URL") -}}
 {{ $goType := .Type -}}
 {{ $constructorName := printf "newSE%s" (.Type | title) -}}
 {{ $returnType := "*SimpleElement" -}}
@@ -95,15 +118,18 @@ const (
 	{{ $constructorName = "newSEString" -}}
 	{{ $value = printf "string(%s)" $arg -}}
 {{ else if or (hasSuffix "EnumType" .Type) (eq .Type "kml:itemIconStateType") -}}
-	{{ $goType = .Type | trimPrefix "kml:" | trimSuffix "Type" | title -}}
+	{{ $goType = printf "%s%s" $gxPrefix (.Type | trimPrefix "gx:" | trimPrefix "kml:" | trimSuffix "Type" | title) -}}
 	{{ $constructorName = "newSEString" -}}
 	{{ $value = printf "string(%s)" $arg -}}
 {{ else if eq .Type "boolean" -}}
 	{{ $goType = "bool" -}}
 	{{ $constructorName = "newSEBool" -}}
-{{ else if or (eq .Type "double") (hasPrefix "kml:angle" .Type) -}}
+{{ else if or (eq .Type "double") (eq .Type "float") (eq .Type "gx:outerWidthType") (hasPrefix "kml:angle" .Type) -}}
 	{{ $goType = "float64" -}}
 	{{ $constructorName = "newSEFloat" -}}
+{{ else if eq .Type "integer" -}}
+	{{ $goType = "int" -}}
+	{{ $constructorName = "newSEInt" -}}
 {{ else if eq .Type "anyURI" -}}
 	{{ $goType = "string" -}}
 	{{ $constructorName = "newSEString" -}}
@@ -123,7 +149,7 @@ const (
 {{ end -}}
 // {{ $functionName }} returns a new {{ .Name }} element.
 func {{ $functionName }}({{ $arg }} {{ $goType }}) {{ $returnType }} {
-	return {{ $constructorName }}("{{ .Name }}", {{ $value }})
+	return {{ $constructorName }}("{{ $namespace }}{{ .Name }}", {{ $value }})
 }
 {{ end -}}
 {{ end -}}
@@ -144,7 +170,10 @@ func run() error {
 	}
 
 	source := &bytes.Buffer{}
-	if err := outputTemplate.Execute(source, xsd); err != nil {
+	if err := outputTemplate.Execute(source, data{
+		Namespace: *namespace,
+		XSD:       xsd,
+	}); err != nil {
 		return err
 	}
 

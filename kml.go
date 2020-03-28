@@ -1,3 +1,4 @@
+//go:generate go run ./internal/generate -f -o kml22gx.gen.go -n gx: xsd/kml22gx.xsd
 //go:generate go run ./internal/generate -f -o ogckml22.gen.go xsd/ogckml22.xsd
 
 // Package kml provides convenience methods for creating and writing KML documents.
@@ -30,14 +31,6 @@ const (
 	Namespace = "http://www.opengis.net/kml/2.2"
 	// GxNamespace is the default namespace for Google Earth extensions.
 	GxNamespace = "http://www.google.com/kml/ext/2.2"
-)
-
-// A PlayModeEnum is a play mode.
-type PlayModeEnum string
-
-// Play modes.
-const (
-	PlayModePause PlayModeEnum = "pause"
 )
 
 var (
@@ -254,73 +247,6 @@ func (cfe *CoordinatesFlatElement) WriteIndent(w io.Writer, prefix, indent strin
 	return write(w, prefix, indent, cfe)
 }
 
-// GxAltitudeMode returns a new gx:altitudeMode element.
-func GxAltitudeMode(value AltitudeModeEnum) *SimpleElement {
-	return newSEString("gx:altitudeMode", string(value))
-}
-
-// GxAltitudeOffset returns a new gx:altitudeOffset element.
-func GxAltitudeOffset(value float64) *SimpleElement { return newSEFloat("gx:altitudeOffset", value) }
-
-// GxBalloonVisibility returns a new gx:BalloonVisibility element.
-func GxBalloonVisibility(value bool) *SimpleElement { return newSEBool("gx:balloonVisibility", value) }
-
-// GxDelayedStart returns a new gx:delayedStart element.
-func GxDelayedStart(value float64) *SimpleElement { return newSEFloat("gx:delayedStart", value) }
-
-// GxDuration returns a new gx:duration element.
-func GxDuration(value float64) *SimpleElement { return newSEFloat("gx:duration", value) }
-
-// GxFlyTo returns a new gx:FlyTo element.
-func GxFlyTo(children ...Element) *CompoundElement { return newCE("gx:FlyTo", children) }
-
-// GxLabelVisibility returns a new gx:labelVisibility element.
-func GxLabelVisibility(value bool) *SimpleElement { return newSEBool("gx:labelVisibility", value) }
-
-// GxLatLonQuad returns a new gx:LatLonQuad element.
-func GxLatLonQuad(children ...Element) *CompoundElement { return newCE("gx:LatLonQuad", children) }
-
-// GxMultiTrack returns a new gx:MultiTrack element.
-func GxMultiTrack(children ...Element) *CompoundElement { return newCE("gx:MultiTrack", children) }
-
-// GxNetworkLink returns a new gc:NetworkLink element.
-func GxNetworkLink(children ...Element) *CompoundElement { return newCE("gx:NetworkLink", children) }
-
-// GxOuterColor returns a new gx:outerColor element.
-func GxOuterColor(value color.Color) *SimpleElement { return newSEColor("gx:outerColor", value) }
-
-// GxOuterWidth returns a new gx:outerWidth element.
-func GxOuterWidth(value float64) *SimpleElement { return newSEFloat("gx:outerWidth", value) }
-
-// GxPhysicalWidth returns a new gx:physicalWidth element.
-func GxPhysicalWidth(value float64) *SimpleElement { return newSEFloat("gx:physicalWidth", value) }
-
-// GxPlayMode returns a new gx:playMode element.
-func GxPlayMode(value PlayModeEnum) *SimpleElement { return newSEString("gx:playMode", string(value)) }
-
-// GxPlaylist returns a new gx:Playlist element.
-func GxPlaylist(children ...Element) *CompoundElement { return newCE("gx:Playlist", children) }
-
-// GxSoundCue returns a new gx:SoundCue element.
-func GxSoundCue(children ...Element) *CompoundElement { return newCE("gx:SoundCue", children) }
-
-// GxTour returns a new gx:Tour element.
-func GxTour(children ...Element) *CompoundElement { return newCE("gx:Tour", children) }
-
-// GxTourControl returns a new gx:TourControl element.
-func GxTourControl(children ...Element) *CompoundElement { return newCE("gx:TourControl", children) }
-
-// GxTourPrimitive returns a new gx:TourPrimitive element.
-func GxTourPrimitive(children ...Element) *CompoundElement {
-	return newCE("gx:TourPrimitive", children)
-}
-
-// GxTrack returns a new gx:Track element.
-func GxTrack(children ...Element) *CompoundElement { return newCE("gx:Track", children) }
-
-// GxWait returns a new gx:Wait element.
-func GxWait(children ...Element) *CompoundElement { return newCE("gx:Wait", children) }
-
 // Coordinates returns a new CoordinatesElement.
 func Coordinates(value ...Coordinate) *CoordinatesElement {
 	return &CoordinatesElement{coordinates: value}
@@ -352,11 +278,6 @@ func GxAngles(value GxAngle) *SimpleElement {
 			strconv.FormatFloat(value.Tilt, 'f', -1, 64) + " " +
 			strconv.FormatFloat(value.Roll, 'f', -1, 64),
 	}
-}
-
-// GxAnimatedUpdate returns a new gx:AnimatedUpdate element.
-func GxAnimatedUpdate(children ...Element) *CompoundElement {
-	return newCE("gx:AnimatedUpdate", children)
 }
 
 // GxCoord returns a new gx:coord element.
