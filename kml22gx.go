@@ -8,6 +8,16 @@ import (
 // GxNamespace is the default namespace for Google Earth extensions.
 const GxNamespace = "http://www.google.com/kml/ext/2.2"
 
+// A GxOptionName is a gx:option name.
+type GxOptionName string
+
+// GxOptionNames.
+const (
+	GxOptionNameHistoricalImagery GxOptionName = "historicalimagery"
+	GxOptionNameStreetView        GxOptionName = "streetview"
+	GxOptionNameSunlight          GxOptionName = "sunlight"
+)
+
 // A GxAngle represents an angle.
 type GxAngle struct {
 	Heading, Tilt, Roll float64
@@ -43,6 +53,19 @@ func GxKML(child Element) *CompoundElement {
 	// FIXME find a more correct way to do this
 	kml.Attr = append(kml.Attr, xml.Attr{Name: xml.Name{Local: "xmlns:gx"}, Value: GxNamespace})
 	return kml
+}
+
+// GxOption returns a new gx:option element.
+func GxOption(name GxOptionName, enabled bool) *SimpleElement {
+	return &SimpleElement{
+		StartElement: xml.StartElement{
+			Name: xml.Name{Local: "gx:option"},
+			Attr: []xml.Attr{
+				{Name: xml.Name{Local: "name"}, Value: string(name)},
+				{Name: xml.Name{Local: "enabled"}, Value: strconv.FormatBool(enabled)},
+			},
+		},
+	}
 }
 
 // GxSimpleArrayField returns a new gx:SimpleArrayField element.
