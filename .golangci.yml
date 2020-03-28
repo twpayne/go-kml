@@ -4,5 +4,11 @@ linters:
     - funlen
     - gochecknoglobals
     - godox
+    - gomnd
     - lll
     - wsl
+issues:
+  exclude-rules:
+  - linters:
+    - scopelint
+    path: "_test\\.go$"
