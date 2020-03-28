@@ -29,8 +29,6 @@ import (
 const (
 	// Namespace is the default namespace.
 	Namespace = "http://www.opengis.net/kml/2.2"
-	// GxNamespace is the default namespace for Google Earth extensions.
-	GxNamespace = "http://www.google.com/kml/ext/2.2"
 )
 
 var (
@@ -41,11 +39,6 @@ var (
 	}
 	coordinatesEndElement = coordinatesStartElement.End()
 )
-
-// A GxAngle represents an angle.
-type GxAngle struct {
-	Heading, Tilt, Roll float64
-}
 
 // A Coordinate represents a single geographical coordinate.
 // Lon and Lat are in degrees, Alt is in meters.
@@ -268,43 +261,6 @@ func CoordinatesFlat(flatCoords []float64, offset, end, stride, dim int) *Coordi
 	}
 }
 
-// GxAngles returns a new gx:angles element.
-func GxAngles(value GxAngle) *SimpleElement {
-	return &SimpleElement{
-		StartElement: xml.StartElement{
-			Name: xml.Name{Local: "gx:angles"},
-		},
-		value: strconv.FormatFloat(value.Heading, 'f', -1, 64) + " " +
-			strconv.FormatFloat(value.Tilt, 'f', -1, 64) + " " +
-			strconv.FormatFloat(value.Roll, 'f', -1, 64),
-	}
-}
-
-// GxCoord returns a new gx:coord element.
-func GxCoord(value Coordinate) *SimpleElement {
-	return &SimpleElement{
-		StartElement: xml.StartElement{
-			Name: xml.Name{Local: "gx:coord"},
-		},
-		value: strconv.FormatFloat(value.Lon, 'f', -1, 64) + " " +
-			strconv.FormatFloat(value.Lat, 'f', -1, 64) + " " +
-			strconv.FormatFloat(value.Alt, 'f', -1, 64),
-	}
-}
-
-// GxSimpleArrayField returns a new gx:SimpleArrayField element.
-func GxSimpleArrayField(name, _type string) *CompoundElement {
-	return &CompoundElement{
-		StartElement: xml.StartElement{
-			Name: xml.Name{Local: "gx:SimpleArrayField"},
-			Attr: []xml.Attr{
-				{Name: xml.Name{Local: "name"}, Value: name},
-				{Name: xml.Name{Local: "type"}, Value: _type},
-			},
-		},
-	}
-}
-
 // LinkSnippet returns a new linkSnippet element.
 func LinkSnippet(maxLines int, value string) *SimpleElement {
 	return &SimpleElement{
@@ -393,14 +349,6 @@ func KML(child Element) *CompoundElement {
 		},
 		children: []Element{child},
 	}
-}
-
-// GxKML returns a new kml element with Google Earth extensions.
-func GxKML(child Element) *CompoundElement {
-	kml := KML(child)
-	// FIXME find a more correct way to do this
-	kml.Attr = append(kml.Attr, xml.Attr{Name: xml.Name{Local: "xmlns:gx"}, Value: GxNamespace})
-	return kml
 }
 
 func write(w io.Writer, prefix, indent string, m xml.Marshaler) error {
