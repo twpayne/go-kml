@@ -1,13 +1,13 @@
 package main
 
 import (
-	"bytes"
 	"encoding/xml"
 	"flag"
 	"fmt"
 	"go/format"
 	"io/ioutil"
 	"os"
+	"strings"
 	"text/template"
 
 	"github.com/Masterminds/sprig"
@@ -171,7 +171,7 @@ func run() error {
 		return err
 	}
 
-	source := &bytes.Buffer{}
+	source := &strings.Builder{}
 	if err := outputTemplate.Execute(source, data{
 		Namespace: *namespace,
 		XSD:       xsd,
@@ -180,10 +180,10 @@ func run() error {
 	}
 
 	if !*gofmt {
-		return ioutil.WriteFile(*output, source.Bytes(), 0666)
+		return ioutil.WriteFile(*output, []byte(source.String()), 0666)
 	}
 
-	formattedSource, err := format.Source(source.Bytes())
+	formattedSource, err := format.Source([]byte(source.String()))
 	if err != nil {
 		return err
 	}

@@ -1,9 +1,9 @@
 package kml
 
 import (
-	"bytes"
 	"encoding/xml"
 	"image/color"
+	"strings"
 	"testing"
 	"time"
 
@@ -144,10 +144,10 @@ func TestSimpleElements(t *testing.T) {
 		// FIXME More simple elements
 	} {
 		t.Run(tc.name, func(t *testing.T) {
-			b := &bytes.Buffer{}
-			e := xml.NewEncoder(b)
+			sb := &strings.Builder{}
+			e := xml.NewEncoder(sb)
 			require.NoError(t, e.Encode(tc.element))
-			assert.Equal(t, tc.expected, b.String())
+			assert.Equal(t, tc.expected, sb.String())
 		})
 	}
 }
@@ -214,10 +214,10 @@ func TestCompoundElements(t *testing.T) {
 		},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
-			b := &bytes.Buffer{}
-			e := xml.NewEncoder(b)
+			sb := &strings.Builder{}
+			e := xml.NewEncoder(sb)
 			require.NoError(t, e.Encode(tc.element))
-			assert.Equal(t, tc.expected, b.String())
+			assert.Equal(t, tc.expected, sb.String())
 		})
 	}
 }
@@ -363,10 +363,10 @@ func TestSharedStyles(t *testing.T) {
 		},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
-			b := &bytes.Buffer{}
-			e := xml.NewEncoder(b)
+			sb := &strings.Builder{}
+			e := xml.NewEncoder(sb)
 			require.NoError(t, e.Encode(tc.element))
-			assert.Equal(t, tc.expected, b.String())
+			assert.Equal(t, tc.expected, sb.String())
 		})
 	}
 }
@@ -618,9 +618,9 @@ func TestWrite(t *testing.T) {
 		},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
-			b := &bytes.Buffer{}
-			require.NoError(t, tc.element.Write(b))
-			assert.Equal(t, tc.expected, b.String())
+			sb := &strings.Builder{}
+			require.NoError(t, tc.element.Write(sb))
+			assert.Equal(t, tc.expected, sb.String())
 		})
 	}
 }
