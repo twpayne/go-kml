@@ -172,7 +172,7 @@ func newSEVec2(name string, value Vec2) *SimpleElement {
 	}
 }
 
-func newSEString(name string, value string) *SimpleElement {
+func newSEString(name, value string) *SimpleElement {
 	return &SimpleElement{
 		StartElement: xml.StartElement{Name: xml.Name{Local: name}},
 		value:        value,

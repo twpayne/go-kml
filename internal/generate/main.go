@@ -180,7 +180,7 @@ func run() error {
 	}
 
 	if !*gofmt {
-		return ioutil.WriteFile(*output, []byte(source.String()), 0666)
+		return ioutil.WriteFile(*output, []byte(source.String()), 0o666)
 	}
 
 	formattedSource, err := format.Source([]byte(source.String()))
@@ -188,7 +188,7 @@ func run() error {
 		return err
 	}
 
-	return ioutil.WriteFile(*output, formattedSource, 0666)
+	return ioutil.WriteFile(*output, formattedSource, 0o666)
 }
 
 func main() {
