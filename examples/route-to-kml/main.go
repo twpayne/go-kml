@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"image/color"
 	"os"
-	"strconv"
 
 	"github.com/twpayne/go-kml"
 	"github.com/twpayne/go-kml/icon"
@@ -29,7 +28,7 @@ func run() error {
 	flag.Parse()
 
 	if flag.NArg() < 1 {
-		return fmt.Errorf("syntax: %s waypoint-file waypoints...", os.Args[0])
+		return fmt.Errorf("syntax: %s waypoint-file [waypoints...]", os.Args[0])
 	}
 
 	waypoints, err := readWaypoints(flag.Arg(0))
@@ -88,19 +87,16 @@ func run() error {
 	)
 
 	var turnpointFolders []kml.Element
-	for i, turnpoint := range turnpoints {
+	for i := 0; i < len(turnpoints)-1; i++ {
+		turnpoint := turnpoints[i]
 		var name string
-		var iconStyle kml.Element
-		switch i {
-		case 0:
+		var paddleID string
+		if i == 0 {
 			name = "START"
-			iconStyle = icon.PaddleIconStyle("go")
-		case len(turnpoints) - 1:
-			name = "GOAL"
-			iconStyle = icon.PaddleIconStyle("stop")
-		default:
+			paddleID = "go"
+		} else {
 			name = fmt.Sprintf("TP%02d", i)
-			iconStyle = icon.PaddleIconStyle(strconv.Itoa(i))
+			paddleID = string([]byte{byte('A' + i - 1)})
 		}
 		turnpointFolder := kml.Folder(
 			kml.Name(fmt.Sprintf("%s %s", name, turnpoint.Description)),
@@ -113,7 +109,13 @@ func run() error {
 					}),
 				),
 				kml.Style(
-					iconStyle,
+					kml.IconStyle(
+						kml.HotSpot(kml.Vec2{X: 0.5, Y: 0, XUnits: kml.UnitsFraction, YUnits: kml.UnitsFraction}),
+						kml.Icon(
+							kml.Href(icon.PaddleHref(paddleID)),
+						),
+						kml.Scale(0.5),
+					),
 				),
 			),
 			kml.Style(
@@ -156,6 +158,7 @@ func run() error {
 								icon.PaletteHref(2, 13),
 							),
 						),
+						kml.Scale(0.5),
 					),
 				),
 			),
