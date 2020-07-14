@@ -1,8 +1,6 @@
 # go-kml
 
-[![Build Status](https://travis-ci.org/twpayne/go-kml.svg?branch=master)](https://travis-ci.org/twpayne/go-kml)
-[![GoDoc](https://godoc.org/github.com/twpayne/go-kml?status.svg)](https://godoc.org/github.com/twpayne/go-kml)
-[![Report Card](https://goreportcard.com/badge/github.com/twpayne/go-kml)](https://goreportcard.com/report/github.com/twpayne/go-kml)
+[![GoDoc](https://pkg.go.dev/badge/github.com/twpayne/go-kml?status.svg)](https://pkg.go.dev/github.com/twpayne/go-kml)
 [![Coverage Status](https://coveralls.io/repos/github/twpayne/go-kml/badge.svg?branch=master)](https://coveralls.io/github/twpayne/go-kml?branch=master)
 
 Package `kml` provides convenience methods for creating and writing KML documents.
@@ -11,7 +9,7 @@ Package `kml` provides convenience methods for creating and writing KML document
 
 * Simple API for building arbitrarily complex KML documents.
 * Support for all KML elements, including Google Earth `gx:` extensions.
-* Compatibilty with the standard library [`encoding/xml`](https://godoc.org/encoding/xml) package.
+* Compatibilty with the standard library [`encoding/xml`](https://pkg.go.dev/encoding/xml) package.
 * Pretty (neatly indented) and compact (minimum size) output formats.
 * Support for shared `Style` and `StyleMap` elements.
 * Simple mapping between functions and KML elements.
@@ -53,14 +51,14 @@ Output:
 ```
 
 There are more [examples in the
-documentation](https://godoc.org/github.com/twpayne/go-kml#pkg-examples)
+documentation](https://pkg.go.dev/github.com/twpayne/go-kml#pkg-examples)
 corresponding to the [examples in the KML
 tutorial](https://developers.google.com/kml/documentation/kml_tut).
 
 ## Subpackages
 
-* [`icon`](https://godoc.org/github.com/twpayne/go-kml/icon) Convenience functions for using standard KML icons.
-* [`sphere`](https://godoc.org/github.com/twpayne/go-kml/sphere) Convenience functions for spherical geometry.
+* [`icon`](https://pkg.go.dev/github.com/twpayne/go-kml/icon) Convenience functions for using standard KML icons.
+* [`sphere`](https://pkg.go.dev/github.com/twpayne/go-kml/sphere) Convenience functions for spherical geometry.
 
 ## License
 
