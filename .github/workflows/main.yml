@@ -1,6 +1,11 @@
+name: Test
 on:
   pull_request:
   push:
+    branches:
+    - master
+    tags:
+    - v*
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -9,33 +14,24 @@ jobs:
       uses: actions/setup-go@v1
       with:
         go-version: 1.14.x
+    - name: Cache Go modules
+      uses: actions/cache@v1
+      with:
+        path: ~/go/pkg/mod
+        key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+        restore-keys: |
+          ${{ runner.os }}-go-
     - name: Checkout
-      uses: actions/checkout@v1
-    - name: Download Go modules
-      run: go mod download
-    - name: Install tools
-      run: |
-        curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- v1.24.0
-        cd $(mktemp -d)
-        go mod init tmp
-        go get github.com/mattn/goveralls
-        go get mvdan.cc/gofumpt/gofumports
-    - name: Generate
-      run: |
-        go generate
-        git diff --exit-code
+      uses: actions/checkout@v2
     - name: Build
       run: go build ./...
     - name: Test
       run: go test -covermode=atomic -coverprofile=profile.cov -race ./...
     - name: Lint
-      run: ./bin/golangci-lint run
-    - name: Check formatting
-      run: |
-        find . -name \*.go | xargs $(go env GOPATH)/bin/gofumports -w
-        git diff --exit-code
-    - name: Send coverage
-      env:
-        COVERALLS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        $(go env GOPATH)/bin/goveralls -coverprofile=profile.cov -service=github
+      uses: golangci/golangci-lint-action@v1
+      with:
+        version: v1.28
+    - name: Upload coverage
+      uses: shogo82148/actions-goveralls@v1
+      with:
+        path-to-profile: profile.cov
