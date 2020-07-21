@@ -64,3 +64,14 @@ func (t T) HaversineDistance(c1, c2 kml.Coordinate) float64 {
 	c := 2 * math.Atan2(math.Sqrt(a), math.Sqrt(1-a))
 	return t.R * c
 }
+
+// InitialBearingTo returns the initial bearing from c1 to c2. Altitude is
+// ignored.
+func (t T) InitialBearingTo(c1, c2 kml.Coordinate) float64 {
+	lat1 := c1.Lat * radians
+	lat2 := c2.Lat * radians
+	deltaLon := (c2.Lon - c1.Lon) * radians
+	y := math.Sin(deltaLon) * math.Cos(lat2)
+	x := math.Cos(lat1)*math.Sin(lat2) - math.Sin(lat1)*math.Cos(lat2)*math.Cos(deltaLon)
+	return math.Atan2(y, x) * degrees
+}
