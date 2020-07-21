@@ -1,25 +1,26 @@
 package sphere
 
 import (
-	"math"
-	"reflect"
+	"strconv"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 
 	"github.com/twpayne/go-kml"
 )
 
 func TestCircle(t *testing.T) {
-	for _, tc := range []struct {
-		center kml.Coordinate
-		radius float64
-		maxErr float64
-		want   []kml.Coordinate
+	for i, tc := range []struct {
+		center   kml.Coordinate
+		radius   float64
+		maxErr   float64
+		expected []kml.Coordinate
 	}{
 		{
 			center: kml.Coordinate{Lon: 0, Lat: 0, Alt: 100},
 			radius: 1000,
 			maxErr: 1,
-			want: []kml.Coordinate{
+			expected: []kml.Coordinate{
 				{Lon: 0, Lat: 0.008983152841195214, Alt: 100},
 				{Lon: 0.0011258876022698656, Lat: 0.008912317997331125, Alt: 100},
 				{Lon: 0.002234019283634706, Lat: 0.008700930573621838, Alt: 100},
@@ -77,7 +78,7 @@ func TestCircle(t *testing.T) {
 			center: kml.Coordinate{Lon: 13.631333, Lat: 46.438500},
 			radius: 50,
 			maxErr: 1,
-			want: []kml.Coordinate{
+			expected: []kml.Coordinate{
 				{Lon: 13.631333, Lat: 46.43894915764205},
 				{Lon: 13.631658888465811, Lat: 46.43888898146551},
 				{Lon: 13.631897453677293, Lat: 46.43872457743259},
@@ -94,40 +95,71 @@ func TestCircle(t *testing.T) {
 			},
 		},
 	} {
-		if got := WGS84.Circle(tc.center, tc.radius, tc.maxErr); !reflect.DeepEqual(got, tc.want) {
-			t.Errorf("WGS84.Circle(%v, %v, %v) == %+v, want %+v", tc.center, tc.radius, tc.maxErr, got, tc.want)
-		}
-		for _, c := range tc.want {
-			distance := WGS84.HaversineDistance(tc.center, c)
-			delta := math.Abs(distance - tc.radius)
-			threshold := 1e-5
-			if math.Abs(delta) > threshold {
-				t.Errorf("math.Abs(WGS84.HaversineDistance(%v, %v)-%f) == %f, want <=%f", tc.center, c, tc.radius, delta, threshold)
+		t.Run(strconv.Itoa(i), func(t *testing.T) {
+			assert.Equal(t, tc.expected, WGS84.Circle(tc.center, tc.radius, tc.maxErr))
+			for _, c := range tc.expected {
+				assert.InDeltaf(t, tc.radius, WGS84.HaversineDistance(tc.center, c), 1e-9, "")
 			}
-		}
+		})
 	}
 }
 
 func TestSphereHaversineDistance(t *testing.T) {
-	for _, tc := range []struct {
-		sphere    T
-		c1        kml.Coordinate
-		c2        kml.Coordinate
-		want      float64
-		threshold float64
+	for i, tc := range []struct {
+		sphere   T
+		c1       kml.Coordinate
+		c2       kml.Coordinate
+		expected float64
+		delta    float64
 	}{
 		{
-			sphere:    FAI,
-			c1:        kml.Coordinate{Lon: -108.6180554, Lat: 35.4325002},
-			c2:        kml.Coordinate{Lon: -108.61, Lat: 35.43},
-			want:      781,
-			threshold: 1e-3,
+			sphere:   FAI,
+			c1:       kml.Coordinate{Lon: -108.6180554, Lat: 35.4325002},
+			c2:       kml.Coordinate{Lon: -108.61, Lat: 35.43},
+			expected: 781,
+			delta:    1e-3,
 		},
 	} {
-		distance := tc.sphere.HaversineDistance(tc.c1, tc.c2)
-		delta := math.Abs(distance - tc.want)
-		if delta > tc.threshold {
-			t.Errorf("math.Abs(tc.sphere.HaversineDistance(%v, %v)-%f) == %f, want <=%f", tc.c1, tc.c2, tc.want, delta, tc.threshold)
-		}
+		t.Run(strconv.Itoa(i), func(t *testing.T) {
+			assert.InDeltaf(t, tc.expected, tc.sphere.HaversineDistance(tc.c1, tc.c2), tc.delta, "")
+		})
+	}
+}
+
+func TestInitialBearingTo(t *testing.T) {
+	for i, tc := range []struct {
+		sphere   T
+		c1       kml.Coordinate
+		c2       kml.Coordinate
+		expected float64
+	}{
+		{
+			sphere:   FAI,
+			c1:       kml.Coordinate{Lon: 0, Lat: 0},
+			c2:       kml.Coordinate{Lon: 0, Lat: 1},
+			expected: 0,
+		},
+		{
+			sphere:   FAI,
+			c1:       kml.Coordinate{Lon: 0, Lat: 0},
+			c2:       kml.Coordinate{Lon: 1, Lat: 0},
+			expected: 90,
+		},
+		{
+			sphere:   FAI,
+			c1:       kml.Coordinate{Lon: 0, Lat: 0},
+			c2:       kml.Coordinate{Lon: 0, Lat: -1},
+			expected: 180,
+		},
+		{
+			sphere:   FAI,
+			c1:       kml.Coordinate{Lon: 0, Lat: 0},
+			c2:       kml.Coordinate{Lon: -1, Lat: 0},
+			expected: -90,
+		},
+	} {
+		t.Run(strconv.Itoa(i), func(t *testing.T) {
+			assert.Equal(t, tc.expected, tc.sphere.InitialBearingTo(tc.c1, tc.c2))
+		})
 	}
 }
