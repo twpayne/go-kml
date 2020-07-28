@@ -1,7 +1,6 @@
 # go-kml
 
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/twpayne/go-kml)](https://pkg.go.dev/github.com/twpayne/go-kml)
-[![Coverage Status](https://coveralls.io/repos/github/twpayne/go-kml/badge.svg?branch=master)](https://coveralls.io/github/twpayne/go-kml?branch=master)
 
 Package `kml` provides convenience methods for creating and writing KML documents.
 
