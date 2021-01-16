@@ -9,6 +9,7 @@ linters:
   - errcheck
   - exhaustive
   - exportloopref
+  - forbidigo
   - gocognit
   - goconst
   - gocritic
@@ -27,12 +28,14 @@ linters:
   - ineffassign
   - interfacer
   - maligned
+  - makezero
   - misspell
   - nakedret
   - nestif
   - noctx
   - nolintlint
   - prealloc
+  - predeclared
   - rowserrcheck
   - scopelint
   - sqlclosecheck
@@ -65,5 +68,6 @@ issues:
     - scopelint
     path: "_test\\.go"
   - linters:
+    - forbidigo
     - gosec
     path: "internal/"
