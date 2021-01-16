@@ -56,6 +56,36 @@ func (se *SimpleElement) MarshalXML(e *xml.Encoder, start xml.StartElement) erro
 	return e.EncodeElement(xml.CharData(se.value), se.StartElement)
 }
 
+// SetBool sets se's value from a bool.
+func (se *SimpleElement) SetBool(value bool) {
+	se.value = formatBool(value)
+}
+
+// SetColor sets se's value from a color.Color.
+func (se *SimpleElement) SetColor(value color.Color) {
+	se.value = formatColor(value)
+}
+
+// SetFloat set se's value from a float64.
+func (se *SimpleElement) SetFloat(value float64) {
+	se.value = formatFloat(value)
+}
+
+// SetInt sets se's value from an int.
+func (se *SimpleElement) SetInt(value int) {
+	se.value = formatInt(value)
+}
+
+// SetString sets se's value from a string.
+func (se *SimpleElement) SetString(value string) {
+	se.value = value
+}
+
+// SetTime sets se'ss value from a time.Time.
+func (se *SimpleElement) SetTime(value time.Time) {
+	se.value = formatTime(value)
+}
+
 // Write writes an XML header and se to w.
 func (se *SimpleElement) Write(w io.Writer) error {
 	return write(w, "", "", se)
@@ -70,6 +100,11 @@ func (se *SimpleElement) WriteIndent(w io.Writer, prefix, indent string) error {
 func (ce *CompoundElement) Add(children ...Element) *CompoundElement {
 	ce.children = append(ce.children, children...)
 	return ce
+}
+
+// SetChildren sets ce's children.
+func (ce *CompoundElement) SetChildren(children []Element) {
+	ce.children = children
 }
 
 // MarshalXML marshals ce to e. start is ignored.
