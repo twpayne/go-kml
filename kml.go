@@ -100,9 +100,38 @@ func (se *SharedElement) ID() string {
 	return se.id
 }
 
+// SetID sets se's id.
+func (se *SharedElement) SetID(id string) {
+	se.id = id
+}
+
 // URL returns se's URL.
 func (se *SharedElement) URL() string {
 	return "#" + se.ID()
+}
+
+func formatBool(value bool) string {
+	if value {
+		return "1"
+	}
+	return "0"
+}
+
+func formatColor(value color.Color) string {
+	r, g, b, a := value.RGBA()
+	return fmt.Sprintf("%02x%02x%02x%02x", a/256, b/256, g/256, r/256)
+}
+
+func formatInt(value int) string {
+	return strconv.Itoa(value)
+}
+
+func formatFloat(value float64) string {
+	return strconv.FormatFloat(value, 'f', -1, 64)
+}
+
+func formatTime(value time.Time) string {
+	return value.Format(time.RFC3339)
 }
 
 func write(w io.Writer, prefix, indent string, m xml.Marshaler) error {
@@ -115,23 +144,16 @@ func write(w io.Writer, prefix, indent string, m xml.Marshaler) error {
 }
 
 func newSEBool(name string, value bool) *SimpleElement {
-	var v string
-	if value {
-		v = "1"
-	} else {
-		v = "0"
-	}
 	return &SimpleElement{
 		StartElement: xml.StartElement{Name: xml.Name{Local: name}},
-		value:        v,
+		value:        formatBool(value),
 	}
 }
 
 func newSEColor(name string, value color.Color) *SimpleElement {
-	r, g, b, a := value.RGBA()
 	return &SimpleElement{
 		StartElement: xml.StartElement{Name: xml.Name{Local: name}},
-		value:        fmt.Sprintf("%02x%02x%02x%02x", a/256, b/256, g/256, r/256),
+		value:        formatColor(value),
 	}
 }
 
@@ -147,14 +169,14 @@ func newSEElement(name string, value Element) *CompoundElement {
 func newSEFloat(name string, value float64) *SimpleElement {
 	return &SimpleElement{
 		StartElement: xml.StartElement{Name: xml.Name{Local: name}},
-		value:        strconv.FormatFloat(value, 'f', -1, 64),
+		value:        formatFloat(value),
 	}
 }
 
 func newSEInt(name string, value int) *SimpleElement {
 	return &SimpleElement{
 		StartElement: xml.StartElement{Name: xml.Name{Local: name}},
-		value:        strconv.Itoa(value),
+		value:        formatInt(value),
 	}
 }
 
