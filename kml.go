@@ -194,10 +194,8 @@ func newSEColor(name string, value color.Color) *SimpleElement {
 
 func newSEElement(name string, value Element) *CompoundElement {
 	return &CompoundElement{
-		StartElement: xml.StartElement{
-			Name: xml.Name{Local: name},
-		},
-		children: []Element{value},
+		StartElement: xml.StartElement{Name: xml.Name{Local: name}},
+		children:     []Element{value},
 	}
 }
 
@@ -239,16 +237,14 @@ func newSEString(name, value string) *SimpleElement {
 func newSETime(name string, value time.Time) *SimpleElement {
 	return &SimpleElement{
 		StartElement: xml.StartElement{Name: xml.Name{Local: name}},
-		value:        value.Format(time.RFC3339),
+		value:        formatTime(value),
 	}
 }
 
 func newCE(name string, children []Element) *CompoundElement {
 	return &CompoundElement{
-		StartElement: xml.StartElement{
-			Name: xml.Name{Local: name},
-		},
-		children: children,
+		StartElement: xml.StartElement{Name: xml.Name{Local: name}},
+		children:     children,
 	}
 }
 
