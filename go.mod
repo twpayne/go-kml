@@ -9,7 +9,7 @@ require (
 	github.com/imdario/mergo v0.3.9 // indirect
 	github.com/mitchellh/copystructure v1.0.0 // indirect
 	github.com/stretchr/testify v1.6.1
-	github.com/twpayne/go-gpx v1.2.0 // indirect
+	github.com/twpayne/go-gpx v1.2.0
 	github.com/twpayne/go-polyline v1.0.0
 	github.com/twpayne/go-waypoint v0.0.0-20200706203930-b263a7f6e4e8
 	golang.org/x/crypto v0.0.0-20200323165209-0ec3e9974c59 // indirect
