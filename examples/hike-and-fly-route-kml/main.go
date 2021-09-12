@@ -20,7 +20,7 @@ import (
 
 var (
 	formatFlag = flag.String("format", "kml", "format")
-	raceFlag   = flag.String("race", "eigertour-2019-challenge", "race")
+	raceFlag   = flag.String("race", "red-bull-x-alps-2021", "race")
 )
 
 var (
@@ -66,6 +66,138 @@ var (
 )
 
 var races = map[string]race{
+	"red-bull-x-alps-2021": {
+		name:    "Red Bull X-Alps 2021",
+		snippet: "Created by twpayne@gmail.com",
+		turnpoints: []turnpoint{
+			{
+				name:   "Mozartplatz",
+				lat:    47.798873,
+				lon:    13.047720,
+				ele:    432,
+				paddle: "go",
+			},
+			{
+				name:      "Gaisberg",
+				lat:       47.804398,
+				lon:       13.110690,
+				ele:       1275,
+				paddle:    "1",
+				signboard: true,
+			},
+			{
+				name:      "Kleinarl Fußballplatz",
+				lat:       47.274628,
+				lon:       13.318581,
+				ele:       1009,
+				paddle:    "2",
+				signboard: true,
+			},
+			{
+				name:      "Kitzbühl Streif Mausefalle",
+				lat:       47.426461,
+				lon:       12.371147,
+				ele:       1633,
+				paddle:    "3",
+				signboard: true,
+			},
+			{
+				name:   "Chiemsee",
+				lat:    47.858077,
+				lon:    12.500269,
+				ele:    521,
+				radius: 3000,
+				paddle: "4",
+			},
+			{
+				name:      "Marquartstein",
+				lat:       47.767503,
+				lon:       12.457437,
+				ele:       542,
+				paddle:    "red-circle",
+				signboard: true,
+			},
+			{
+				name:     "Zugspitze",
+				lat:      47.421063,
+				lon:      10.985517,
+				ele:      2873,
+				offRoute: true,
+				pass:     "N",
+			},
+			{
+				name:      "Lermoos",
+				lat:       47.401283,
+				lon:       10.879767,
+				ele:       990,
+				paddle:    "5",
+				signboard: true,
+			},
+			{
+				name:   "Säntis",
+				lat:    47.249365,
+				lon:    9.343238,
+				ele:    2500,
+				paddle: "6",
+				radius: 2000,
+			},
+			{
+				name:      "Fiesch",
+				lat:       46.40940,
+				lon:       8.13688,
+				ele:       1057,
+				paddle:    "7",
+				signboard: true,
+			},
+			{
+				name:   "Dent d’Oche",
+				lat:    46.352357,
+				lon:    6.731626,
+				ele:    2079,
+				paddle: "8",
+				pass:   "NW",
+			},
+			{
+				name:   "Mont Blanc",
+				lat:    45.830359,
+				lon:    6.867674,
+				ele:    4714,
+				paddle: "9",
+				pass:   "SW",
+			},
+			{
+				name:   "Piz Palü",
+				lat:    46.378200,
+				lon:    9.958730,
+				ele:    3901,
+				paddle: "A",
+				radius: 3500,
+			},
+			{
+				name:      "Kronplatz",
+				lat:       46.737598,
+				lon:       11.954900,
+				ele:       2258,
+				paddle:    "B",
+				signboard: true,
+			},
+			{
+				name:      "Schmittenhöhe",
+				lat:       47.328744,
+				lon:       12.737518,
+				ele:       1950,
+				paddle:    "C",
+				signboard: true,
+			},
+			{
+				name:   "Zell am See",
+				lat:    47.325290,
+				lon:    12.801694,
+				ele:    751,
+				paddle: "stop",
+			},
+		},
+	},
 	"eigertour-2019-challenge": {
 		name:    "Eigertour 2019 Challenge",
 		snippet: "https://eigertour.rocks/ Created by twpayne@gmail.com",
