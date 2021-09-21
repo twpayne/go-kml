@@ -29,7 +29,7 @@ func GxAngles(value GxAngle) *SimpleElement {
 		StartElement: xml.StartElement{
 			Name: xml.Name{Local: "gx:angles"},
 		},
-		value: strconv.FormatFloat(value.Heading, 'f', -1, 64) + " " +
+		Value: strconv.FormatFloat(value.Heading, 'f', -1, 64) + " " +
 			strconv.FormatFloat(value.Tilt, 'f', -1, 64) + " " +
 			strconv.FormatFloat(value.Roll, 'f', -1, 64),
 	}
@@ -41,7 +41,7 @@ func GxCoord(value Coordinate) *SimpleElement {
 		StartElement: xml.StartElement{
 			Name: xml.Name{Local: "gx:coord"},
 		},
-		value: strconv.FormatFloat(value.Lon, 'f', -1, 64) + " " +
+		Value: strconv.FormatFloat(value.Lon, 'f', -1, 64) + " " +
 			strconv.FormatFloat(value.Lat, 'f', -1, 64) + " " +
 			strconv.FormatFloat(value.Alt, 'f', -1, 64),
 	}

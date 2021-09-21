@@ -169,7 +169,7 @@ func LinkSnippet(maxLines int, value string) *SimpleElement {
 				{Name: xml.Name{Local: "maxLines"}, Value: strconv.Itoa(maxLines)},
 			},
 		},
-		value: value,
+		Value: value,
 	}
 }
 
@@ -184,9 +184,9 @@ func Schema(id, name string, children ...Element) *SharedElement {
 					{Name: xml.Name{Local: "name"}, Value: name},
 				},
 			},
-			children: children,
+			Children: children,
 		},
-		id: id,
+		Id: id,
 	}
 }
 
@@ -199,7 +199,7 @@ func SchemaData(schemaURL string, children ...Element) *CompoundElement {
 				{Name: xml.Name{Local: "schemaUrl"}, Value: schemaURL},
 			},
 		},
-		children: children,
+		Children: children,
 	}
 }
 
@@ -222,7 +222,7 @@ func SimpleData(name, value string) *SimpleElement {
 				{Name: xml.Name{Local: "name"}, Value: name},
 			},
 		},
-		value: value,
+		Value: value,
 	}
 }
 
@@ -236,7 +236,7 @@ func SimpleField(name, _type string, children ...Element) *CompoundElement {
 				{Name: xml.Name{Local: "type"}, Value: _type},
 			},
 		},
-		children: children,
+		Children: children,
 	}
 }
 
@@ -246,6 +246,6 @@ func KML(child Element) *CompoundElement {
 		StartElement: xml.StartElement{
 			Name: xml.Name{Space: Namespace, Local: "kml"},
 		},
-		children: []Element{child},
+		Children: []Element{child},
 	}
 }
