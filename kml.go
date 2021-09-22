@@ -130,19 +130,9 @@ func (ce *CompoundElement) WriteIndent(w io.Writer, prefix, indent string) error
 	return write(w, prefix, indent, ce)
 }
 
-// ID returns se's id.
-func (se *SharedElement) ID() string {
-	return se.Id
-}
-
-// SetID sets se's id.
-func (se *SharedElement) SetID(id string) {
-	se.Id = id
-}
-
 // URL returns se's URL.
 func (se *SharedElement) URL() string {
-	return "#" + se.ID()
+	return "#" + se.Id
 }
 
 func formatBool(value bool) string {
