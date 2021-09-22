@@ -36,54 +36,54 @@ type Element interface {
 // A SimpleElement is an Element with a single value.
 type SimpleElement struct {
 	xml.StartElement
-	value string
+	Value string
 }
 
 // A CompoundElement is an Element with children.
 type CompoundElement struct {
 	xml.StartElement
-	children []Element
+	Children []Element
 }
 
 // A SharedElement is an element with an id.
 type SharedElement struct {
 	CompoundElement
-	id string
+	ID string
 }
 
 // MarshalXML marshals se to e. start is ignored.
 func (se *SimpleElement) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
-	return e.EncodeElement(xml.CharData(se.value), se.StartElement)
+	return e.EncodeElement(xml.CharData(se.Value), se.StartElement)
 }
 
 // SetBool sets se's value from a bool.
 func (se *SimpleElement) SetBool(value bool) {
-	se.value = formatBool(value)
+	se.Value = formatBool(value)
 }
 
 // SetColor sets se's value from a color.Color.
 func (se *SimpleElement) SetColor(value color.Color) {
-	se.value = formatColor(value)
+	se.Value = formatColor(value)
 }
 
 // SetFloat set se's value from a float64.
 func (se *SimpleElement) SetFloat(value float64) {
-	se.value = formatFloat(value)
+	se.Value = formatFloat(value)
 }
 
 // SetInt sets se's value from an int.
 func (se *SimpleElement) SetInt(value int) {
-	se.value = formatInt(value)
+	se.Value = formatInt(value)
 }
 
 // SetString sets se's value from a string.
 func (se *SimpleElement) SetString(value string) {
-	se.value = value
+	se.Value = value
 }
 
 // SetTime sets se'ss value from a time.Time.
 func (se *SimpleElement) SetTime(value time.Time) {
-	se.value = formatTime(value)
+	se.Value = formatTime(value)
 }
 
 // Write writes an XML header and se to w.
@@ -98,13 +98,13 @@ func (se *SimpleElement) WriteIndent(w io.Writer, prefix, indent string) error {
 
 // Add adds children to ce.
 func (ce *CompoundElement) Add(children ...Element) *CompoundElement {
-	ce.children = append(ce.children, children...)
+	ce.Children = append(ce.Children, children...)
 	return ce
 }
 
 // SetChildren sets ce's children.
 func (ce *CompoundElement) SetChildren(children []Element) {
-	ce.children = children
+	ce.Children = children
 }
 
 // MarshalXML marshals ce to e. start is ignored.
@@ -112,7 +112,7 @@ func (ce *CompoundElement) MarshalXML(e *xml.Encoder, start xml.StartElement) er
 	if err := e.EncodeToken(ce.StartElement); err != nil {
 		return err
 	}
-	for _, c := range ce.children {
+	for _, c := range ce.Children {
 		if err := e.EncodeElement(c, ce.StartElement); err != nil {
 			return err
 		}
@@ -130,19 +130,9 @@ func (ce *CompoundElement) WriteIndent(w io.Writer, prefix, indent string) error
 	return write(w, prefix, indent, ce)
 }
 
-// ID returns se's id.
-func (se *SharedElement) ID() string {
-	return se.id
-}
-
-// SetID sets se's id.
-func (se *SharedElement) SetID(id string) {
-	se.id = id
-}
-
 // URL returns se's URL.
 func (se *SharedElement) URL() string {
-	return "#" + se.ID()
+	return "#" + se.ID
 }
 
 func formatBool(value bool) string {
@@ -181,35 +171,35 @@ func write(w io.Writer, prefix, indent string, m xml.Marshaler) error {
 func newSEBool(name string, value bool) *SimpleElement {
 	return &SimpleElement{
 		StartElement: xml.StartElement{Name: xml.Name{Local: name}},
-		value:        formatBool(value),
+		Value:        formatBool(value),
 	}
 }
 
 func newSEColor(name string, value color.Color) *SimpleElement {
 	return &SimpleElement{
 		StartElement: xml.StartElement{Name: xml.Name{Local: name}},
-		value:        formatColor(value),
+		Value:        formatColor(value),
 	}
 }
 
 func newSEElement(name string, value Element) *CompoundElement {
 	return &CompoundElement{
 		StartElement: xml.StartElement{Name: xml.Name{Local: name}},
-		children:     []Element{value},
+		Children:     []Element{value},
 	}
 }
 
 func newSEFloat(name string, value float64) *SimpleElement {
 	return &SimpleElement{
 		StartElement: xml.StartElement{Name: xml.Name{Local: name}},
-		value:        formatFloat(value),
+		Value:        formatFloat(value),
 	}
 }
 
 func newSEInt(name string, value int) *SimpleElement {
 	return &SimpleElement{
 		StartElement: xml.StartElement{Name: xml.Name{Local: name}},
-		value:        formatInt(value),
+		Value:        formatInt(value),
 	}
 }
 
@@ -230,21 +220,21 @@ func newSEVec2(name string, value Vec2) *SimpleElement {
 func newSEString(name, value string) *SimpleElement {
 	return &SimpleElement{
 		StartElement: xml.StartElement{Name: xml.Name{Local: name}},
-		value:        value,
+		Value:        value,
 	}
 }
 
 func newSETime(name string, value time.Time) *SimpleElement {
 	return &SimpleElement{
 		StartElement: xml.StartElement{Name: xml.Name{Local: name}},
-		value:        formatTime(value),
+		Value:        formatTime(value),
 	}
 }
 
 func newCE(name string, children []Element) *CompoundElement {
 	return &CompoundElement{
 		StartElement: xml.StartElement{Name: xml.Name{Local: name}},
-		children:     children,
+		Children:     children,
 	}
 }
 
@@ -259,8 +249,8 @@ func newSharedE(name, id string, children []Element) *SharedElement {
 				Name: xml.Name{Local: name},
 				Attr: attr,
 			},
-			children: children,
+			Children: children,
 		},
-		id: id,
+		ID: id,
 	}
 }
