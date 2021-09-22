@@ -1,3 +1,9 @@
+// Disable test on arm64 as it tests generated floating point values exactly and
+// arm64 differs from amd64 in the last place of one of the generated values.
+
+//go:build !arm64
+// +build !arm64
+
 package sphere
 
 import (
