@@ -1,6 +1,6 @@
 # go-kml
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/twpayne/go-kml)](https://pkg.go.dev/github.com/twpayne/go-kml)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/twpayne/go-kml/v2)](https://pkg.go.dev/github.com/twpayne/go-kml/v2)
 
 Package `kml` provides convenience methods for creating and writing KML documents.
 
@@ -50,14 +50,14 @@ Output:
 ```
 
 There are more [examples in the
-documentation](https://pkg.go.dev/github.com/twpayne/go-kml#pkg-examples)
+documentation](https://pkg.go.dev/github.com/twpayne/go-kml/v2#pkg-examples)
 corresponding to the [examples in the KML
 tutorial](https://developers.google.com/kml/documentation/kml_tut).
 
 ## Subpackages
 
-* [`icon`](https://pkg.go.dev/github.com/twpayne/go-kml/icon) Convenience functions for using standard KML icons.
-* [`sphere`](https://pkg.go.dev/github.com/twpayne/go-kml/sphere) Convenience functions for spherical geometry.
+* [`icon`](https://pkg.go.dev/github.com/twpayne/go-kml/v2/icon) Convenience functions for using standard KML icons.
+* [`sphere`](https://pkg.go.dev/github.com/twpayne/go-kml/v2/sphere) Convenience functions for spherical geometry.
 
 ## License
 

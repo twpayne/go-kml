@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/twpayne/go-kml"
+	"github.com/twpayne/go-kml/v2"
 )
 
 func ExamplePlacemark() {

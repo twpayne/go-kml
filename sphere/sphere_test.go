@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/twpayne/go-kml"
+	"github.com/twpayne/go-kml/v2"
 )
 
 func TestSphereHaversineDistance(t *testing.T) {

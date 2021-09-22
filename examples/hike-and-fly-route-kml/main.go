@@ -12,9 +12,9 @@ import (
 	"strconv"
 
 	"github.com/twpayne/go-gpx"
-	kml "github.com/twpayne/go-kml"
-	"github.com/twpayne/go-kml/icon"
-	"github.com/twpayne/go-kml/sphere"
+	kml "github.com/twpayne/go-kml/v2"
+	"github.com/twpayne/go-kml/v2/icon"
+	"github.com/twpayne/go-kml/v2/sphere"
 	polyline "github.com/twpayne/go-polyline"
 )
 
