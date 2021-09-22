@@ -23,18 +23,16 @@ var (
 	raceFlag   = flag.String("race", "red-bull-x-alps-2021", "race")
 )
 
-var (
-	blockBearings = map[string]int{
-		"S":  0,
-		"SW": 45,
-		"W":  90,
-		"NW": 135,
-		"N":  180,
-		"NE": 225,
-		"E":  270,
-		"SE": 315,
-	}
-)
+var blockBearings = map[string]int{
+	"S":  0,
+	"SW": 45,
+	"W":  90,
+	"NW": 135,
+	"N":  180,
+	"NE": 225,
+	"E":  270,
+	"SE": 315,
+}
 
 type turnpoint struct {
 	name      string
