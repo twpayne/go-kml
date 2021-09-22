@@ -48,7 +48,7 @@ type CompoundElement struct {
 // A SharedElement is an element with an id.
 type SharedElement struct {
 	CompoundElement
-	Id string
+	ID string
 }
 
 // MarshalXML marshals se to e. start is ignored.
@@ -132,7 +132,7 @@ func (ce *CompoundElement) WriteIndent(w io.Writer, prefix, indent string) error
 
 // URL returns se's URL.
 func (se *SharedElement) URL() string {
-	return "#" + se.Id
+	return "#" + se.ID
 }
 
 func formatBool(value bool) string {
@@ -251,6 +251,6 @@ func newSharedE(name, id string, children []Element) *SharedElement {
 			},
 			Children: children,
 		},
-		Id: id,
+		ID: id,
 	}
 }

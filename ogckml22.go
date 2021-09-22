@@ -186,7 +186,7 @@ func Schema(id, name string, children ...Element) *SharedElement {
 			},
 			Children: children,
 		},
-		Id: id,
+		ID: id,
 	}
 }
 
