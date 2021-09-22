@@ -27,6 +27,7 @@ github.com/twpayne/go-geom v1.0.0 h1:ARrRnN4+rBX3LZFZQy9NFeXXlgQqVL4OOvAcnLdgy2g
 github.com/twpayne/go-geom v1.0.0/go.mod h1:RWsl+e3XSahOul/KH2BHCfF0QxSL4RMnMlFw/TNmET0=
 github.com/twpayne/go-gpx v1.2.0 h1:Jjq0NKXgHmEXXhmQue4KWtAVG5gxkAYY+FvsM1AliLQ=
 github.com/twpayne/go-gpx v1.2.0/go.mod h1:70xTQn0dGph3dgKIPxfl0K3XMVNpulC70/e383iHouA=
+github.com/twpayne/go-kml v1.0.0 h1:XMyRRufIWOYaPGW1UzTnqJO42oY7wngXyO7kW/vzXjI=
 github.com/twpayne/go-kml v1.0.0/go.mod h1:LlvLIQSfMqYk2O7Nx8vYAbSLv4K9rjMvLlEdUKWdjq0=
 github.com/twpayne/go-polyline v1.0.0 h1:EA8HPg0MNS62R5D2E8B6zyz2TMkmkXVlQaVBVgY3F5A=
 github.com/twpayne/go-polyline v1.0.0/go.mod h1:ICh24bcLYBX8CknfvNPKqoTbe+eg+MX1NPyJmSBo7pU=

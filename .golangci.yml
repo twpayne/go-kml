@@ -15,7 +15,6 @@ linters:
   - exportloopref
   - forbidigo
   - forcetypeassert
-  - gci
   - gochecknoinits
   - gocognit
   - goconst
@@ -65,6 +64,7 @@ linters:
   disable:
   - exhaustivestruct
   - funlen
+  - gci # FIXME enable
   - gochecknoglobals
   - godox
   - gomnd
@@ -76,7 +76,7 @@ linters:
   - wsl
 
 linters-settings:
-  goimports:
+  gofumpt:
     local-prefixes: github.com/twpayne/go-kml
 
 issues:

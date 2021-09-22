@@ -27,6 +27,15 @@ jobs:
       run: go build ./...
     - name: Test
       run: go test ./...
+    - name: Generate
+      run: |
+        go generate
+        git diff --exit-code
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
     - name: Lint
       uses: golangci/golangci-lint-action@v2
       with:

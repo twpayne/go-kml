@@ -12,9 +12,9 @@ import (
 	"strconv"
 
 	"github.com/twpayne/go-gpx"
-	kml "github.com/twpayne/go-kml"
-	"github.com/twpayne/go-kml/icon"
-	"github.com/twpayne/go-kml/sphere"
+	kml "github.com/twpayne/go-kml/v2"
+	"github.com/twpayne/go-kml/v2/icon"
+	"github.com/twpayne/go-kml/v2/sphere"
 	polyline "github.com/twpayne/go-polyline"
 )
 
@@ -23,18 +23,16 @@ var (
 	raceFlag   = flag.String("race", "red-bull-x-alps-2021", "race")
 )
 
-var (
-	blockBearings = map[string]int{
-		"S":  0,
-		"SW": 45,
-		"W":  90,
-		"NW": 135,
-		"N":  180,
-		"NE": 225,
-		"E":  270,
-		"SE": 315,
-	}
-)
+var blockBearings = map[string]int{
+	"S":  0,
+	"SW": 45,
+	"W":  90,
+	"NW": 135,
+	"N":  180,
+	"NE": 225,
+	"E":  270,
+	"SE": 315,
+}
 
 type turnpoint struct {
 	name      string
