@@ -1,9 +1,3 @@
-// Disable test on arm64 as it tests generated floating point values exactly and
-// arm64 differs from amd64 in the last place of one of the generated values.
-
-//go:build !arm64
-// +build !arm64
-
 package sphere
 
 import (
@@ -101,9 +95,16 @@ func TestCircle(t *testing.T) {
 		},
 	} {
 		t.Run(strconv.Itoa(i), func(t *testing.T) {
-			assert.Equal(t, tc.expected, WGS84.Circle(tc.center, tc.radius, tc.maxErr))
-			for _, c := range tc.expected {
-				assert.InDeltaf(t, tc.radius, WGS84.HaversineDistance(tc.center, c), 1e-9, "")
+			actual := WGS84.Circle(tc.center, tc.radius, tc.maxErr)
+			assert.Len(t, actual, len(tc.expected))
+			for i, actualCoordinate := range actual {
+				assert.InDelta(t, tc.expected[i].Lon, actualCoordinate.Lon, 1e-14)
+				assert.InDelta(t, tc.expected[i].Lat, actualCoordinate.Lat, 1e-14)
+				assert.Equal(t, tc.center.Alt, actualCoordinate.Alt)
+				assert.InDelta(t, tc.radius, WGS84.HaversineDistance(tc.center, actualCoordinate), 1e-9)
+			}
+			for _, expectedCoordinate := range tc.expected {
+				assert.InDelta(t, tc.radius, WGS84.HaversineDistance(tc.center, expectedCoordinate), 1e-9)
 			}
 		})
 	}
