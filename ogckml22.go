@@ -160,6 +160,19 @@ func CoordinatesFlat(flatCoords []float64, offset, end, stride, dim int) *Coordi
 	}
 }
 
+// Data returns a new Dataelement.
+func Data(name string, children ...Element) *CompoundElement {
+	return &CompoundElement{
+		StartElement: xml.StartElement{
+			Name: xml.Name{Local: "Data"},
+			Attr: []xml.Attr{
+				{Name: xml.Name{Local: "name"}, Value: name},
+			},
+		},
+		Children: children,
+	}
+}
+
 // LinkSnippet returns a new linkSnippet element.
 func LinkSnippet(maxLines int, value string) *SimpleElement {
 	return &SimpleElement{

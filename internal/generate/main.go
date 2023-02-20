@@ -98,7 +98,7 @@ const (
 {{ end -}}
 
 {{ range .XSD.Elements -}}
-{{ if and (not .Abstract) (not (regexMatch "^(angles|coord|coordinates|kml|linkSnippet|option|AbstractTourPrimitive|Scale|Schema|SchemaData|SimpleArrayField|SimpleData|SimpleField|Snippet)$" .Name)) -}}
+{{ if and (not .Abstract) (not (regexMatch "^(angles|coord|coordinates|kml|linkSnippet|option|AbstractTourPrimitive|Data|Scale|Schema|SchemaData|SimpleArrayField|SimpleData|SimpleField|Snippet)$" .Name)) -}}
 {{ $functionNamePrefix := "" -}}
 {{ if eq $namespace "gx:" -}}
 	{{ $functionNamePrefix = "Gx" -}}
