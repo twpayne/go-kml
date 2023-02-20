@@ -568,11 +568,6 @@ func ExtendedData(children ...Element) *CompoundElement {
 	return newCE("ExtendedData", children)
 }
 
-// Data returns a new Data element.
-func Data(children ...Element) *CompoundElement {
-	return newCE("Data", children)
-}
-
 // NetworkLinkControl returns a new NetworkLinkControl element.
 func NetworkLinkControl(children ...Element) *CompoundElement {
 	return newCE("NetworkLinkControl", children)
