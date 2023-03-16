@@ -2,22 +2,22 @@
 // arm64 differs from amd64 in the last place of one of the generated values.
 
 //go:build !arm64
-// +build !arm64
 
-package sphere
+package sphere_test
 
 import (
 	"log"
 	"os"
 
 	"github.com/twpayne/go-kml/v2"
+	"github.com/twpayne/go-kml/v2/sphere"
 )
 
 func ExampleT_Circle() {
 	k := kml.KML(
 		kml.Placemark(
 			kml.LineString(
-				kml.Coordinates(WGS84.Circle(kml.Coordinate{Lon: 7.658320, Lat: 45.97651, Alt: 0}, 5500, 1)...),
+				kml.Coordinates(sphere.WGS84.Circle(kml.Coordinate{Lon: 7.658320, Lat: 45.97651, Alt: 0}, 5500, 1)...),
 			),
 		),
 	)

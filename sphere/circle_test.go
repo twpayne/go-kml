@@ -1,11 +1,13 @@
-package sphere
+package sphere_test
 
 import (
 	"strconv"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+
 	"github.com/twpayne/go-kml/v2"
+	"github.com/twpayne/go-kml/v2/sphere"
 )
 
 func TestCircle(t *testing.T) {
@@ -95,16 +97,16 @@ func TestCircle(t *testing.T) {
 		},
 	} {
 		t.Run(strconv.Itoa(i), func(t *testing.T) {
-			actual := WGS84.Circle(tc.center, tc.radius, tc.maxErr)
+			actual := sphere.WGS84.Circle(tc.center, tc.radius, tc.maxErr)
 			assert.Len(t, actual, len(tc.expected))
 			for i, actualCoordinate := range actual {
 				assert.InDelta(t, tc.expected[i].Lon, actualCoordinate.Lon, 1e-14)
 				assert.InDelta(t, tc.expected[i].Lat, actualCoordinate.Lat, 1e-14)
 				assert.Equal(t, tc.center.Alt, actualCoordinate.Alt)
-				assert.InDelta(t, tc.radius, WGS84.HaversineDistance(tc.center, actualCoordinate), 1e-9)
+				assert.InDelta(t, tc.radius, sphere.WGS84.HaversineDistance(tc.center, actualCoordinate), 1e-9)
 			}
 			for _, expectedCoordinate := range tc.expected {
-				assert.InDelta(t, tc.radius, WGS84.HaversineDistance(tc.center, expectedCoordinate), 1e-9)
+				assert.InDelta(t, tc.radius, sphere.WGS84.HaversineDistance(tc.center, expectedCoordinate), 1e-9)
 			}
 		})
 	}

@@ -1,4 +1,4 @@
-package kml
+package kml_test
 
 import (
 	"encoding/xml"
@@ -9,136 +9,138 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"github.com/twpayne/go-kml/v2"
 )
 
 func TestSimpleElements(t *testing.T) {
 	for _, tc := range []struct {
 		name     string
-		element  Element
+		element  kml.Element
 		expected string
 	}{
 		{
 			name:     "Altitude",
-			element:  Altitude(0),
+			element:  kml.Altitude(0),
 			expected: `<altitude>0</altitude>`,
 		},
 		{
 			name:     "AltitudeMode",
-			element:  AltitudeMode(AltitudeModeAbsolute),
+			element:  kml.AltitudeMode(kml.AltitudeModeAbsolute),
 			expected: `<altitudeMode>absolute</altitudeMode>`,
 		},
 		{
 			name:     "Begin",
-			element:  Begin(time.Date(1876, 8, 1, 0, 0, 0, 0, time.UTC)),
+			element:  kml.Begin(time.Date(1876, 8, 1, 0, 0, 0, 0, time.UTC)),
 			expected: `<begin>1876-08-01T00:00:00Z</begin>`,
 		},
 		{
 			name:     "BgColor",
-			element:  BgColor(color.Black),
+			element:  kml.BgColor(color.Black),
 			expected: `<bgColor>ff000000</bgColor>`,
 		},
 		{
 			name:     "Color",
-			element:  Color(color.White),
+			element:  kml.Color(color.White),
 			expected: `<color>ffffffff</color>`,
 		},
 		{
 			name:     "Coordinates",
-			element:  Coordinates(Coordinate{Lon: 1.23, Lat: 4.56, Alt: 7.89}),
+			element:  kml.Coordinates(kml.Coordinate{Lon: 1.23, Lat: 4.56, Alt: 7.89}),
 			expected: `<coordinates>1.23,4.56,7.89</coordinates>`,
 		},
 		{
 			name:     "CoordinatesArray0",
-			element:  CoordinatesArray([]float64{1.23, 4.56}),
+			element:  kml.CoordinatesArray([]float64{1.23, 4.56}),
 			expected: `<coordinates>1.23,4.56</coordinates>`,
 		},
 		{
 			name:     "CoordinatesArray1",
-			element:  CoordinatesArray([]float64{1.23, 4.56, 7.89}),
+			element:  kml.CoordinatesArray([]float64{1.23, 4.56, 7.89}),
 			expected: `<coordinates>1.23,4.56,7.89</coordinates>`,
 		},
 		{
 			name:     "CoordinatesArray2",
-			element:  CoordinatesArray([][]float64{{1.23, 4.56}, {7.89, 0.12}}...),
+			element:  kml.CoordinatesArray([][]float64{{1.23, 4.56}, {7.89, 0.12}}...),
 			expected: `<coordinates>1.23,4.56 7.89,0.12</coordinates>`,
 		},
 		{
-			element:  CoordinatesFlat([]float64{1.23, 4.56, 7.89, 0.12}, 0, 4, 2, 2),
+			element:  kml.CoordinatesFlat([]float64{1.23, 4.56, 7.89, 0.12}, 0, 4, 2, 2),
 			expected: `<coordinates>1.23,4.56 7.89,0.12</coordinates>`,
 		},
 		{
 			name:     "CoordinatesFlat0",
-			element:  CoordinatesFlat([]float64{1.23, 4.56, 0, 7.89, 0.12, 0}, 0, 6, 3, 3),
+			element:  kml.CoordinatesFlat([]float64{1.23, 4.56, 0, 7.89, 0.12, 0}, 0, 6, 3, 3),
 			expected: `<coordinates>1.23,4.56 7.89,0.12</coordinates>`,
 		},
 		{
 			name:     "CoordinatesFlat1",
-			element:  CoordinatesFlat([]float64{1.23, 4.56, 7.89, 0.12, 3.45, 6.78}, 0, 6, 3, 3),
+			element:  kml.CoordinatesFlat([]float64{1.23, 4.56, 7.89, 0.12, 3.45, 6.78}, 0, 6, 3, 3),
 			expected: `<coordinates>1.23,4.56,7.89 0.12,3.45,6.78</coordinates>`,
 		},
 		{
 			name:     "Description",
-			element:  Description("text"),
+			element:  kml.Description("text"),
 			expected: `<description>text</description>`,
 		},
 		{
 			name:     "End",
-			element:  End(time.Date(2015, 12, 31, 23, 59, 59, 0, time.UTC)),
+			element:  kml.End(time.Date(2015, 12, 31, 23, 59, 59, 0, time.UTC)),
 			expected: `<end>2015-12-31T23:59:59Z</end>`,
 		},
 		{
 			name:     "Extrude",
-			element:  Extrude(false),
+			element:  kml.Extrude(false),
 			expected: `<extrude>0</extrude>`,
 		},
 		{
 			name:     "Folder",
-			element:  Folder(),
+			element:  kml.Folder(),
 			expected: `<Folder></Folder>`,
 		},
 		{
 			name:     "GxCoord",
-			element:  GxCoord(Coordinate{1.23, 4.56, 7.89}),
+			element:  kml.GxCoord(kml.Coordinate{1.23, 4.56, 7.89}),
 			expected: `<gx:coord>1.23 4.56 7.89</gx:coord>`,
 		},
 		{
 			name:     "Heading",
-			element:  Heading(0),
+			element:  kml.Heading(0),
 			expected: `<heading>0</heading>`,
 		},
 		{
 			name:     "HotSpot",
-			element:  HotSpot(Vec2{X: 0.5, Y: 0.5, XUnits: UnitsPixels, YUnits: UnitsPixels}),
+			element:  kml.HotSpot(kml.Vec2{X: 0.5, Y: 0.5, XUnits: kml.UnitsPixels, YUnits: kml.UnitsPixels}),
 			expected: `<hotSpot x="0.5" y="0.5" xunits="pixels" yunits="pixels"></hotSpot>`,
 		},
 		{
 			name:     "Href",
-			element:  Href("https://www.google.com/"),
+			element:  kml.Href("https://www.google.com/"),
 			expected: `<href>https://www.google.com/</href>`,
 		},
 		{
 			name:     "Latitude",
-			element:  Latitude(0),
+			element:  kml.Latitude(0),
 			expected: `<latitude>0</latitude>`,
 		},
 		{
 			name:     "LinkSnippet",
-			element:  LinkSnippet(2, "snippet"),
+			element:  kml.LinkSnippet(2, "snippet"),
 			expected: `<linkSnippet maxLines="2">snippet</linkSnippet>`,
 		},
 		{
 			name:     "ListItemType",
-			element:  ListItemType(ListItemTypeCheck),
+			element:  kml.ListItemType(kml.ListItemTypeCheck),
 			expected: `<listItemType>check</listItemType>`,
 		},
 		{
 			name:     "OverlayXY",
-			element:  OverlayXY(Vec2{X: 0, Y: 0, XUnits: UnitsFraction, YUnits: UnitsFraction}),
+			element:  kml.OverlayXY(kml.Vec2{X: 0, Y: 0, XUnits: kml.UnitsFraction, YUnits: kml.UnitsFraction}),
 			expected: `<overlayXY x="0" y="0" xunits="fraction" yunits="fraction"></overlayXY>`,
 		},
 		{
 			name:     "Style",
-			element:  Style(),
+			element:  kml.Style(),
 			expected: `<Style></Style>`,
 		},
 		// FIXME More simple elements
@@ -155,22 +157,22 @@ func TestSimpleElements(t *testing.T) {
 func TestCompoundElements(t *testing.T) {
 	for _, tc := range []struct {
 		name     string
-		element  Element
+		element  kml.Element
 		expected string
 	}{
 		{
 			name: "easy_trail",
-			element: Placemark(
-				Name("Easy trail"),
-				ExtendedData(
-					SchemaData("#TrailHeadTypeId",
-						SimpleData("TrailHeadName", "Pi in the sky"),
-						SimpleData("TrailLength", "3.14159"),
-						SimpleData("ElevationGain", "10"),
+			element: kml.Placemark(
+				kml.Name("Easy trail"),
+				kml.ExtendedData(
+					kml.SchemaData("#TrailHeadTypeId",
+						kml.SimpleData("TrailHeadName", "Pi in the sky"),
+						kml.SimpleData("TrailLength", "3.14159"),
+						kml.SimpleData("ElevationGain", "10"),
 					),
 				),
-				Point(
-					Coordinates(Coordinate{Lon: -122.000, Lat: 37.002}),
+				kml.Point(
+					kml.Coordinates(kml.Coordinate{Lon: -122.000, Lat: 37.002}),
 				),
 			),
 			expected: `<Placemark>` +
@@ -189,16 +191,16 @@ func TestCompoundElements(t *testing.T) {
 		},
 		{
 			name: "simple_crosshairs",
-			element: ScreenOverlay(
-				Name("Simple crosshairs"),
-				Description("This screen overlay uses fractional positioning to put the image in the exact center of the screen"),
-				Icon(
-					Href("http://myserver/myimage.jpg"),
+			element: kml.ScreenOverlay(
+				kml.Name("Simple crosshairs"),
+				kml.Description("This screen overlay uses fractional positioning to put the image in the exact center of the screen"),
+				kml.Icon(
+					kml.Href("http://myserver/myimage.jpg"),
 				),
-				OverlayXY(Vec2{X: 0.5, Y: 0.5, XUnits: UnitsFraction, YUnits: UnitsFraction}),
-				ScreenXY(Vec2{X: 0.5, Y: 0.5, XUnits: UnitsFraction, YUnits: UnitsFraction}),
-				Rotation(39.37878630116985),
-				Size(Vec2{X: 0, Y: 0, XUnits: UnitsPixels, YUnits: UnitsPixels}),
+				kml.OverlayXY(kml.Vec2{X: 0.5, Y: 0.5, XUnits: kml.UnitsFraction, YUnits: kml.UnitsFraction}),
+				kml.ScreenXY(kml.Vec2{X: 0.5, Y: 0.5, XUnits: kml.UnitsFraction, YUnits: kml.UnitsFraction}),
+				kml.Rotation(39.37878630116985),
+				kml.Size(kml.Vec2{X: 0, Y: 0, XUnits: kml.UnitsPixels, YUnits: kml.UnitsPixels}),
 			),
 			expected: `<ScreenOverlay>` +
 				`<name>Simple crosshairs</name>` +
@@ -223,45 +225,45 @@ func TestCompoundElements(t *testing.T) {
 }
 
 func TestSharedStyles(t *testing.T) {
-	style0 := SharedStyle("0")
-	highlightPlacemarkStyle := SharedStyle(
+	style0 := kml.SharedStyle("0")
+	highlightPlacemarkStyle := kml.SharedStyle(
 		"highlightPlacemark",
-		IconStyle(
-			Icon(
-				Href("http://maps.google.com/mapfiles/kml/paddle/red-stars.png"),
+		kml.IconStyle(
+			kml.Icon(
+				kml.Href("http://maps.google.com/mapfiles/kml/paddle/red-stars.png"),
 			),
 		),
 	)
-	normalPlacemarkStyle := SharedStyle(
+	normalPlacemarkStyle := kml.SharedStyle(
 		"normalPlacemark",
-		IconStyle(
-			Icon(
-				Href("http://maps.google.com/mapfiles/kml/paddle/wht-blank.png"),
+		kml.IconStyle(
+			kml.Icon(
+				kml.Href("http://maps.google.com/mapfiles/kml/paddle/wht-blank.png"),
 			),
 		),
 	)
-	exampleStyleMap := SharedStyleMap(
+	exampleStyleMap := kml.SharedStyleMap(
 		"exampleStyleMap",
-		Pair(
-			Key(StyleStateNormal),
-			StyleURL(normalPlacemarkStyle.URL()),
+		kml.Pair(
+			kml.Key(kml.StyleStateNormal),
+			kml.StyleURL(normalPlacemarkStyle.URL()),
 		),
-		Pair(
-			Key(StyleStateHighlight),
-			StyleURL(highlightPlacemarkStyle.URL()),
+		kml.Pair(
+			kml.Key(kml.StyleStateHighlight),
+			kml.StyleURL(highlightPlacemarkStyle.URL()),
 		),
 	)
 	for _, tc := range []struct {
 		name     string
-		element  Element
+		element  kml.Element
 		expected string
 	}{
 		{
 			name: "folder",
-			element: Folder(
+			element: kml.Folder(
 				style0,
-				Placemark(
-					StyleURL(style0.URL()),
+				kml.Placemark(
+					kml.StyleURL(style0.URL()),
 				),
 			),
 			expected: `<Folder>` +
@@ -274,18 +276,18 @@ func TestSharedStyles(t *testing.T) {
 		},
 		{
 			name: "highlighted_icon",
-			element: KML(
-				Document(
-					Name("Highlighted Icon"),
-					Description("Place your mouse over the icon to see it display the new icon"),
+			element: kml.KML(
+				kml.Document(
+					kml.Name("Highlighted Icon"),
+					kml.Description("Place your mouse over the icon to see it display the new icon"),
 					highlightPlacemarkStyle,
 					normalPlacemarkStyle,
 					exampleStyleMap,
-					Placemark(
-						Name("Roll over this icon"),
-						StyleURL(exampleStyleMap.URL()),
-						Point(
-							Coordinates(Coordinate{Lon: -122.0856545755255, Lat: 37.42243077405461}),
+					kml.Placemark(
+						kml.Name("Roll over this icon"),
+						kml.StyleURL(exampleStyleMap.URL()),
+						kml.Point(
+							kml.Coordinates(kml.Coordinate{Lon: -122.0856545755255, Lat: 37.42243077405461}),
 						),
 					),
 				),
@@ -330,17 +332,17 @@ func TestSharedStyles(t *testing.T) {
 		},
 		{
 			name: "trail_head_type",
-			element: KML(
-				Document(
-					Schema("TrailHeadTypeId", "TrailHeadType",
-						SimpleField("TrailHeadName", "string",
-							DisplayName("<b>Trail Head Name</b>"),
+			element: kml.KML(
+				kml.Document(
+					kml.Schema("TrailHeadTypeId", "TrailHeadType",
+						kml.SimpleField("TrailHeadName", "string",
+							kml.DisplayName("<b>Trail Head Name</b>"),
 						),
-						SimpleField("TrailLength", "double",
-							DisplayName("<i>The length in miles</i>"),
+						kml.SimpleField("TrailLength", "double",
+							kml.DisplayName("<i>The length in miles</i>"),
 						),
-						SimpleField("ElevationGain", "int",
-							DisplayName("<i>change in altitude</i>"),
+						kml.SimpleField("ElevationGain", "int",
+							kml.DisplayName("<i>change in altitude</i>"),
 						),
 					),
 				),
@@ -374,12 +376,12 @@ func TestSharedStyles(t *testing.T) {
 func TestWrite(t *testing.T) {
 	for _, tc := range []struct {
 		name     string
-		element  Element
+		element  kml.Element
 		expected string
 	}{
 		{
 			name:    "placemark",
-			element: KML(Placemark()),
+			element: kml.KML(kml.Placemark()),
 			expected: `<?xml version="1.0" encoding="UTF-8"?>` + "\n" +
 				`<kml xmlns="http://www.opengis.net/kml/2.2">` +
 				`<Placemark>` +
@@ -388,12 +390,12 @@ func TestWrite(t *testing.T) {
 		},
 		{
 			name: "simple_placemark",
-			element: KML(
-				Placemark(
-					Name("Simple placemark"),
-					Description("Attached to the ground. Intelligently places itself at the height of the underlying terrain."),
-					Point(
-						Coordinates(Coordinate{Lon: -122.0822035425683, Lat: 37.42228990140251}),
+			element: kml.KML(
+				kml.Placemark(
+					kml.Name("Simple placemark"),
+					kml.Description("Attached to the ground. Intelligently places itself at the height of the underlying terrain."),
+					kml.Point(
+						kml.Coordinates(kml.Coordinate{Lon: -122.0822035425683, Lat: 37.42228990140251}),
 					),
 				),
 			),
@@ -410,18 +412,18 @@ func TestWrite(t *testing.T) {
 		},
 		{
 			name: "entity_references_example",
-			element: KML(
-				Document(
-					Placemark(
-						Name("Entity references example"),
-						Description(
+			element: kml.KML(
+				kml.Document(
+					kml.Placemark(
+						kml.Name("Entity references example"),
+						kml.Description(
 							`<h1>Entity references are hard to type!</h1>`+
 								`<p><font color="red">Text is <i>more readable</i> and `+
 								`<b>easier to write</b> when you can avoid using entity `+
 								`references.</font></p>`,
 						),
-						Point(
-							Coordinates(Coordinate{Lon: 102.594411, Lat: 14.998518}),
+						kml.Point(
+							kml.Coordinates(kml.Coordinate{Lon: 102.594411, Lat: 14.998518}),
 						),
 					),
 				),
@@ -447,22 +449,22 @@ func TestWrite(t *testing.T) {
 		},
 		{
 			name: "ground_overlays",
-			element: KML(
-				Folder(
-					Name("Ground Overlays"),
-					Description("Examples of ground overlays"),
-					GroundOverlay(
-						Name("Large-scale overlay on terrain"),
-						Description("Overlay shows Mount Etna erupting on July 13th, 2001."),
-						Icon(
-							Href("http://developers.google.com/kml/documentation/images/etna.jpg"),
+			element: kml.KML(
+				kml.Folder(
+					kml.Name("Ground Overlays"),
+					kml.Description("Examples of ground overlays"),
+					kml.GroundOverlay(
+						kml.Name("Large-scale overlay on terrain"),
+						kml.Description("Overlay shows Mount Etna erupting on July 13th, 2001."),
+						kml.Icon(
+							kml.Href("http://developers.google.com/kml/documentation/images/etna.jpg"),
 						),
-						LatLonBox(
-							North(37.91904192681665),
-							South(37.46543388598137),
-							East(15.35832653742206),
-							West(14.60128369746704),
-							Rotation(-0.1556640799496235),
+						kml.LatLonBox(
+							kml.North(37.91904192681665),
+							kml.South(37.46543388598137),
+							kml.East(15.35832653742206),
+							kml.West(14.60128369746704),
+							kml.Rotation(-0.1556640799496235),
 						),
 					),
 				),
@@ -491,15 +493,15 @@ func TestWrite(t *testing.T) {
 		},
 		{
 			name: "the_pentagon",
-			element: KML(
-				Placemark(
-					Name("The Pentagon"),
-					Polygon(
-						Extrude(true),
-						AltitudeMode(AltitudeModeRelativeToGround),
-						OuterBoundaryIs(
-							LinearRing(
-								Coordinates([]Coordinate{
+			element: kml.KML(
+				kml.Placemark(
+					kml.Name("The Pentagon"),
+					kml.Polygon(
+						kml.Extrude(true),
+						kml.AltitudeMode(kml.AltitudeModeRelativeToGround),
+						kml.OuterBoundaryIs(
+							kml.LinearRing(
+								kml.Coordinates([]kml.Coordinate{
 									{-77.05788457660967, 38.87253259892824, 100},
 									{-77.05465973756702, 38.87291016281703, 100},
 									{-77.05315536854791, 38.87053267794386, 100},
@@ -509,9 +511,9 @@ func TestWrite(t *testing.T) {
 								}...),
 							),
 						),
-						InnerBoundaryIs(
-							LinearRing(
-								Coordinates([]Coordinate{
+						kml.InnerBoundaryIs(
+							kml.LinearRing(
+								kml.Coordinates([]kml.Coordinate{
 									{-77.05668055019126, 38.87154239798456, 100},
 									{-77.05542625960818, 38.87167890344077, 100},
 									{-77.05485125901024, 38.87076535397792, 100},
@@ -561,7 +563,7 @@ func TestWrite(t *testing.T) {
 		},
 		{
 			name:    "gx_placemark",
-			element: GxKML(Placemark()),
+			element: kml.GxKML(kml.Placemark()),
 			expected: `<?xml version="1.0" encoding="UTF-8"?>` + "\n" +
 				`<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2">` +
 				`<Placemark>` +
@@ -570,24 +572,24 @@ func TestWrite(t *testing.T) {
 		},
 		{
 			name: "gx_track",
-			element: GxKML(
-				Folder(
-					Placemark(
-						GxTrack(
-							When(time.Date(2010, 5, 28, 2, 2, 9, 0, time.UTC)),
-							When(time.Date(2010, 5, 28, 2, 2, 35, 0, time.UTC)),
-							When(time.Date(2010, 5, 28, 2, 2, 44, 0, time.UTC)),
-							When(time.Date(2010, 5, 28, 2, 2, 53, 0, time.UTC)),
-							When(time.Date(2010, 5, 28, 2, 2, 54, 0, time.UTC)),
-							When(time.Date(2010, 5, 28, 2, 2, 55, 0, time.UTC)),
-							When(time.Date(2010, 5, 28, 2, 2, 56, 0, time.UTC)),
-							GxCoord(Coordinate{-122.207881, 37.371915, 156.000000}),
-							GxCoord(Coordinate{-122.205712, 37.373288, 152.000000}),
-							GxCoord(Coordinate{-122.204678, 37.373939, 147.000000}),
-							GxCoord(Coordinate{-122.203572, 37.374630, 142.199997}),
-							GxCoord(Coordinate{-122.203451, 37.374706, 141.800003}),
-							GxCoord(Coordinate{-122.203329, 37.374780, 141.199997}),
-							GxCoord(Coordinate{-122.203207, 37.374857, 140.199997}),
+			element: kml.GxKML(
+				kml.Folder(
+					kml.Placemark(
+						kml.GxTrack(
+							kml.When(time.Date(2010, 5, 28, 2, 2, 9, 0, time.UTC)),
+							kml.When(time.Date(2010, 5, 28, 2, 2, 35, 0, time.UTC)),
+							kml.When(time.Date(2010, 5, 28, 2, 2, 44, 0, time.UTC)),
+							kml.When(time.Date(2010, 5, 28, 2, 2, 53, 0, time.UTC)),
+							kml.When(time.Date(2010, 5, 28, 2, 2, 54, 0, time.UTC)),
+							kml.When(time.Date(2010, 5, 28, 2, 2, 55, 0, time.UTC)),
+							kml.When(time.Date(2010, 5, 28, 2, 2, 56, 0, time.UTC)),
+							kml.GxCoord(kml.Coordinate{-122.207881, 37.371915, 156.000000}),
+							kml.GxCoord(kml.Coordinate{-122.205712, 37.373288, 152.000000}),
+							kml.GxCoord(kml.Coordinate{-122.204678, 37.373939, 147.000000}),
+							kml.GxCoord(kml.Coordinate{-122.203572, 37.374630, 142.199997}),
+							kml.GxCoord(kml.Coordinate{-122.203451, 37.374706, 141.800003}),
+							kml.GxCoord(kml.Coordinate{-122.203329, 37.374780, 141.199997}),
+							kml.GxCoord(kml.Coordinate{-122.203207, 37.374857, 140.199997}),
 						),
 					),
 				),

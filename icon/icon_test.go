@@ -1,10 +1,12 @@
-package icon
+package icon_test
 
 import (
 	"strconv"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+
+	"github.com/twpayne/go-kml/v2/icon"
 )
 
 func TestHref(t *testing.T) {
@@ -13,43 +15,43 @@ func TestHref(t *testing.T) {
 		expected string
 	}{
 		{
-			actual:   CharacterHref('9'),
+			actual:   icon.CharacterHref('9'),
 			expected: "https://maps.google.com/mapfiles/kml/pal3/icon8.png",
 		},
 		{
-			actual:   CharacterHref('A'),
+			actual:   icon.CharacterHref('A'),
 			expected: "https://maps.google.com/mapfiles/kml/pal5/icon48.png",
 		},
 		{
-			actual:   CharacterHref('M'),
+			actual:   icon.CharacterHref('M'),
 			expected: "https://maps.google.com/mapfiles/kml/pal5/icon36.png",
 		},
 		{
-			actual:   CharacterHref('Z'),
+			actual:   icon.CharacterHref('Z'),
 			expected: "https://maps.google.com/mapfiles/kml/pal5/icon1.png",
 		},
 		{
-			actual:   DefaultHref(),
+			actual:   icon.DefaultHref(),
 			expected: "https://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png",
 		},
 		{
-			actual:   NoneHref(),
+			actual:   icon.NoneHref(),
 			expected: "https://maps.google.com/mapfiles/kml/pal2/icon15.png",
 		},
 		{
-			actual:   NumberHref(1),
+			actual:   icon.NumberHref(1),
 			expected: "https://maps.google.com/mapfiles/kml/pal3/icon0.png",
 		},
 		{
-			actual:   NumberHref(10),
+			actual:   icon.NumberHref(10),
 			expected: "https://maps.google.com/mapfiles/kml/pal3/icon17.png",
 		},
 		{
-			actual:   PaddleHref("A"),
+			actual:   icon.PaddleHref("A"),
 			expected: "https://maps.google.com/mapfiles/kml/paddle/A.png",
 		},
 		{
-			actual:   TrackHref(0),
+			actual:   icon.TrackHref(0),
 			expected: "https://earth.google.com/images/kml-icons/track-directional/track-0.png",
 		},
 	} {
