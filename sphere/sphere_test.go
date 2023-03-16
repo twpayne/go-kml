@@ -1,4 +1,4 @@
-package sphere
+package sphere_test
 
 import (
 	"strconv"
@@ -7,18 +7,19 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"github.com/twpayne/go-kml/v2"
+	"github.com/twpayne/go-kml/v2/sphere"
 )
 
 func TestSphereHaversineDistance(t *testing.T) {
 	for i, tc := range []struct {
-		sphere   T
+		sphere   sphere.T
 		c1       kml.Coordinate
 		c2       kml.Coordinate
 		expected float64
 		delta    float64
 	}{
 		{
-			sphere:   FAI,
+			sphere:   sphere.FAI,
 			c1:       kml.Coordinate{Lon: -108.6180554, Lat: 35.4325002},
 			c2:       kml.Coordinate{Lon: -108.61, Lat: 35.43},
 			expected: 781,
@@ -33,31 +34,31 @@ func TestSphereHaversineDistance(t *testing.T) {
 
 func TestInitialBearingTo(t *testing.T) {
 	for i, tc := range []struct {
-		sphere   T
+		sphere   sphere.T
 		c1       kml.Coordinate
 		c2       kml.Coordinate
 		expected float64
 	}{
 		{
-			sphere:   FAI,
+			sphere:   sphere.FAI,
 			c1:       kml.Coordinate{Lon: 0, Lat: 0},
 			c2:       kml.Coordinate{Lon: 0, Lat: 1},
 			expected: 0,
 		},
 		{
-			sphere:   FAI,
+			sphere:   sphere.FAI,
 			c1:       kml.Coordinate{Lon: 0, Lat: 0},
 			c2:       kml.Coordinate{Lon: 1, Lat: 0},
 			expected: 90,
 		},
 		{
-			sphere:   FAI,
+			sphere:   sphere.FAI,
 			c1:       kml.Coordinate{Lon: 0, Lat: 0},
 			c2:       kml.Coordinate{Lon: 0, Lat: -1},
 			expected: 180,
 		},
 		{
-			sphere:   FAI,
+			sphere:   sphere.FAI,
 			c1:       kml.Coordinate{Lon: 0, Lat: 0},
 			c2:       kml.Coordinate{Lon: -1, Lat: 0},
 			expected: -90,

@@ -1,20 +1,29 @@
 linters:
   enable:
+  - asasalint
   - asciicheck
+  - bidichk
   - bodyclose
+  - containedctx
+  - contextcheck
   - cyclop
-  - deadcode
+  - decorder
   - depguard
   - dogsled
   - dupl
+  - dupword
   - durationcheck
   - errcheck
+  - errchkjson
   - errname
   - errorlint
+  - execinquery
   - exhaustive
   - exportloopref
   - forbidigo
   - forcetypeassert
+  - gci
+  - ginkgolinter
   - gochecknoinits
   - gocognit
   - goconst
@@ -32,9 +41,12 @@ linters:
   - gosec
   - gosimple
   - govet
-  - ifshort
+  - grouper
   - importas
   - ineffassign
+  - interfacebloat
+  - ireturn
+  - loggercheck
   - makezero
   - misspell
   - nakedret
@@ -42,42 +54,67 @@ linters:
   - nilerr
   - noctx
   - nolintlint
+  - nonamedreturns
+  - nosprintfhostport
   - prealloc
   - predeclared
   - promlinter
+  - reassign
   - revive
-  - rowserrcheck
   - sqlclosecheck
   - staticcheck
-  - structcheck
   - stylecheck
   - tagliatelle
+  - tenv
+  - testableexamples
+  - testpackage
   - thelper
   - tparallel
   - typecheck
   - unconvert
   - unparam
   - unused
-  - varcheck
-  - wastedassign
+  - usestdlibvars
   - whitespace
   disable:
   - exhaustivestruct
+  - exhaustruct
   - funlen
-  - gci # FIXME enable
   - gochecknoglobals
   - godox
   - gomnd
   - lll
+  - maintidx
   - nlreturn
   - paralleltest
-  - testpackage
+  - rowserrcheck # https://github.com/golangci/golangci-lint/issues/2649
+  - structcheck # https://github.com/golangci/golangci-lint/issues/2649
+  - varnamelen
+  - wastedassign # https://github.com/golangci/golangci-lint/issues/2649
   - wrapcheck
   - wsl
 
 linters-settings:
+  gci:
+    sections:
+    - standard
+    - default
+    - prefix(github.com/twpayne/go-kml)
   gofumpt:
+    extra-rules: true
     local-prefixes: github.com/twpayne/go-kml
+  goimports:
+    local-prefixes: github.com/twpayne/go-kml
+  govet:
+    disable:
+    - fieldalignment
+    - shadow
+    enable-all: true
+  misspell:
+    locale: US
+  stylecheck:
+    checks:
+    - all
 
 issues:
   exclude-rules:

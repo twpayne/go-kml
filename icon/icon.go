@@ -50,7 +50,7 @@ func PaddleHref(id string) string {
 
 // PaddleIconStyle returns an IconStyle for the paddle icon with id and the
 // hotspot set. See http://kml4earth.appspot.com/icons.html#paddle.
-func PaddleIconStyle(id string) kml.Element {
+func PaddleIconStyle(id string) *kml.CompoundElement {
 	return kml.IconStyle(
 		kml.HotSpot(kml.Vec2{X: 0.5, Y: 0, XUnits: kml.UnitsFraction, YUnits: kml.UnitsFraction}),
 		kml.Icon(
