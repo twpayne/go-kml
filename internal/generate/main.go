@@ -18,47 +18,6 @@ var (
 	namespace = flag.String("n", "", "namespace")
 )
 
-type stringValue struct {
-	Value string `xml:"value,attr"`
-}
-
-type restriction struct {
-	Base         string        `xml:"base,attr"`
-	Enumerations []stringValue `xml:"enumeration"`
-}
-
-type simpleType struct {
-	Name        string      `xml:"name,attr"`
-	Restriction restriction `xml:"restriction"`
-}
-
-type attribute struct {
-	Name string `xml:"name,attr"`
-	Type string `xml:"type,attr"`
-}
-
-type complexType struct {
-	Name       string      `xml:"name,attr"`
-	Attributes []attribute `xml:"attribute"`
-}
-
-type element struct {
-	Name     string `xml:"name,attr"`
-	Type     string `xml:"type,attr"`
-	Abstract bool   `xml:"abstract,attr"`
-}
-
-type xsd struct {
-	SimpleTypes  []simpleType  `xml:"simpleType"`
-	ComplexTypes []complexType `xml:"complexType"`
-	Elements     []element     `xml:"element"`
-}
-
-type data struct {
-	Namespace string
-	XSD       *xsd
-}
-
 var outputTemplate = template.Must(template.New("output").Funcs(sprig.HermeticTxtFuncMap()).Parse(`
 {{- $namespace := .Namespace -}}
 {{- $gxPrefix := "" -}}
@@ -76,7 +35,7 @@ import (
 {{ end -}}
 )
 
-{{ range .XSD.SimpleTypes -}}
+{{ range .Schema.SimpleType -}}
 {{ if eq .Restriction.Base "string" -}}
 {{ $typeName := printf "%s%s" $gxPrefix (.Name | trimSuffix "Type" | title) -}}
 // A{{ if hasPrefix "A" $typeName }}n{{ end }} {{ $typeName }} is a{{ if hasPrefix "a" .Name }}n{{ end }} {{ .Name }}.
@@ -89,14 +48,14 @@ const (
 	GxAltitudeModeRelativeToGround GxAltitudeModeEnum = "relativeToGround"
 	GxAltitudeModeAbsolute         GxAltitudeModeEnum = "absolute"
 	{{- end -}}
-	{{- range .Restriction.Enumerations }}
+	{{- range .Restriction.Enumeration }}
 	{{ $typeName | trimSuffix "Enum" }}{{ .Value | title }} {{ $typeName }} = "{{ .Value }}"
 {{- end }}
 )
 {{ end -}}
 {{ end -}}
 
-{{ range .XSD.Elements -}}
+{{ range .Schema.Element -}}
 {{ if and (not .Abstract) (not (regexMatch "^(angles|coord|coordinates|kml|linkSnippet|option|AbstractTourPrimitive|Data|Scale|Schema|SchemaData|SimpleArrayField|SimpleData|SimpleField|Snippet)$" .Name)) -}}
 {{ $functionNamePrefix := "" -}}
 {{ if eq $namespace "gx:" -}}
@@ -165,15 +124,18 @@ func run() error {
 	}
 	defer f.Close()
 
-	xsd := &xsd{}
-	if err := xml.NewDecoder(f).Decode(xsd); err != nil {
+	var schema Schema
+	if err := xml.NewDecoder(f).Decode(&schema); err != nil {
 		return err
 	}
 
 	source := &strings.Builder{}
-	if err := outputTemplate.Execute(source, data{
+	if err := outputTemplate.Execute(source, struct {
+		Namespace string
+		Schema    Schema
+	}{
 		Namespace: *namespace,
-		XSD:       xsd,
+		Schema:    schema,
 	}); err != nil {
 		return err
 	}
