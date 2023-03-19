@@ -9,7 +9,6 @@ import (
 	"log"
 	"net/url"
 	"os"
-	"strconv"
 
 	"github.com/twpayne/go-gpx"
 	kml "github.com/twpayne/go-kml/v2"
@@ -840,19 +839,16 @@ func (r race) kmlDocument() kml.Element {
 	)
 }
 
-func (r race) xcPlannerURL() *url.URL {
+func (r race) flyXCURL() *url.URL {
 	var coords [][]float64
 	for _, tp := range r.turnpoints {
 		coords = append(coords, []float64{tp.lat, tp.lon})
 	}
 	vs := url.Values{}
-	vs.Set("l", "free")
 	vs.Set("p", string(polyline.EncodeCoords(coords)))
-	vs.Set("s", strconv.Itoa(5))
-	vs.Set("a", strconv.Itoa(2000))
 	return &url.URL{
 		Scheme:   "https",
-		Host:     "xcplanner.appspot.com",
+		Host:     "flyxc.app",
 		RawQuery: vs.Encode(),
 	}
 }
@@ -868,14 +864,14 @@ func run() error {
 		return fmt.Errorf("unknown race: %q", *raceFlag)
 	}
 	switch *formatFlag {
+	case "flyxc":
+		_, err := os.Stdout.WriteString(r.flyXCURL().String() + "\n")
+		return err
 	case "gpx":
 		os.Stdout.WriteString(xml.Header)
 		return r.gpx().WriteIndent(os.Stdout, "", "  ")
 	case "kml":
 		return r.kmlDocument().WriteIndent(os.Stdout, "", "  ")
-	case "xcplanner":
-		_, err := os.Stdout.WriteString(r.xcPlannerURL().String() + "\n")
-		return err
 	default:
 		return fmt.Errorf("unknown format: %q", *formatFlag)
 	}
