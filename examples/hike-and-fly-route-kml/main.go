@@ -20,7 +20,7 @@ import (
 
 var (
 	formatFlag = flag.String("format", "kml", "format")
-	raceFlag   = flag.String("race", "red-bull-x-alps-2021", "race")
+	raceFlag   = flag.String("race", "red-bull-x-alps-2023", "race")
 )
 
 var blockBearings = map[string]int{
@@ -64,6 +64,145 @@ var (
 )
 
 var races = map[string]race{
+	"red-bull-x-alps-2023": {
+		name:    "Red Bull X-Alps 2023",
+		snippet: "Created by twpayne@gmail.com",
+		turnpoints: []turnpoint{
+			{
+				name:   "KITZBÜHEL",
+				lat:    47.446654,
+				lon:    12.390899,
+				ele:    760,
+				paddle: "go",
+			},
+			{
+				name:      "HAHNENKAM",
+				lat:       47.426461,
+				lon:       12.371147,
+				ele:       1660,
+				paddle:    "1",
+				signboard: true,
+			},
+			{
+				name:      "WAGRAIN - KLEINARL",
+				lat:       47.331859,
+				lon:       13.303494,
+				ele:       900,
+				paddle:    "2",
+				signboard: true,
+			},
+			{
+				name:      "CHIEMGAU ACHENTAL",
+				lat:       47.767503,
+				lon:       12.457437,
+				ele:       540,
+				paddle:    "3",
+				signboard: true,
+			},
+			{
+				name:      "LERMOOS - TIROLER ZUGSPITZ ARENA",
+				lat:       47.399948,
+				lon:       10.879854,
+				ele:       1000,
+				paddle:    "4",
+				signboard: true,
+			},
+			{
+				name:   "PIZ BUIN",
+				lat:    46.844200,
+				lon:    10.118800,
+				ele:    3300,
+				paddle: "5",
+				radius: 3000,
+			},
+			{
+				name:      "FIESCH - ALETSCH ARENA",
+				lat:       46.409400,
+				lon:       8.136880,
+				ele:       1060,
+				paddle:    "6",
+				signboard: true,
+			},
+			{
+				name:      "FRUTIGEN",
+				lat:       46.593319,
+				lon:       7.654066,
+				ele:       770,
+				paddle:    "7",
+				signboard: true,
+			},
+			{
+				name:      "NIESEN",
+				lat:       46.645057,
+				lon:       7.651374,
+				ele:       2340,
+				paddle:    "8",
+				signboard: true,
+			},
+			{
+				name:   "MONT BLANC",
+				lat:    45.832778,
+				lon:    6.865000,
+				ele:    4800,
+				paddle: "9",
+			},
+			{
+				name:   "COL DU PETIT SAINT-BERNARD",
+				lat:    45.680474,
+				lon:    6.883831,
+				ele:    2190,
+				paddle: "A",
+				notes:  "selfie",
+			},
+			{
+				name:   "DUFOURSPITZE",
+				lat:    45.936833,
+				lon:    7.867056,
+				ele:    4630,
+				paddle: "B",
+				radius: 5000,
+			},
+			{
+				name:   "CIMA TOSA",
+				lat:    46.175365,
+				lon:    10.876155,
+				ele:    2180,
+				paddle: "C",
+				notes:  "signboard and selfie",
+			},
+			{
+				name:   "3 ZINNEN",
+				lat:    46.630400,
+				lon:    12.315200,
+				ele:    2740,
+				paddle: "D",
+				notes:  "via ferrata",
+			},
+			{
+				name:      "SEXTEN",
+				lat:       46.696944,
+				lon:       12.356500,
+				ele:       1319,
+				paddle:    "E",
+				signboard: true,
+			},
+			{
+				name:      "SCHMITTENHÖHE",
+				lat:       47.328744,
+				lon:       12.737518,
+				ele:       1960,
+				paddle:    "F",
+				signboard: true,
+			},
+			{
+				name:   "ZELL AM SEE",
+				lat:    47.326821,
+				lon:    12.800403,
+				ele:    750,
+				paddle: "stop",
+			},
+		},
+	},
 	"red-bull-x-alps-2021": {
 		name:    "Red Bull X-Alps 2021",
 		snippet: "Created by twpayne@gmail.com",
