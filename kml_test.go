@@ -9,7 +9,7 @@ import (
 
 	"github.com/alecthomas/assert"
 
-	kml "github.com/twpayne/go-kml/v2"
+	kml "github.com/twpayne/go-kml/v3"
 )
 
 var (

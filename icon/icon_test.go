@@ -6,7 +6,7 @@ import (
 
 	"github.com/alecthomas/assert"
 
-	"github.com/twpayne/go-kml/v2/icon"
+	"github.com/twpayne/go-kml/v3/icon"
 )
 
 func TestHref(t *testing.T) {

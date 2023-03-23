@@ -5,7 +5,7 @@ package icon
 import (
 	"strconv"
 
-	"github.com/twpayne/go-kml/v2"
+	"github.com/twpayne/go-kml/v3"
 )
 
 // CharacterHref returns the href of the icon wirh the specificed character, or

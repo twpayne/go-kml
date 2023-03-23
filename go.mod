@@ -1,4 +1,4 @@
-module github.com/twpayne/go-kml/v2
+module github.com/twpayne/go-kml/v3
 
 go 1.19
 

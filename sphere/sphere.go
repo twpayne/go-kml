@@ -5,7 +5,7 @@ package sphere
 import (
 	"math"
 
-	"github.com/twpayne/go-kml/v2"
+	"github.com/twpayne/go-kml/v3"
 )
 
 const (
