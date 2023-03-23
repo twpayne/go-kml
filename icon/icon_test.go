@@ -4,7 +4,7 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
+	"github.com/alecthomas/assert"
 
 	"github.com/twpayne/go-kml/v2/icon"
 )

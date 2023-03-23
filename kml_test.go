@@ -7,89 +7,95 @@ import (
 	"testing"
 	"time"
 
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
+	"github.com/alecthomas/assert"
 
-	"github.com/twpayne/go-kml/v2"
+	kml "github.com/twpayne/go-kml/v2"
+)
+
+var (
+	_ kml.TopLevelElement = &kml.GxKMLElement{}
+	_ kml.TopLevelElement = &kml.KMLElement{}
 )
 
 func TestSimpleElements(t *testing.T) {
 	for _, tc := range []struct {
-		name     string
-		element  kml.Element
-		expected string
+		name        string
+		element     kml.Element
+		expected    string
+		expectedErr string
 	}{
 		{
-			name:     "Altitude",
+			name:     "altitude",
 			element:  kml.Altitude(0),
 			expected: `<altitude>0</altitude>`,
 		},
 		{
-			name:     "AltitudeMode",
+			name:     "altitudeMode",
 			element:  kml.AltitudeMode(kml.AltitudeModeAbsolute),
 			expected: `<altitudeMode>absolute</altitudeMode>`,
 		},
 		{
-			name:     "Begin",
+			name:     "begin",
 			element:  kml.Begin(time.Date(1876, 8, 1, 0, 0, 0, 0, time.UTC)),
 			expected: `<begin>1876-08-01T00:00:00Z</begin>`,
 		},
 		{
-			name:     "BgColor",
+			name:     "bgColor",
 			element:  kml.BgColor(color.Black),
 			expected: `<bgColor>ff000000</bgColor>`,
 		},
 		{
-			name:     "Color",
+			name:     "color",
 			element:  kml.Color(color.White),
 			expected: `<color>ffffffff</color>`,
 		},
 		{
-			name:     "Coordinates",
+			name:     "coordinates",
 			element:  kml.Coordinates(kml.Coordinate{Lon: 1.23, Lat: 4.56, Alt: 7.89}),
 			expected: `<coordinates>1.23,4.56,7.89</coordinates>`,
 		},
 		{
-			name:     "CoordinatesArray0",
-			element:  kml.CoordinatesArray([]float64{1.23, 4.56}),
-			expected: `<coordinates>1.23,4.56</coordinates>`,
-		},
-		{
-			name:     "CoordinatesArray1",
-			element:  kml.CoordinatesArray([]float64{1.23, 4.56, 7.89}),
-			expected: `<coordinates>1.23,4.56,7.89</coordinates>`,
-		},
-		{
-			name:     "CoordinatesArray2",
-			element:  kml.CoordinatesArray([][]float64{{1.23, 4.56}, {7.89, 0.12}}...),
-			expected: `<coordinates>1.23,4.56 7.89,0.12</coordinates>`,
-		},
-		{
+			name:     "coordinatesFlat0",
 			element:  kml.CoordinatesFlat([]float64{1.23, 4.56, 7.89, 0.12}, 0, 4, 2, 2),
 			expected: `<coordinates>1.23,4.56 7.89,0.12</coordinates>`,
 		},
 		{
-			name:     "CoordinatesFlat0",
+			name:     "coordinatesFlat1",
 			element:  kml.CoordinatesFlat([]float64{1.23, 4.56, 0, 7.89, 0.12, 0}, 0, 6, 3, 3),
 			expected: `<coordinates>1.23,4.56 7.89,0.12</coordinates>`,
 		},
 		{
-			name:     "CoordinatesFlat1",
+			name:     "coordinatesFlat2",
 			element:  kml.CoordinatesFlat([]float64{1.23, 4.56, 7.89, 0.12, 3.45, 6.78}, 0, 6, 3, 3),
 			expected: `<coordinates>1.23,4.56,7.89 0.12,3.45,6.78</coordinates>`,
 		},
 		{
-			name:     "Description",
+			name:     "coordinatesSlice0",
+			element:  kml.CoordinatesSlice([]float64{1.23, 4.56}),
+			expected: `<coordinates>1.23,4.56</coordinates>`,
+		},
+		{
+			name:     "coordinatesSlice1",
+			element:  kml.CoordinatesSlice([]float64{1.23, 4.56, 7.89}),
+			expected: `<coordinates>1.23,4.56,7.89</coordinates>`,
+		},
+		{
+			name:     "coordinatesSlice2",
+			element:  kml.CoordinatesSlice([][]float64{{1.23, 4.56}, {7.89, 0.12}}...),
+			expected: `<coordinates>1.23,4.56 7.89,0.12</coordinates>`,
+		},
+		{
+			name:     "description",
 			element:  kml.Description("text"),
 			expected: `<description>text</description>`,
 		},
 		{
-			name:     "End",
+			name:     "end",
 			element:  kml.End(time.Date(2015, 12, 31, 23, 59, 59, 0, time.UTC)),
 			expected: `<end>2015-12-31T23:59:59Z</end>`,
 		},
 		{
-			name:     "Extrude",
+			name:     "extrude",
 			element:  kml.Extrude(false),
 			expected: `<extrude>0</extrude>`,
 		},
@@ -99,57 +105,186 @@ func TestSimpleElements(t *testing.T) {
 			expected: `<Folder></Folder>`,
 		},
 		{
-			name:     "GxCoord",
+			name:     "gx:angles",
+			element:  kml.GxAngles(1.23, 4.56, 7.89),
+			expected: `<gx:angles>1.23 4.56 7.89</gx:angles>`,
+		},
+		{
+			name:     "gx:coord",
 			element:  kml.GxCoord(kml.Coordinate{1.23, 4.56, 7.89}),
 			expected: `<gx:coord>1.23 4.56 7.89</gx:coord>`,
 		},
 		{
-			name:     "Heading",
+			name:     "gx:option",
+			element:  kml.GxOption(kml.GxOptionNameStreetView, true),
+			expected: `<gx:option name="streetview" enabled="true"></gx:option>`,
+		},
+		{
+			name:     "heading",
 			element:  kml.Heading(0),
 			expected: `<heading>0</heading>`,
 		},
 		{
-			name:     "HotSpot",
+			name:     "hotSpot",
 			element:  kml.HotSpot(kml.Vec2{X: 0.5, Y: 0.5, XUnits: kml.UnitsPixels, YUnits: kml.UnitsPixels}),
 			expected: `<hotSpot x="0.5" y="0.5" xunits="pixels" yunits="pixels"></hotSpot>`,
 		},
 		{
-			name:     "Href",
+			name:     "href",
 			element:  kml.Href("https://www.google.com/"),
 			expected: `<href>https://www.google.com/</href>`,
 		},
 		{
-			name:     "Latitude",
+			name:     "latitude",
 			element:  kml.Latitude(0),
 			expected: `<latitude>0</latitude>`,
 		},
 		{
-			name:     "LinkSnippet",
-			element:  kml.LinkSnippet(2, "snippet"),
-			expected: `<linkSnippet maxLines="2">snippet</linkSnippet>`,
+			name:     "linkSnippet0",
+			element:  kml.LinkSnippet("snippet"),
+			expected: `<linkSnippet>snippet</linkSnippet>`,
 		},
 		{
-			name:     "ListItemType",
+			name:     "linkSnippet1",
+			element:  kml.LinkSnippet("snippet").WithMaxLines(1),
+			expected: `<linkSnippet maxLines="1">snippet</linkSnippet>`,
+		},
+		{
+			name:     "listItemType",
 			element:  kml.ListItemType(kml.ListItemTypeCheck),
 			expected: `<listItemType>check</listItemType>`,
 		},
 		{
-			name:     "OverlayXY",
+			name:     "name",
+			element:  kml.Name("value"),
+			expected: "<name>value</name>",
+		},
+		{
+			name:     "overlayXY",
 			element:  kml.OverlayXY(kml.Vec2{X: 0, Y: 0, XUnits: kml.UnitsFraction, YUnits: kml.UnitsFraction}),
 			expected: `<overlayXY x="0" y="0" xunits="fraction" yunits="fraction"></overlayXY>`,
 		},
 		{
-			name:     "Style",
-			element:  kml.Style(),
-			expected: `<Style></Style>`,
+			name:     "value_charData",
+			element:  kml.Value(xml.CharData("<>")),
+			expected: "<value>&lt;&gt;</value>",
 		},
-		// FIXME More simple elements
+		{
+			name:     "value_stringer",
+			element:  kml.Value(kml.AltitudeModeAbsolute),
+			expected: "<value>absolute</value>",
+		},
+		{
+			name:     "value_byte_slice",
+			element:  kml.Value([]byte("&")),
+			expected: "<value>&amp;</value>",
+		},
+		{
+			name:     "value_bool",
+			element:  kml.Value(true),
+			expected: "<value>true</value>",
+		},
+		{
+			name:     "value_complex64",
+			element:  kml.Value(complex64(1 + 2i)),
+			expected: "<value>(1+2i)</value>",
+		},
+		{
+			name:     "value_complex128",
+			element:  kml.Value(1 + 2i),
+			expected: "<value>(1+2i)</value>",
+		},
+		{
+			name:     "value_float32",
+			element:  kml.Value(float32(1.25)),
+			expected: "<value>1.25</value>",
+		},
+		{
+			name:     "value_float64",
+			element:  kml.Value(1.2),
+			expected: "<value>1.2</value>",
+		},
+		{
+			name:     "value_int",
+			element:  kml.Value(1),
+			expected: "<value>1</value>",
+		},
+		{
+			name:     "value_int8",
+			element:  kml.Value(int8(-8)),
+			expected: "<value>-8</value>",
+		},
+		{
+			name:     "value_int16",
+			element:  kml.Value(int16(-16)),
+			expected: "<value>-16</value>",
+		},
+		{
+			name:     "value_int32",
+			element:  kml.Value(int32(-32)),
+			expected: "<value>-32</value>",
+		},
+		{
+			name:     "value_int64",
+			element:  kml.Value(int64(-64)),
+			expected: "<value>-64</value>",
+		},
+		{
+			name:     "value_nil",
+			element:  kml.Value(nil),
+			expected: "<value></value>",
+		},
+		{
+			name:     "value_string",
+			element:  kml.Value("<>"),
+			expected: "<value>&lt;&gt;</value>",
+		},
+		{
+			name:     "value_uint",
+			element:  kml.Value(uint(1)),
+			expected: "<value>1</value>",
+		},
+		{
+			name:     "value_uint8",
+			element:  kml.Value(uint8(8)),
+			expected: "<value>8</value>",
+		},
+		{
+			name:     "value_uint16",
+			element:  kml.Value(uint16(16)),
+			expected: "<value>16</value>",
+		},
+		{
+			name:     "value_uint32",
+			element:  kml.Value(uint32(32)),
+			expected: "<value>32</value>",
+		},
+		{
+			name:     "value_uint64",
+			element:  kml.Value(uint64(64)),
+			expected: "<value>64</value>",
+		},
+		{
+			name:     "value_nil",
+			element:  kml.Value(nil),
+			expected: "<value></value>",
+		},
+		{
+			name:        "value_unsupported",
+			element:     kml.Value(kml.Value(nil)),
+			expectedErr: "*kml.ValueElement: unsupported type",
+		},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
-			sb := &strings.Builder{}
-			e := xml.NewEncoder(sb)
-			require.NoError(t, e.Encode(tc.element))
-			assert.Equal(t, tc.expected, sb.String())
+			var builder strings.Builder
+			err := xml.NewEncoder(&builder).Encode(tc.element)
+			if tc.expectedErr != "" {
+				assert.Error(t, err)
+				assert.Equal(t, tc.expectedErr, err.Error())
+			} else {
+				assert.NoError(t, err)
+				assert.Equal(t, tc.expected, builder.String())
+			}
 		})
 	}
 }
@@ -175,7 +310,8 @@ func TestCompoundElements(t *testing.T) {
 					kml.Coordinates(kml.Coordinate{Lon: -122.000, Lat: 37.002}),
 				),
 			),
-			expected: `<Placemark>` +
+			expected: `` +
+				`<Placemark>` +
 				`<name>Easy trail</name>` +
 				`<ExtendedData>` +
 				`<SchemaData schemaUrl="#TrailHeadTypeId">` +
@@ -202,7 +338,8 @@ func TestCompoundElements(t *testing.T) {
 				kml.Rotation(39.37878630116985),
 				kml.Size(kml.Vec2{X: 0, Y: 0, XUnits: kml.UnitsPixels, YUnits: kml.UnitsPixels}),
 			),
-			expected: `<ScreenOverlay>` +
+			expected: `` +
+				`<ScreenOverlay>` +
 				`<name>Simple crosshairs</name>` +
 				`<description>This screen overlay uses fractional positioning to put the image in the exact center of the screen</description>` +
 				`<Icon>` +
@@ -214,14 +351,146 @@ func TestCompoundElements(t *testing.T) {
 				`<size x="0" y="0" xunits="pixels" yunits="pixels"></size>` +
 				`</ScreenOverlay>`,
 		},
+		{
+			name: "extended_data",
+			element: kml.Placemark(
+				kml.Name("Club house"),
+				kml.ExtendedData(
+					kml.Data("holeNumber", kml.Value(1)),
+					kml.Data("holeYardage", kml.Value(234)),
+					kml.Data("holePar", kml.Value(4)),
+				),
+			),
+			expected: `` +
+				`<Placemark>` +
+				`<name>Club house</name>` +
+				`<ExtendedData>` +
+				`<Data name="holeNumber">` +
+				`<value>1</value>` +
+				`</Data>` +
+				`<Data name="holeYardage">` +
+				`<value>234</value>` +
+				`</Data>` +
+				`<Data name="holePar">` +
+				`<value>4</value>` +
+				`</Data>` +
+				`</ExtendedData>` +
+				`</Placemark>`,
+		},
+		{
+			name: "Schema",
+			element: kml.Schema("schema",
+				kml.GxSimpleArrayField("heartrate", "int", kml.DisplayName("Heart Rate")),
+				kml.GxSimpleArrayField("cadence", "int", kml.DisplayName("Cadence")),
+				kml.GxSimpleArrayField("power", "float", kml.DisplayName("Power")),
+			),
+			expected: `` +
+				`<Schema id="schema">` +
+				`<gx:SimpleArrayField name="heartrate" type="int">` +
+				`<displayName>Heart Rate</displayName>` +
+				`</gx:SimpleArrayField>` +
+				`<gx:SimpleArrayField name="cadence" type="int">` +
+				`<displayName>Cadence</displayName>` +
+				`</gx:SimpleArrayField>` +
+				`<gx:SimpleArrayField name="power" type="float">` +
+				`<displayName>Power</displayName>` +
+				`</gx:SimpleArrayField>` +
+				`</Schema>`,
+		},
+		{
+			name:     "Snippet",
+			element:  kml.Snippet("snippet").WithMaxLines(1),
+			expected: `<Snippet maxLines="1">snippet</Snippet>`,
+		},
+		{
+			name: "gx:Wait",
+			element: kml.GxWait(
+				kml.GxDuration(2500 * time.Millisecond),
+			),
+			expected: `` +
+				`<gx:Wait>` +
+				`<gx:duration>2.5</gx:duration>` +
+				`</gx:Wait>`,
+		},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
-			sb := &strings.Builder{}
-			e := xml.NewEncoder(sb)
-			require.NoError(t, e.Encode(tc.element))
-			assert.Equal(t, tc.expected, sb.String())
+			var builder strings.Builder
+			encoder := xml.NewEncoder(&builder)
+			assert.NoError(t, encoder.Encode(tc.element))
+			assert.Equal(t, tc.expected, builder.String())
 		})
 	}
+}
+
+func TestModel(t *testing.T) {
+	k := kml.KML(
+		kml.Placemark(
+			kml.Name("SketchUp Model of Macky Auditorium"),
+			kml.Description("University of Colorado, Boulder; model created by Noël Nemcik."),
+			kml.LookAt(
+				kml.Longitude(-105.2727379358738),
+				kml.Latitude(40.01000594412381),
+				kml.Altitude(0),
+				kml.Range(127.2393107680517),
+				kml.Tilt(65.74454495876547),
+				kml.Heading(-27.70337734057933),
+			),
+			kml.Model(
+				kml.AltitudeMode(kml.AltitudeModeRelativeToGround),
+				kml.Location(
+					kml.Longitude(-105.272774533734),
+					kml.Latitude(40.009993372683),
+					kml.Altitude(0),
+				),
+				kml.Orientation(
+					kml.Heading(0),
+					kml.Tilt(0),
+					kml.Roll(0),
+				),
+				kml.ModelScale(
+					kml.X(1),
+					kml.Y(1),
+					kml.Z(1),
+				),
+			),
+		),
+	)
+	expected := `<?xml version="1.0" encoding="UTF-8"?>` + "\n" +
+		`<kml xmlns="http://www.opengis.net/kml/2.2">` +
+		`<Placemark>` +
+		`<name>SketchUp Model of Macky Auditorium</name>` +
+		`<description>University of Colorado, Boulder; model created by Noël Nemcik.</description>` +
+		`<LookAt>` +
+		`<longitude>-105.2727379358738</longitude>` +
+		`<latitude>40.01000594412381</latitude>` +
+		`<altitude>0</altitude>` +
+		`<range>127.2393107680517</range>` +
+		`<tilt>65.74454495876547</tilt>` +
+		`<heading>-27.70337734057933</heading>` +
+		`</LookAt>` +
+		`<Model>` +
+		`<altitudeMode>relativeToGround</altitudeMode>` +
+		`<Location>` +
+		`<longitude>-105.272774533734</longitude>` +
+		`<latitude>40.009993372683</latitude>` +
+		`<altitude>0</altitude>` +
+		`</Location>` +
+		`<Orientation>` +
+		`<heading>0</heading>` +
+		`<tilt>0</tilt>` +
+		`<roll>0</roll>` +
+		`</Orientation>` +
+		`<Scale>` +
+		`<x>1</x>` +
+		`<y>1</y>` +
+		`<z>1</z>` +
+		`</Scale>` +
+		`</Model>` +
+		`</Placemark>` +
+		`</kml>`
+	var builder strings.Builder
+	assert.NoError(t, k.Write(&builder))
+	assert.Equal(t, expected, builder.String())
 }
 
 func TestSharedStyles(t *testing.T) {
@@ -334,7 +603,7 @@ func TestSharedStyles(t *testing.T) {
 			name: "trail_head_type",
 			element: kml.KML(
 				kml.Document(
-					kml.Schema("TrailHeadTypeId", "TrailHeadType",
+					kml.NamedSchema("TrailHeadTypeId", "TrailHeadType",
 						kml.SimpleField("TrailHeadName", "string",
 							kml.DisplayName("<b>Trail Head Name</b>"),
 						),
@@ -365,10 +634,10 @@ func TestSharedStyles(t *testing.T) {
 		},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
-			sb := &strings.Builder{}
-			e := xml.NewEncoder(sb)
-			require.NoError(t, e.Encode(tc.element))
-			assert.Equal(t, tc.expected, sb.String())
+			var builder strings.Builder
+			encoder := xml.NewEncoder(&builder)
+			assert.NoError(t, encoder.Encode(tc.element))
+			assert.Equal(t, tc.expected, builder.String())
 		})
 	}
 }
@@ -376,7 +645,7 @@ func TestSharedStyles(t *testing.T) {
 func TestWrite(t *testing.T) {
 	for _, tc := range []struct {
 		name     string
-		element  kml.Element
+		element  kml.TopLevelElement
 		expected string
 	}{
 		{
@@ -620,9 +889,9 @@ func TestWrite(t *testing.T) {
 		},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
-			sb := &strings.Builder{}
-			require.NoError(t, tc.element.Write(sb))
-			assert.Equal(t, tc.expected, sb.String())
+			var builder strings.Builder
+			assert.NoError(t, tc.element.Write(&builder))
+			assert.Equal(t, tc.expected, builder.String())
 		})
 	}
 }

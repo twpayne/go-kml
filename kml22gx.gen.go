@@ -3,11 +3,17 @@
 package kml
 
 import (
+	"encoding/xml"
+	"fmt"
 	"image/color"
+	"strconv"
+	"time"
 )
 
 // A GxAltitudeModeEnum is an altitudeModeEnumType.
 type GxAltitudeModeEnum string
+
+func (e GxAltitudeModeEnum) String() string { return string(e) }
 
 // GxAltitudeModeEnums.
 const (
@@ -21,6 +27,8 @@ const (
 // A GxFlyToModeEnum is a flyToModeEnumType.
 type GxFlyToModeEnum string
 
+func (e GxFlyToModeEnum) String() string { return string(e) }
+
 // GxFlyToModeEnums.
 const (
 	GxFlyToModeBounce GxFlyToModeEnum = "bounce"
@@ -30,177 +38,748 @@ const (
 // A GxPlayModeEnum is a playModeEnumType.
 type GxPlayModeEnum string
 
+func (e GxPlayModeEnum) String() string { return string(e) }
+
 // GxPlayModeEnums.
 const (
 	GxPlayModePause GxPlayModeEnum = "pause"
 )
 
-// GxAltitudeMode returns a new altitudeMode element.
-func GxAltitudeMode(value GxAltitudeModeEnum) *SimpleElement {
-	return newSEString("gx:altitudeMode", string(value))
+// A GxAltitudeModeElement is an altitudeMode element.
+type GxAltitudeModeElement struct {
+	Value GxAltitudeModeEnum
 }
 
-// GxAltitudeOffset returns a new altitudeOffset element.
-func GxAltitudeOffset(value float64) *SimpleElement {
-	return newSEFloat("gx:altitudeOffset", value)
+// GxAltitudeMode returns a new GxAltitudeModeElement.
+func GxAltitudeMode(value GxAltitudeModeEnum) *GxAltitudeModeElement {
+	return &GxAltitudeModeElement{
+		Value: value,
+	}
 }
 
-// GxBalloonVisibility returns a new balloonVisibility element.
-func GxBalloonVisibility(value bool) *SimpleElement {
-	return newSEBool("gx:balloonVisibility", value)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *GxAltitudeModeElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "gx:altitudeMode"}}
+	charData := xml.CharData(e.Value)
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// GxDelayedStart returns a new delayedStart element.
-func GxDelayedStart(value float64) *SimpleElement {
-	return newSEFloat("gx:delayedStart", value)
+// A GxAltitudeOffsetElement is an altitudeOffset element.
+type GxAltitudeOffsetElement struct {
+	Value float64
 }
 
-// GxDrawOrder returns a new drawOrder element.
-func GxDrawOrder(value int) *SimpleElement {
-	return newSEInt("gx:drawOrder", value)
+// GxAltitudeOffset returns a new GxAltitudeOffsetElement.
+func GxAltitudeOffset(value float64) *GxAltitudeOffsetElement {
+	return &GxAltitudeOffsetElement{
+		Value: value,
+	}
 }
 
-// GxDuration returns a new duration element.
-func GxDuration(value float64) *SimpleElement {
-	return newSEFloat("gx:duration", value)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *GxAltitudeOffsetElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "gx:altitudeOffset"}}
+	charData := xml.CharData(strconv.FormatFloat(e.Value, 'f', -1, 64))
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// GxFlyToMode returns a new flyToMode element.
-func GxFlyToMode(value GxFlyToModeEnum) *SimpleElement {
-	return newSEString("gx:flyToMode", string(value))
+// A GxBalloonVisibilityElement is a balloonVisibility element.
+type GxBalloonVisibilityElement struct {
+	Value bool
 }
 
-// GxHorizFOV returns a new horizFov element.
-func GxHorizFOV(value float64) *SimpleElement {
-	return newSEFloat("gx:horizFov", value)
+// GxBalloonVisibility returns a new GxBalloonVisibilityElement.
+func GxBalloonVisibility(value bool) *GxBalloonVisibilityElement {
+	return &GxBalloonVisibilityElement{
+		Value: value,
+	}
 }
 
-// GxInterpolate returns a new interpolate element.
-func GxInterpolate(value bool) *SimpleElement {
-	return newSEBool("gx:interpolate", value)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *GxBalloonVisibilityElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "gx:balloonVisibility"}}
+	var charData xml.CharData
+	if e.Value {
+		charData = xml.CharData("1")
+	} else {
+		charData = xml.CharData("0")
+	}
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// GxLabelVisibility returns a new labelVisibility element.
-func GxLabelVisibility(value bool) *SimpleElement {
-	return newSEBool("gx:labelVisibility", value)
+// A GxDelayedStartElement is a delayedStart element.
+type GxDelayedStartElement struct {
+	Value time.Duration
 }
 
-// GxOuterColor returns a new outerColor element.
-func GxOuterColor(value color.Color) *SimpleElement {
-	return newSEColor("gx:outerColor", value)
+// GxDelayedStart returns a new GxDelayedStartElement.
+func GxDelayedStart(value time.Duration) *GxDelayedStartElement {
+	return &GxDelayedStartElement{
+		Value: value,
+	}
 }
 
-// GxOuterWidth returns a new outerWidth element.
-func GxOuterWidth(value float64) *SimpleElement {
-	return newSEFloat("gx:outerWidth", value)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *GxDelayedStartElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "gx:delayedStart"}}
+	seconds := float64(e.Value) / float64(time.Second)
+	charData := xml.CharData(strconv.FormatFloat(seconds, 'f', -1, 64))
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// GxPhysicalWidth returns a new physicalWidth element.
-func GxPhysicalWidth(value float64) *SimpleElement {
-	return newSEFloat("gx:physicalWidth", value)
+// A GxDrawOrderElement is a drawOrder element.
+type GxDrawOrderElement struct {
+	Value int
 }
 
-// GxPlayMode returns a new playMode element.
-func GxPlayMode(value GxPlayModeEnum) *SimpleElement {
-	return newSEString("gx:playMode", string(value))
+// GxDrawOrder returns a new GxDrawOrderElement.
+func GxDrawOrder(value int) *GxDrawOrderElement {
+	return &GxDrawOrderElement{
+		Value: value,
+	}
 }
 
-// GxRank returns a new rank element.
-func GxRank(value float64) *SimpleElement {
-	return newSEFloat("gx:rank", value)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *GxDrawOrderElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "gx:drawOrder"}}
+	charData := xml.CharData(strconv.Itoa(e.Value))
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// GxValue returns a new value element.
-func GxValue(value string) *SimpleElement {
-	return newSEString("gx:value", value)
+// A GxDurationElement is a duration element.
+type GxDurationElement struct {
+	Value time.Duration
 }
 
-// GxX returns a new x element.
-func GxX(value int) *SimpleElement {
-	return newSEInt("gx:x", value)
+// GxDuration returns a new GxDurationElement.
+func GxDuration(value time.Duration) *GxDurationElement {
+	return &GxDurationElement{
+		Value: value,
+	}
 }
 
-// GxY returns a new y element.
-func GxY(value int) *SimpleElement {
-	return newSEInt("gx:y", value)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *GxDurationElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "gx:duration"}}
+	seconds := float64(e.Value) / float64(time.Second)
+	charData := xml.CharData(strconv.FormatFloat(seconds, 'f', -1, 64))
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// GxW returns a new w element.
-func GxW(value int) *SimpleElement {
-	return newSEInt("gx:w", value)
+// A GxFlyToModeElement is a flyToMode element.
+type GxFlyToModeElement struct {
+	Value GxFlyToModeEnum
 }
 
-// GxH returns a new h element.
-func GxH(value int) *SimpleElement {
-	return newSEInt("gx:h", value)
+// GxFlyToMode returns a new GxFlyToModeElement.
+func GxFlyToMode(value GxFlyToModeEnum) *GxFlyToModeElement {
+	return &GxFlyToModeElement{
+		Value: value,
+	}
 }
 
-// GxAnimatedUpdate returns a new AnimatedUpdate element.
-func GxAnimatedUpdate(children ...Element) *CompoundElement {
-	return newCE("gx:AnimatedUpdate", children)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *GxFlyToModeElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "gx:flyToMode"}}
+	charData := xml.CharData(e.Value)
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// GxFlyTo returns a new FlyTo element.
-func GxFlyTo(children ...Element) *CompoundElement {
-	return newCE("gx:FlyTo", children)
+// A GxHorizFOVElement is a horizFov element.
+type GxHorizFOVElement struct {
+	Value float64
 }
 
-// GxPlaylist returns a new Playlist element.
-func GxPlaylist(children ...Element) *CompoundElement {
-	return newCE("gx:Playlist", children)
+// GxHorizFOV returns a new GxHorizFOVElement.
+func GxHorizFOV(value float64) *GxHorizFOVElement {
+	return &GxHorizFOVElement{
+		Value: value,
+	}
 }
 
-// GxSoundCue returns a new SoundCue element.
-func GxSoundCue(children ...Element) *CompoundElement {
-	return newCE("gx:SoundCue", children)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *GxHorizFOVElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "gx:horizFov"}}
+	charData := xml.CharData(strconv.FormatFloat(e.Value, 'f', -1, 64))
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// GxTour returns a new Tour element.
-func GxTour(children ...Element) *CompoundElement {
-	return newCE("gx:Tour", children)
+// A GxInterpolateElement is an interpolate element.
+type GxInterpolateElement struct {
+	Value bool
 }
 
-// GxTimeStamp returns a new TimeStamp element.
-func GxTimeStamp(children ...Element) *CompoundElement {
-	return newCE("gx:TimeStamp", children)
+// GxInterpolate returns a new GxInterpolateElement.
+func GxInterpolate(value bool) *GxInterpolateElement {
+	return &GxInterpolateElement{
+		Value: value,
+	}
 }
 
-// GxTimeSpan returns a new TimeSpan element.
-func GxTimeSpan(children ...Element) *CompoundElement {
-	return newCE("gx:TimeSpan", children)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *GxInterpolateElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "gx:interpolate"}}
+	var charData xml.CharData
+	if e.Value {
+		charData = xml.CharData("1")
+	} else {
+		charData = xml.CharData("0")
+	}
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// GxTourControl returns a new TourControl element.
-func GxTourControl(children ...Element) *CompoundElement {
-	return newCE("gx:TourControl", children)
+// A GxLabelVisibilityElement is a labelVisibility element.
+type GxLabelVisibilityElement struct {
+	Value bool
 }
 
-// GxWait returns a new Wait element.
-func GxWait(children ...Element) *CompoundElement {
-	return newCE("gx:Wait", children)
+// GxLabelVisibility returns a new GxLabelVisibilityElement.
+func GxLabelVisibility(value bool) *GxLabelVisibilityElement {
+	return &GxLabelVisibilityElement{
+		Value: value,
+	}
 }
 
-// GxLatLonQuad returns a new LatLonQuad element.
-func GxLatLonQuad(children ...Element) *CompoundElement {
-	return newCE("gx:LatLonQuad", children)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *GxLabelVisibilityElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "gx:labelVisibility"}}
+	var charData xml.CharData
+	if e.Value {
+		charData = xml.CharData("1")
+	} else {
+		charData = xml.CharData("0")
+	}
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// GxTrack returns a new Track element.
-func GxTrack(children ...Element) *CompoundElement {
-	return newCE("gx:Track", children)
+// A GxOuterColorElement is an outerColor element.
+type GxOuterColorElement struct {
+	Value color.Color
 }
 
-// GxMultiTrack returns a new MultiTrack element.
-func GxMultiTrack(children ...Element) *CompoundElement {
-	return newCE("gx:MultiTrack", children)
+// GxOuterColor returns a new GxOuterColorElement.
+func GxOuterColor(value color.Color) *GxOuterColorElement {
+	return &GxOuterColorElement{
+		Value: value,
+	}
 }
 
-// GxSimpleArrayData returns a new SimpleArrayData element.
-func GxSimpleArrayData(children ...Element) *CompoundElement {
-	return newCE("gx:SimpleArrayData", children)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *GxOuterColorElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "gx:outerColor"}}
+	red, green, blue, alpha := e.Value.RGBA()
+	charData := xml.CharData(fmt.Sprintf("%02x%02x%02x%02x", alpha/256, blue/256, green/256, red/256))
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// GxViewerOptions returns a new ViewerOptions element.
-func GxViewerOptions(children ...Element) *CompoundElement {
-	return newCE("gx:ViewerOptions", children)
+// A GxOuterWidthElement is an outerWidth element.
+type GxOuterWidthElement struct {
+	Value float64
+}
+
+// GxOuterWidth returns a new GxOuterWidthElement.
+func GxOuterWidth(value float64) *GxOuterWidthElement {
+	return &GxOuterWidthElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *GxOuterWidthElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "gx:outerWidth"}}
+	charData := xml.CharData(strconv.FormatFloat(e.Value, 'f', -1, 64))
+	return encodeElementWithCharData(encoder, startElement, charData)
+}
+
+// A GxPhysicalWidthElement is a physicalWidth element.
+type GxPhysicalWidthElement struct {
+	Value float64
+}
+
+// GxPhysicalWidth returns a new GxPhysicalWidthElement.
+func GxPhysicalWidth(value float64) *GxPhysicalWidthElement {
+	return &GxPhysicalWidthElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *GxPhysicalWidthElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "gx:physicalWidth"}}
+	charData := xml.CharData(strconv.FormatFloat(e.Value, 'f', -1, 64))
+	return encodeElementWithCharData(encoder, startElement, charData)
+}
+
+// A GxPlayModeElement is a playMode element.
+type GxPlayModeElement struct {
+	Value GxPlayModeEnum
+}
+
+// GxPlayMode returns a new GxPlayModeElement.
+func GxPlayMode(value GxPlayModeEnum) *GxPlayModeElement {
+	return &GxPlayModeElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *GxPlayModeElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "gx:playMode"}}
+	charData := xml.CharData(e.Value)
+	return encodeElementWithCharData(encoder, startElement, charData)
+}
+
+// A GxRankElement is a rank element.
+type GxRankElement struct {
+	Value float64
+}
+
+// GxRank returns a new GxRankElement.
+func GxRank(value float64) *GxRankElement {
+	return &GxRankElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *GxRankElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "gx:rank"}}
+	charData := xml.CharData(strconv.FormatFloat(e.Value, 'f', -1, 64))
+	return encodeElementWithCharData(encoder, startElement, charData)
+}
+
+// A GxXElement is a x element.
+type GxXElement struct {
+	Value int
+}
+
+// GxX returns a new GxXElement.
+func GxX(value int) *GxXElement {
+	return &GxXElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *GxXElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "gx:x"}}
+	charData := xml.CharData(strconv.Itoa(e.Value))
+	return encodeElementWithCharData(encoder, startElement, charData)
+}
+
+// A GxYElement is a y element.
+type GxYElement struct {
+	Value int
+}
+
+// GxY returns a new GxYElement.
+func GxY(value int) *GxYElement {
+	return &GxYElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *GxYElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "gx:y"}}
+	charData := xml.CharData(strconv.Itoa(e.Value))
+	return encodeElementWithCharData(encoder, startElement, charData)
+}
+
+// A GxWElement is a w element.
+type GxWElement struct {
+	Value int
+}
+
+// GxW returns a new GxWElement.
+func GxW(value int) *GxWElement {
+	return &GxWElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *GxWElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "gx:w"}}
+	charData := xml.CharData(strconv.Itoa(e.Value))
+	return encodeElementWithCharData(encoder, startElement, charData)
+}
+
+// A GxHElement is a h element.
+type GxHElement struct {
+	Value int
+}
+
+// GxH returns a new GxHElement.
+func GxH(value int) *GxHElement {
+	return &GxHElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *GxHElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "gx:h"}}
+	charData := xml.CharData(strconv.Itoa(e.Value))
+	return encodeElementWithCharData(encoder, startElement, charData)
+}
+
+// A GxAbstractTourPrimitiveElement is an AbstractTourPrimitive element.
+type GxAbstractTourPrimitiveElement struct {
+	Children []Element
+}
+
+// GxAbstractTourPrimitive returns a new GxAbstractTourPrimitiveElement.
+func GxAbstractTourPrimitive(children ...Element) *GxAbstractTourPrimitiveElement {
+	return &GxAbstractTourPrimitiveElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *GxAbstractTourPrimitiveElement) Append(children ...Element) *GxAbstractTourPrimitiveElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *GxAbstractTourPrimitiveElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "gx:AbstractTourPrimitive"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A GxAnimatedUpdateElement is an AnimatedUpdate element.
+type GxAnimatedUpdateElement struct {
+	Children []Element
+}
+
+// GxAnimatedUpdate returns a new GxAnimatedUpdateElement.
+func GxAnimatedUpdate(children ...Element) *GxAnimatedUpdateElement {
+	return &GxAnimatedUpdateElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *GxAnimatedUpdateElement) Append(children ...Element) *GxAnimatedUpdateElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *GxAnimatedUpdateElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "gx:AnimatedUpdate"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A GxFlyToElement is a FlyTo element.
+type GxFlyToElement struct {
+	Children []Element
+}
+
+// GxFlyTo returns a new GxFlyToElement.
+func GxFlyTo(children ...Element) *GxFlyToElement {
+	return &GxFlyToElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *GxFlyToElement) Append(children ...Element) *GxFlyToElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *GxFlyToElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "gx:FlyTo"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A GxPlaylistElement is a Playlist element.
+type GxPlaylistElement struct {
+	Children []Element
+}
+
+// GxPlaylist returns a new GxPlaylistElement.
+func GxPlaylist(children ...Element) *GxPlaylistElement {
+	return &GxPlaylistElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *GxPlaylistElement) Append(children ...Element) *GxPlaylistElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *GxPlaylistElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "gx:Playlist"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A GxSoundCueElement is a SoundCue element.
+type GxSoundCueElement struct {
+	Children []Element
+}
+
+// GxSoundCue returns a new GxSoundCueElement.
+func GxSoundCue(children ...Element) *GxSoundCueElement {
+	return &GxSoundCueElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *GxSoundCueElement) Append(children ...Element) *GxSoundCueElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *GxSoundCueElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "gx:SoundCue"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A GxTourElement is a Tour element.
+type GxTourElement struct {
+	Children []Element
+}
+
+// GxTour returns a new GxTourElement.
+func GxTour(children ...Element) *GxTourElement {
+	return &GxTourElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *GxTourElement) Append(children ...Element) *GxTourElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *GxTourElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "gx:Tour"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A GxTimeStampElement is a TimeStamp element.
+type GxTimeStampElement struct {
+	Children []Element
+}
+
+// GxTimeStamp returns a new GxTimeStampElement.
+func GxTimeStamp(children ...Element) *GxTimeStampElement {
+	return &GxTimeStampElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *GxTimeStampElement) Append(children ...Element) *GxTimeStampElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *GxTimeStampElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "gx:TimeStamp"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A GxTimeSpanElement is a TimeSpan element.
+type GxTimeSpanElement struct {
+	Children []Element
+}
+
+// GxTimeSpan returns a new GxTimeSpanElement.
+func GxTimeSpan(children ...Element) *GxTimeSpanElement {
+	return &GxTimeSpanElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *GxTimeSpanElement) Append(children ...Element) *GxTimeSpanElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *GxTimeSpanElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "gx:TimeSpan"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A GxTourControlElement is a TourControl element.
+type GxTourControlElement struct {
+	Children []Element
+}
+
+// GxTourControl returns a new GxTourControlElement.
+func GxTourControl(children ...Element) *GxTourControlElement {
+	return &GxTourControlElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *GxTourControlElement) Append(children ...Element) *GxTourControlElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *GxTourControlElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "gx:TourControl"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A GxWaitElement is a Wait element.
+type GxWaitElement struct {
+	Children []Element
+}
+
+// GxWait returns a new GxWaitElement.
+func GxWait(children ...Element) *GxWaitElement {
+	return &GxWaitElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *GxWaitElement) Append(children ...Element) *GxWaitElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *GxWaitElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "gx:Wait"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A GxLatLonQuadElement is a LatLonQuad element.
+type GxLatLonQuadElement struct {
+	Children []Element
+}
+
+// GxLatLonQuad returns a new GxLatLonQuadElement.
+func GxLatLonQuad(children ...Element) *GxLatLonQuadElement {
+	return &GxLatLonQuadElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *GxLatLonQuadElement) Append(children ...Element) *GxLatLonQuadElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *GxLatLonQuadElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "gx:LatLonQuad"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A GxTrackElement is a Track element.
+type GxTrackElement struct {
+	Children []Element
+}
+
+// GxTrack returns a new GxTrackElement.
+func GxTrack(children ...Element) *GxTrackElement {
+	return &GxTrackElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *GxTrackElement) Append(children ...Element) *GxTrackElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *GxTrackElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "gx:Track"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A GxMultiTrackElement is a MultiTrack element.
+type GxMultiTrackElement struct {
+	Children []Element
+}
+
+// GxMultiTrack returns a new GxMultiTrackElement.
+func GxMultiTrack(children ...Element) *GxMultiTrackElement {
+	return &GxMultiTrackElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *GxMultiTrackElement) Append(children ...Element) *GxMultiTrackElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *GxMultiTrackElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "gx:MultiTrack"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A GxSimpleArrayDataElement is a SimpleArrayData element.
+type GxSimpleArrayDataElement struct {
+	Children []Element
+}
+
+// GxSimpleArrayData returns a new GxSimpleArrayDataElement.
+func GxSimpleArrayData(children ...Element) *GxSimpleArrayDataElement {
+	return &GxSimpleArrayDataElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *GxSimpleArrayDataElement) Append(children ...Element) *GxSimpleArrayDataElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *GxSimpleArrayDataElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "gx:SimpleArrayData"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A GxViewerOptionsElement is a ViewerOptions element.
+type GxViewerOptionsElement struct {
+	Children []Element
+}
+
+// GxViewerOptions returns a new GxViewerOptionsElement.
+func GxViewerOptions(children ...Element) *GxViewerOptionsElement {
+	return &GxViewerOptionsElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *GxViewerOptionsElement) Append(children ...Element) *GxViewerOptionsElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *GxViewerOptionsElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "gx:ViewerOptions"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
 }

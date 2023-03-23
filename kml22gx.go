@@ -2,7 +2,9 @@ package kml
 
 import (
 	"encoding/xml"
+	"io"
 	"strconv"
+	"strings"
 )
 
 // GxNamespace is the default namespace for Google Earth extensions.
@@ -11,6 +13,8 @@ const GxNamespace = "http://www.google.com/kml/ext/2.2"
 // A GxOptionName is a gx:option name.
 type GxOptionName string
 
+func (e GxOptionName) String() string { return string(e) }
+
 // GxOptionNames.
 const (
 	GxOptionNameHistoricalImagery GxOptionName = "historicalimagery"
@@ -18,65 +22,144 @@ const (
 	GxOptionNameSunlight          GxOptionName = "sunlight"
 )
 
-// A GxAngle represents an angle.
-type GxAngle struct {
-	Heading, Tilt, Roll float64
+// A GxAnglesElement is a gx:angles element.
+type GxAnglesElement struct {
+	Heading float64
+	Tilt    float64
+	Roll    float64
 }
 
-// GxAngles returns a new gx:angles element.
-func GxAngles(value GxAngle) *SimpleElement {
-	return &SimpleElement{
-		StartElement: xml.StartElement{
-			Name: xml.Name{Local: "gx:angles"},
-		},
-		Value: strconv.FormatFloat(value.Heading, 'f', -1, 64) + " " +
-			strconv.FormatFloat(value.Tilt, 'f', -1, 64) + " " +
-			strconv.FormatFloat(value.Roll, 'f', -1, 64),
+// GxAngles returns a new GxAnglesElement.
+func GxAngles(heading, tilt, roll float64) *GxAnglesElement {
+	return &GxAnglesElement{
+		Heading: heading,
+		Tilt:    tilt,
+		Roll:    roll,
 	}
 }
 
-// GxCoord returns a new gx:coord element.
-func GxCoord(value Coordinate) *SimpleElement {
-	return &SimpleElement{
-		StartElement: xml.StartElement{
-			Name: xml.Name{Local: "gx:coord"},
-		},
-		Value: strconv.FormatFloat(value.Lon, 'f', -1, 64) + " " +
-			strconv.FormatFloat(value.Lat, 'f', -1, 64) + " " +
-			strconv.FormatFloat(value.Alt, 'f', -1, 64),
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *GxAnglesElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "gx:angles"}}
+	var builder strings.Builder
+	builder.Grow(3 * float64StringSize)
+	builder.WriteString(strconv.FormatFloat(e.Heading, 'f', -1, 64))
+	builder.WriteByte(' ')
+	builder.WriteString(strconv.FormatFloat(e.Tilt, 'f', -1, 64))
+	builder.WriteByte(' ')
+	builder.WriteString(strconv.FormatFloat(e.Roll, 'f', -1, 64))
+	charData := xml.CharData(builder.String())
+	return encodeElementWithCharData(encoder, startElement, charData)
+}
+
+// A GxCoordElement is a gx:coord element.
+type GxCoordElement Coordinate
+
+// GxCoord returns a new GxCoordElement.
+func GxCoord(coordinate Coordinate) GxCoordElement {
+	return GxCoordElement(coordinate)
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e GxCoordElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "gx:coord"}}
+	var builder strings.Builder
+	builder.Grow(3 * float64StringSize)
+	builder.WriteString(strconv.FormatFloat(e.Lon, 'f', -1, 64))
+	builder.WriteByte(' ')
+	builder.WriteString(strconv.FormatFloat(e.Lat, 'f', -1, 64))
+	builder.WriteByte(' ')
+	builder.WriteString(strconv.FormatFloat(e.Alt, 'f', -1, 64))
+	charData := xml.CharData(builder.String())
+	return encodeElementWithCharData(encoder, startElement, charData)
+}
+
+// A GxKMLElement is a kml element with gx: extensions.
+type GxKMLElement struct {
+	Child Element
+}
+
+// GxKML returns a new GxKMLElement.
+func GxKML(child Element) *GxKMLElement {
+	return &GxKMLElement{
+		Child: child,
 	}
 }
 
-// GxKML returns a new kml element with Google Earth extensions.
-func GxKML(child Element) *CompoundElement {
-	kml := KML(child)
-	// FIXME find a more correct way to do this
-	kml.Attr = append(kml.Attr, xml.Attr{Name: xml.Name{Local: "xmlns:gx"}, Value: GxNamespace})
-	return kml
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *GxKMLElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{
+		Name: xml.Name{Space: Namespace, Local: "kml"},
+		Attr: []xml.Attr{
+			{
+				Name:  xml.Name{Local: "xmlns:gx"},
+				Value: GxNamespace,
+			},
+		},
+	}
+	return encodeElementWithChild(encoder, startElement, e.Child)
+}
+
+// Write writes e to w.
+func (e *GxKMLElement) Write(w io.Writer) error {
+	return write(w, e)
+}
+
+// WriteIndent writes e to w with the given prefix and indent.
+func (e *GxKMLElement) WriteIndent(w io.Writer, prefix, indent string) error {
+	return writeIndent(w, e, prefix, indent)
+}
+
+// A GxOptionElement is a gx:option element.
+type GxOptionElement struct {
+	Name    GxOptionName
+	Enabled bool
 }
 
 // GxOption returns a new gx:option element.
-func GxOption(name GxOptionName, enabled bool) *SimpleElement {
-	return &SimpleElement{
-		StartElement: xml.StartElement{
-			Name: xml.Name{Local: "gx:option"},
-			Attr: []xml.Attr{
-				{Name: xml.Name{Local: "name"}, Value: string(name)},
-				{Name: xml.Name{Local: "enabled"}, Value: strconv.FormatBool(enabled)},
-			},
-		},
+func GxOption(name GxOptionName, enabled bool) *GxOptionElement {
+	return &GxOptionElement{
+		Name:    name,
+		Enabled: enabled,
 	}
 }
 
-// GxSimpleArrayField returns a new gx:SimpleArrayField element.
-func GxSimpleArrayField(name, _type string) *CompoundElement {
-	return &CompoundElement{
-		StartElement: xml.StartElement{
-			Name: xml.Name{Local: "gx:SimpleArrayField"},
-			Attr: []xml.Attr{
-				{Name: xml.Name{Local: "name"}, Value: name},
-				{Name: xml.Name{Local: "type"}, Value: _type},
-			},
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *GxOptionElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{
+		Name: xml.Name{Local: "gx:option"},
+		Attr: []xml.Attr{
+			{Name: xml.Name{Local: "name"}, Value: string(e.Name)},
+			{Name: xml.Name{Local: "enabled"}, Value: strconv.FormatBool(e.Enabled)},
 		},
 	}
+	return encodeElement(encoder, startElement)
+}
+
+// A GxSimpleArrayFieldElement is a gx:SimpleArrayField element.
+type GxSimpleArrayFieldElement struct {
+	Name     string
+	Type     string
+	Children []Element
+}
+
+// GxSimpleArrayField returns a new GxSimpleArrayFieldElement.
+func GxSimpleArrayField(name, _type string, children ...Element) *GxSimpleArrayFieldElement {
+	return &GxSimpleArrayFieldElement{
+		Name:     name,
+		Type:     _type,
+		Children: children,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *GxSimpleArrayFieldElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{
+		Name: xml.Name{Local: "gx:SimpleArrayField"},
+		Attr: []xml.Attr{
+			{Name: xml.Name{Local: "name"}, Value: e.Name},
+			{Name: xml.Name{Local: "type"}, Value: e.Type},
+		},
+	}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
 }

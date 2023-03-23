@@ -827,7 +827,7 @@ func (r race) kmlTurnpointsFolder() kml.Element {
 	)
 }
 
-func (r race) kmlDocument() kml.Element {
+func (r race) kmlDocument() *kml.KMLElement {
 	return kml.KML(
 		kml.Document(
 			kml.Name(fmt.Sprintf("%s Route", r.name)),

@@ -3,12 +3,17 @@
 package kml
 
 import (
+	"encoding/xml"
+	"fmt"
 	"image/color"
+	"strconv"
 	"time"
 )
 
 // An AltitudeModeEnum is an altitudeModeEnumType.
 type AltitudeModeEnum string
+
+func (e AltitudeModeEnum) String() string { return string(e) }
 
 // AltitudeModeEnums.
 const (
@@ -20,6 +25,8 @@ const (
 // A ColorModeEnum is a colorModeEnumType.
 type ColorModeEnum string
 
+func (e ColorModeEnum) String() string { return string(e) }
+
 // ColorModeEnums.
 const (
 	ColorModeNormal ColorModeEnum = "normal"
@@ -28,6 +35,8 @@ const (
 
 // A DisplayModeEnum is a displayModeEnumType.
 type DisplayModeEnum string
+
+func (e DisplayModeEnum) String() string { return string(e) }
 
 // DisplayModeEnums.
 const (
@@ -38,14 +47,18 @@ const (
 // A GridOriginEnum is a gridOriginEnumType.
 type GridOriginEnum string
 
+func (e GridOriginEnum) String() string { return string(e) }
+
 // GridOriginEnums.
 const (
 	GridOriginLowerLeft GridOriginEnum = "lowerLeft"
 	GridOriginUpperLeft GridOriginEnum = "upperLeft"
 )
 
-// A ItemIconStateEnum is a itemIconStateEnumType.
+// An ItemIconStateEnum is an itemIconStateEnumType.
 type ItemIconStateEnum string
+
+func (e ItemIconStateEnum) String() string { return string(e) }
 
 // ItemIconStateEnums.
 const (
@@ -60,6 +73,8 @@ const (
 // A ListItemTypeEnum is a listItemTypeEnumType.
 type ListItemTypeEnum string
 
+func (e ListItemTypeEnum) String() string { return string(e) }
+
 // ListItemTypeEnums.
 const (
 	ListItemTypeRadioFolder       ListItemTypeEnum = "radioFolder"
@@ -71,6 +86,8 @@ const (
 // A RefreshModeEnum is a refreshModeEnumType.
 type RefreshModeEnum string
 
+func (e RefreshModeEnum) String() string { return string(e) }
+
 // RefreshModeEnums.
 const (
 	RefreshModeOnChange   RefreshModeEnum = "onChange"
@@ -80,6 +97,8 @@ const (
 
 // A ViewRefreshModeEnum is a viewRefreshModeEnumType.
 type ViewRefreshModeEnum string
+
+func (e ViewRefreshModeEnum) String() string { return string(e) }
 
 // ViewRefreshModeEnums.
 const (
@@ -92,6 +111,8 @@ const (
 // A ShapeEnum is a shapeEnumType.
 type ShapeEnum string
 
+func (e ShapeEnum) String() string { return string(e) }
+
 // ShapeEnums.
 const (
 	ShapeRectangle ShapeEnum = "rectangle"
@@ -102,6 +123,8 @@ const (
 // A StyleStateEnum is a styleStateEnumType.
 type StyleStateEnum string
 
+func (e StyleStateEnum) String() string { return string(e) }
+
 // StyleStateEnums.
 const (
 	StyleStateNormal    StyleStateEnum = "normal"
@@ -111,6 +134,8 @@ const (
 // A UnitsEnum is a unitsEnumType.
 type UnitsEnum string
 
+func (e UnitsEnum) String() string { return string(e) }
+
 // UnitsEnums.
 const (
 	UnitsFraction    UnitsEnum = "fraction"
@@ -118,677 +143,2764 @@ const (
 	UnitsInsetPixels UnitsEnum = "insetPixels"
 )
 
-// Address returns a new address element.
-func Address(value string) *SimpleElement {
-	return newSEString("address", value)
+// An AddressElement is an address element.
+type AddressElement struct {
+	Value string
 }
 
-// Altitude returns a new altitude element.
-func Altitude(value float64) *SimpleElement {
-	return newSEFloat("altitude", value)
+// Address returns a new AddressElement.
+func Address(value string) *AddressElement {
+	return &AddressElement{
+		Value: value,
+	}
 }
 
-// AltitudeMode returns a new altitudeMode element.
-func AltitudeMode(value AltitudeModeEnum) *SimpleElement {
-	return newSEString("altitudeMode", string(value))
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *AddressElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "address"}}
+	charData := xml.CharData(e.Value)
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// Begin returns a new begin element.
-func Begin(value time.Time) *SimpleElement {
-	return newSETime("begin", value)
+// An AltitudeElement is an altitude element.
+type AltitudeElement struct {
+	Value float64
 }
 
-// BgColor returns a new bgColor element.
-func BgColor(value color.Color) *SimpleElement {
-	return newSEColor("bgColor", value)
+// Altitude returns a new AltitudeElement.
+func Altitude(value float64) *AltitudeElement {
+	return &AltitudeElement{
+		Value: value,
+	}
 }
 
-// BottomFOV returns a new bottomFov element.
-func BottomFOV(value float64) *SimpleElement {
-	return newSEFloat("bottomFov", value)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *AltitudeElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "altitude"}}
+	charData := xml.CharData(strconv.FormatFloat(e.Value, 'f', -1, 64))
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// Color returns a new color element.
-func Color(value color.Color) *SimpleElement {
-	return newSEColor("color", value)
+// An AltitudeModeElement is an altitudeMode element.
+type AltitudeModeElement struct {
+	Value AltitudeModeEnum
 }
 
-// ColorMode returns a new colorMode element.
-func ColorMode(value ColorModeEnum) *SimpleElement {
-	return newSEString("colorMode", string(value))
+// AltitudeMode returns a new AltitudeModeElement.
+func AltitudeMode(value AltitudeModeEnum) *AltitudeModeElement {
+	return &AltitudeModeElement{
+		Value: value,
+	}
 }
 
-// Cookie returns a new cookie element.
-func Cookie(value string) *SimpleElement {
-	return newSEString("cookie", value)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *AltitudeModeElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "altitudeMode"}}
+	charData := xml.CharData(e.Value)
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// Description returns a new description element.
-func Description(value string) *SimpleElement {
-	return newSEString("description", value)
+// A BeginElement is a begin element.
+type BeginElement struct {
+	Value time.Time
 }
 
-// DisplayName returns a new displayName element.
-func DisplayName(value string) *SimpleElement {
-	return newSEString("displayName", value)
+// Begin returns a new BeginElement.
+func Begin(value time.Time) *BeginElement {
+	return &BeginElement{
+		Value: value,
+	}
 }
 
-// DisplayMode returns a new displayMode element.
-func DisplayMode(value DisplayModeEnum) *SimpleElement {
-	return newSEString("displayMode", string(value))
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *BeginElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "begin"}}
+	charData := xml.CharData(e.Value.Format(time.RFC3339))
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// DrawOrder returns a new drawOrder element.
-func DrawOrder(value int) *SimpleElement {
-	return newSEInt("drawOrder", value)
+// A BgColorElement is a bgColor element.
+type BgColorElement struct {
+	Value color.Color
 }
 
-// East returns a new east element.
-func East(value float64) *SimpleElement {
-	return newSEFloat("east", value)
+// BgColor returns a new BgColorElement.
+func BgColor(value color.Color) *BgColorElement {
+	return &BgColorElement{
+		Value: value,
+	}
 }
 
-// End returns a new end element.
-func End(value time.Time) *SimpleElement {
-	return newSETime("end", value)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *BgColorElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "bgColor"}}
+	red, green, blue, alpha := e.Value.RGBA()
+	charData := xml.CharData(fmt.Sprintf("%02x%02x%02x%02x", alpha/256, blue/256, green/256, red/256))
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// Expires returns a new expires element.
-func Expires(value time.Time) *SimpleElement {
-	return newSETime("expires", value)
+// A BottomFOVElement is a bottomFov element.
+type BottomFOVElement struct {
+	Value float64
 }
 
-// Extrude returns a new extrude element.
-func Extrude(value bool) *SimpleElement {
-	return newSEBool("extrude", value)
+// BottomFOV returns a new BottomFOVElement.
+func BottomFOV(value float64) *BottomFOVElement {
+	return &BottomFOVElement{
+		Value: value,
+	}
 }
 
-// Fill returns a new fill element.
-func Fill(value bool) *SimpleElement {
-	return newSEBool("fill", value)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *BottomFOVElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "bottomFov"}}
+	charData := xml.CharData(strconv.FormatFloat(e.Value, 'f', -1, 64))
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// FlyToView returns a new flyToView element.
-func FlyToView(value bool) *SimpleElement {
-	return newSEBool("flyToView", value)
+// A ColorElement is a color element.
+type ColorElement struct {
+	Value color.Color
 }
 
-// GridOrigin returns a new gridOrigin element.
-func GridOrigin(value GridOriginEnum) *SimpleElement {
-	return newSEString("gridOrigin", string(value))
+// Color returns a new ColorElement.
+func Color(value color.Color) *ColorElement {
+	return &ColorElement{
+		Value: value,
+	}
 }
 
-// Heading returns a new heading element.
-func Heading(value float64) *SimpleElement {
-	return newSEFloat("heading", value)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *ColorElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "color"}}
+	red, green, blue, alpha := e.Value.RGBA()
+	charData := xml.CharData(fmt.Sprintf("%02x%02x%02x%02x", alpha/256, blue/256, green/256, red/256))
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// Href returns a new href element.
-func Href(value string) *SimpleElement {
-	return newSEString("href", value)
+// A ColorModeElement is a colorMode element.
+type ColorModeElement struct {
+	Value ColorModeEnum
 }
 
-// HTTPQuery returns a new httpQuery element.
-func HTTPQuery(value string) *SimpleElement {
-	return newSEString("httpQuery", value)
+// ColorMode returns a new ColorModeElement.
+func ColorMode(value ColorModeEnum) *ColorModeElement {
+	return &ColorModeElement{
+		Value: value,
+	}
 }
 
-// HotSpot returns a new hotSpot element.
-func HotSpot(value Vec2) *SimpleElement {
-	return newSEVec2("hotSpot", value)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *ColorModeElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "colorMode"}}
+	charData := xml.CharData(e.Value)
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// Key returns a new key element.
-func Key(value StyleStateEnum) *SimpleElement {
-	return newSEString("key", string(value))
+// A CookieElement is a cookie element.
+type CookieElement struct {
+	Value string
 }
 
-// Latitude returns a new latitude element.
-func Latitude(value float64) *SimpleElement {
-	return newSEFloat("latitude", value)
+// Cookie returns a new CookieElement.
+func Cookie(value string) *CookieElement {
+	return &CookieElement{
+		Value: value,
+	}
 }
 
-// LeftFOV returns a new leftFov element.
-func LeftFOV(value float64) *SimpleElement {
-	return newSEFloat("leftFov", value)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *CookieElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "cookie"}}
+	charData := xml.CharData(e.Value)
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// LinkDescription returns a new linkDescription element.
-func LinkDescription(value string) *SimpleElement {
-	return newSEString("linkDescription", value)
+// A DescriptionElement is a description element.
+type DescriptionElement struct {
+	Value string
 }
 
-// LinkName returns a new linkName element.
-func LinkName(value string) *SimpleElement {
-	return newSEString("linkName", value)
+// Description returns a new DescriptionElement.
+func Description(value string) *DescriptionElement {
+	return &DescriptionElement{
+		Value: value,
+	}
 }
 
-// ListItemType returns a new listItemType element.
-func ListItemType(value ListItemTypeEnum) *SimpleElement {
-	return newSEString("listItemType", string(value))
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *DescriptionElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "description"}}
+	charData := xml.CharData(e.Value)
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// Longitude returns a new longitude element.
-func Longitude(value float64) *SimpleElement {
-	return newSEFloat("longitude", value)
+// A DisplayNameElement is a displayName element.
+type DisplayNameElement struct {
+	Value string
 }
 
-// MaxSnippetLines returns a new maxSnippetLines element.
-func MaxSnippetLines(value int) *SimpleElement {
-	return newSEInt("maxSnippetLines", value)
+// DisplayName returns a new DisplayNameElement.
+func DisplayName(value string) *DisplayNameElement {
+	return &DisplayNameElement{
+		Value: value,
+	}
 }
 
-// MaxSessionLength returns a new maxSessionLength element.
-func MaxSessionLength(value float64) *SimpleElement {
-	return newSEFloat("maxSessionLength", value)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *DisplayNameElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "displayName"}}
+	charData := xml.CharData(e.Value)
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// Message returns a new message element.
-func Message(value string) *SimpleElement {
-	return newSEString("message", value)
+// A DisplayModeElement is a displayMode element.
+type DisplayModeElement struct {
+	Value DisplayModeEnum
 }
 
-// MinAltitude returns a new minAltitude element.
-func MinAltitude(value float64) *SimpleElement {
-	return newSEFloat("minAltitude", value)
+// DisplayMode returns a new DisplayModeElement.
+func DisplayMode(value DisplayModeEnum) *DisplayModeElement {
+	return &DisplayModeElement{
+		Value: value,
+	}
 }
 
-// MinFadeExtent returns a new minFadeExtent element.
-func MinFadeExtent(value float64) *SimpleElement {
-	return newSEFloat("minFadeExtent", value)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *DisplayModeElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "displayMode"}}
+	charData := xml.CharData(e.Value)
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// MinLODPixels returns a new minLodPixels element.
-func MinLODPixels(value float64) *SimpleElement {
-	return newSEFloat("minLodPixels", value)
+// A DrawOrderElement is a drawOrder element.
+type DrawOrderElement struct {
+	Value int
 }
 
-// MinRefreshPeriod returns a new minRefreshPeriod element.
-func MinRefreshPeriod(value float64) *SimpleElement {
-	return newSEFloat("minRefreshPeriod", value)
+// DrawOrder returns a new DrawOrderElement.
+func DrawOrder(value int) *DrawOrderElement {
+	return &DrawOrderElement{
+		Value: value,
+	}
 }
 
-// MaxAltitude returns a new maxAltitude element.
-func MaxAltitude(value float64) *SimpleElement {
-	return newSEFloat("maxAltitude", value)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *DrawOrderElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "drawOrder"}}
+	charData := xml.CharData(strconv.Itoa(e.Value))
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// MaxFadeExtent returns a new maxFadeExtent element.
-func MaxFadeExtent(value float64) *SimpleElement {
-	return newSEFloat("maxFadeExtent", value)
+// An EastElement is an east element.
+type EastElement struct {
+	Value float64
 }
 
-// MaxLODPixels returns a new maxLodPixels element.
-func MaxLODPixels(value float64) *SimpleElement {
-	return newSEFloat("maxLodPixels", value)
+// East returns a new EastElement.
+func East(value float64) *EastElement {
+	return &EastElement{
+		Value: value,
+	}
 }
 
-// MaxHeight returns a new maxHeight element.
-func MaxHeight(value int) *SimpleElement {
-	return newSEInt("maxHeight", value)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *EastElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "east"}}
+	charData := xml.CharData(strconv.FormatFloat(e.Value, 'f', -1, 64))
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// MaxWidth returns a new maxWidth element.
-func MaxWidth(value int) *SimpleElement {
-	return newSEInt("maxWidth", value)
+// An EndElement is an end element.
+type EndElement struct {
+	Value time.Time
 }
 
-// Name returns a new name element.
-func Name(value string) *SimpleElement {
-	return newSEString("name", value)
+// End returns a new EndElement.
+func End(value time.Time) *EndElement {
+	return &EndElement{
+		Value: value,
+	}
 }
 
-// Near returns a new near element.
-func Near(value float64) *SimpleElement {
-	return newSEFloat("near", value)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *EndElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "end"}}
+	charData := xml.CharData(e.Value.Format(time.RFC3339))
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// North returns a new north element.
-func North(value float64) *SimpleElement {
-	return newSEFloat("north", value)
+// An ExpiresElement is an expires element.
+type ExpiresElement struct {
+	Value time.Time
 }
 
-// Open returns a new open element.
-func Open(value bool) *SimpleElement {
-	return newSEBool("open", value)
+// Expires returns a new ExpiresElement.
+func Expires(value time.Time) *ExpiresElement {
+	return &ExpiresElement{
+		Value: value,
+	}
 }
 
-// Outline returns a new outline element.
-func Outline(value bool) *SimpleElement {
-	return newSEBool("outline", value)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *ExpiresElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "expires"}}
+	charData := xml.CharData(e.Value.Format(time.RFC3339))
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// OverlayXY returns a new overlayXY element.
-func OverlayXY(value Vec2) *SimpleElement {
-	return newSEVec2("overlayXY", value)
+// An ExtrudeElement is an extrude element.
+type ExtrudeElement struct {
+	Value bool
 }
 
-// PhoneNumber returns a new phoneNumber element.
-func PhoneNumber(value string) *SimpleElement {
-	return newSEString("phoneNumber", value)
+// Extrude returns a new ExtrudeElement.
+func Extrude(value bool) *ExtrudeElement {
+	return &ExtrudeElement{
+		Value: value,
+	}
 }
 
-// Range returns a new range element.
-func Range(value float64) *SimpleElement {
-	return newSEFloat("range", value)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *ExtrudeElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "extrude"}}
+	var charData xml.CharData
+	if e.Value {
+		charData = xml.CharData("1")
+	} else {
+		charData = xml.CharData("0")
+	}
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// RefreshMode returns a new refreshMode element.
-func RefreshMode(value RefreshModeEnum) *SimpleElement {
-	return newSEString("refreshMode", string(value))
+// A FillElement is a fill element.
+type FillElement struct {
+	Value bool
 }
 
-// RefreshInterval returns a new refreshInterval element.
-func RefreshInterval(value float64) *SimpleElement {
-	return newSEFloat("refreshInterval", value)
+// Fill returns a new FillElement.
+func Fill(value bool) *FillElement {
+	return &FillElement{
+		Value: value,
+	}
 }
 
-// RefreshVisibility returns a new refreshVisibility element.
-func RefreshVisibility(value bool) *SimpleElement {
-	return newSEBool("refreshVisibility", value)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *FillElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "fill"}}
+	var charData xml.CharData
+	if e.Value {
+		charData = xml.CharData("1")
+	} else {
+		charData = xml.CharData("0")
+	}
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// RightFOV returns a new rightFov element.
-func RightFOV(value float64) *SimpleElement {
-	return newSEFloat("rightFov", value)
+// A FlyToViewElement is a flyToView element.
+type FlyToViewElement struct {
+	Value bool
 }
 
-// Roll returns a new roll element.
-func Roll(value float64) *SimpleElement {
-	return newSEFloat("roll", value)
+// FlyToView returns a new FlyToViewElement.
+func FlyToView(value bool) *FlyToViewElement {
+	return &FlyToViewElement{
+		Value: value,
+	}
 }
 
-// Rotation returns a new rotation element.
-func Rotation(value float64) *SimpleElement {
-	return newSEFloat("rotation", value)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *FlyToViewElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "flyToView"}}
+	var charData xml.CharData
+	if e.Value {
+		charData = xml.CharData("1")
+	} else {
+		charData = xml.CharData("0")
+	}
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// RotationXY returns a new rotationXY element.
-func RotationXY(value Vec2) *SimpleElement {
-	return newSEVec2("rotationXY", value)
+// A GridOriginElement is a gridOrigin element.
+type GridOriginElement struct {
+	Value GridOriginEnum
 }
 
-// Scale returns a new scale element.
-func Scale(value float64) *SimpleElement {
-	return newSEFloat("scale", value)
+// GridOrigin returns a new GridOriginElement.
+func GridOrigin(value GridOriginEnum) *GridOriginElement {
+	return &GridOriginElement{
+		Value: value,
+	}
 }
 
-// ScreenXY returns a new screenXY element.
-func ScreenXY(value Vec2) *SimpleElement {
-	return newSEVec2("screenXY", value)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *GridOriginElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "gridOrigin"}}
+	charData := xml.CharData(e.Value)
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// Shape returns a new shape element.
-func Shape(value ShapeEnum) *SimpleElement {
-	return newSEString("shape", string(value))
+// A HeadingElement is a heading element.
+type HeadingElement struct {
+	Value float64
 }
 
-// Size returns a new size element.
-func Size(value Vec2) *SimpleElement {
-	return newSEVec2("size", value)
+// Heading returns a new HeadingElement.
+func Heading(value float64) *HeadingElement {
+	return &HeadingElement{
+		Value: value,
+	}
 }
 
-// South returns a new south element.
-func South(value float64) *SimpleElement {
-	return newSEFloat("south", value)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *HeadingElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "heading"}}
+	charData := xml.CharData(strconv.FormatFloat(e.Value, 'f', -1, 64))
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// SourceHref returns a new sourceHref element.
-func SourceHref(value string) *SimpleElement {
-	return newSEString("sourceHref", value)
+// A HrefElement is a href element.
+type HrefElement struct {
+	Value string
 }
 
-// Snippet returns a new snippet element.
-func Snippet(value string) *SimpleElement {
-	return newSEString("snippet", value)
+// Href returns a new HrefElement.
+func Href(value string) *HrefElement {
+	return &HrefElement{
+		Value: value,
+	}
 }
 
-// State returns a new state element.
-func State(value ItemIconStateEnum) *SimpleElement {
-	return newSEString("state", string(value))
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *HrefElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "href"}}
+	charData := xml.CharData(e.Value)
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// StyleURL returns a new styleUrl element.
-func StyleURL(value string) *SimpleElement {
-	return newSEString("styleUrl", value)
+// A HttpQueryElement is a httpQuery element.
+type HttpQueryElement struct {
+	Value string
 }
 
-// TargetHref returns a new targetHref element.
-func TargetHref(value string) *SimpleElement {
-	return newSEString("targetHref", value)
+// HttpQuery returns a new HttpQueryElement.
+func HttpQuery(value string) *HttpQueryElement {
+	return &HttpQueryElement{
+		Value: value,
+	}
 }
 
-// Tessellate returns a new tessellate element.
-func Tessellate(value bool) *SimpleElement {
-	return newSEBool("tessellate", value)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *HttpQueryElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "httpQuery"}}
+	charData := xml.CharData(e.Value)
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// Text returns a new text element.
-func Text(value string) *SimpleElement {
-	return newSEString("text", value)
+// A HotSpotElement is a hotSpot element.
+type HotSpotElement struct {
+	Value Vec2
 }
 
-// TextColor returns a new textColor element.
-func TextColor(value color.Color) *SimpleElement {
-	return newSEColor("textColor", value)
+// HotSpot returns a new HotSpotElement.
+func HotSpot(value Vec2) *HotSpotElement {
+	return &HotSpotElement{
+		Value: value,
+	}
 }
 
-// TileSize returns a new tileSize element.
-func TileSize(value int) *SimpleElement {
-	return newSEInt("tileSize", value)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *HotSpotElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{
+		Name: xml.Name{Local: "hotSpot"},
+		Attr: e.Value.attr(),
+	}
+	return encodeElement(encoder, startElement)
 }
 
-// Tilt returns a new tilt element.
-func Tilt(value float64) *SimpleElement {
-	return newSEFloat("tilt", value)
+// A KeyElement is a key element.
+type KeyElement struct {
+	Value StyleStateEnum
 }
 
-// TopFOV returns a new topFov element.
-func TopFOV(value float64) *SimpleElement {
-	return newSEFloat("topFov", value)
+// Key returns a new KeyElement.
+func Key(value StyleStateEnum) *KeyElement {
+	return &KeyElement{
+		Value: value,
+	}
 }
 
-// Value returns a new value element.
-func Value(value string) *SimpleElement {
-	return newSEString("value", value)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *KeyElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "key"}}
+	charData := xml.CharData(e.Value)
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// ViewBoundScale returns a new viewBoundScale element.
-func ViewBoundScale(value float64) *SimpleElement {
-	return newSEFloat("viewBoundScale", value)
+// A LatitudeElement is a latitude element.
+type LatitudeElement struct {
+	Value float64
 }
 
-// ViewFormat returns a new viewFormat element.
-func ViewFormat(value string) *SimpleElement {
-	return newSEString("viewFormat", value)
+// Latitude returns a new LatitudeElement.
+func Latitude(value float64) *LatitudeElement {
+	return &LatitudeElement{
+		Value: value,
+	}
 }
 
-// ViewRefreshMode returns a new viewRefreshMode element.
-func ViewRefreshMode(value ViewRefreshModeEnum) *SimpleElement {
-	return newSEString("viewRefreshMode", string(value))
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *LatitudeElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "latitude"}}
+	charData := xml.CharData(strconv.FormatFloat(e.Value, 'f', -1, 64))
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// ViewRefreshTime returns a new viewRefreshTime element.
-func ViewRefreshTime(value float64) *SimpleElement {
-	return newSEFloat("viewRefreshTime", value)
+// A LeftFOVElement is a leftFov element.
+type LeftFOVElement struct {
+	Value float64
 }
 
-// Visibility returns a new visibility element.
-func Visibility(value bool) *SimpleElement {
-	return newSEBool("visibility", value)
+// LeftFOV returns a new LeftFOVElement.
+func LeftFOV(value float64) *LeftFOVElement {
+	return &LeftFOVElement{
+		Value: value,
+	}
 }
 
-// West returns a new west element.
-func West(value float64) *SimpleElement {
-	return newSEFloat("west", value)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *LeftFOVElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "leftFov"}}
+	charData := xml.CharData(strconv.FormatFloat(e.Value, 'f', -1, 64))
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// When returns a new when element.
-func When(value time.Time) *SimpleElement {
-	return newSETime("when", value)
+// A LinkDescriptionElement is a linkDescription element.
+type LinkDescriptionElement struct {
+	Value string
 }
 
-// Width returns a new width element.
-func Width(value float64) *SimpleElement {
-	return newSEFloat("width", value)
+// LinkDescription returns a new LinkDescriptionElement.
+func LinkDescription(value string) *LinkDescriptionElement {
+	return &LinkDescriptionElement{
+		Value: value,
+	}
 }
 
-// X returns a new x element.
-func X(value float64) *SimpleElement {
-	return newSEFloat("x", value)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *LinkDescriptionElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "linkDescription"}}
+	charData := xml.CharData(e.Value)
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// Y returns a new y element.
-func Y(value float64) *SimpleElement {
-	return newSEFloat("y", value)
+// A LinkNameElement is a linkName element.
+type LinkNameElement struct {
+	Value string
 }
 
-// Z returns a new z element.
-func Z(value float64) *SimpleElement {
-	return newSEFloat("z", value)
+// LinkName returns a new LinkNameElement.
+func LinkName(value string) *LinkNameElement {
+	return &LinkNameElement{
+		Value: value,
+	}
 }
 
-// LookAt returns a new LookAt element.
-func LookAt(children ...Element) *CompoundElement {
-	return newCE("LookAt", children)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *LinkNameElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "linkName"}}
+	charData := xml.CharData(e.Value)
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// Camera returns a new Camera element.
-func Camera(children ...Element) *CompoundElement {
-	return newCE("Camera", children)
+// A ListItemTypeElement is a listItemType element.
+type ListItemTypeElement struct {
+	Value ListItemTypeEnum
 }
 
-// Metadata returns a new Metadata element.
-func Metadata(children ...Element) *CompoundElement {
-	return newCE("Metadata", children)
+// ListItemType returns a new ListItemTypeElement.
+func ListItemType(value ListItemTypeEnum) *ListItemTypeElement {
+	return &ListItemTypeElement{
+		Value: value,
+	}
 }
 
-// ExtendedData returns a new ExtendedData element.
-func ExtendedData(children ...Element) *CompoundElement {
-	return newCE("ExtendedData", children)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *ListItemTypeElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "listItemType"}}
+	charData := xml.CharData(e.Value)
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// NetworkLinkControl returns a new NetworkLinkControl element.
-func NetworkLinkControl(children ...Element) *CompoundElement {
-	return newCE("NetworkLinkControl", children)
+// A LongitudeElement is a longitude element.
+type LongitudeElement struct {
+	Value float64
 }
 
-// Document returns a new Document element.
-func Document(children ...Element) *CompoundElement {
-	return newCE("Document", children)
+// Longitude returns a new LongitudeElement.
+func Longitude(value float64) *LongitudeElement {
+	return &LongitudeElement{
+		Value: value,
+	}
 }
 
-// Folder returns a new Folder element.
-func Folder(children ...Element) *CompoundElement {
-	return newCE("Folder", children)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *LongitudeElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "longitude"}}
+	charData := xml.CharData(strconv.FormatFloat(e.Value, 'f', -1, 64))
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// Placemark returns a new Placemark element.
-func Placemark(children ...Element) *CompoundElement {
-	return newCE("Placemark", children)
+// A MaxSessionLengthElement is a maxSessionLength element.
+type MaxSessionLengthElement struct {
+	Value time.Duration
 }
 
-// NetworkLink returns a new NetworkLink element.
-func NetworkLink(children ...Element) *CompoundElement {
-	return newCE("NetworkLink", children)
+// MaxSessionLength returns a new MaxSessionLengthElement.
+func MaxSessionLength(value time.Duration) *MaxSessionLengthElement {
+	return &MaxSessionLengthElement{
+		Value: value,
+	}
 }
 
-// Region returns a new Region element.
-func Region(children ...Element) *CompoundElement {
-	return newCE("Region", children)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *MaxSessionLengthElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "maxSessionLength"}}
+	seconds := float64(e.Value) / float64(time.Second)
+	charData := xml.CharData(strconv.FormatFloat(seconds, 'f', -1, 64))
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// LatLonAltBox returns a new LatLonAltBox element.
-func LatLonAltBox(children ...Element) *CompoundElement {
-	return newCE("LatLonAltBox", children)
+// A MessageElement is a message element.
+type MessageElement struct {
+	Value string
 }
 
-// LOD returns a new Lod element.
-func LOD(children ...Element) *CompoundElement {
-	return newCE("Lod", children)
+// Message returns a new MessageElement.
+func Message(value string) *MessageElement {
+	return &MessageElement{
+		Value: value,
+	}
 }
 
-// Icon returns a new Icon element.
-func Icon(children ...Element) *CompoundElement {
-	return newCE("Icon", children)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *MessageElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "message"}}
+	charData := xml.CharData(e.Value)
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// Link returns a new Link element.
-func Link(children ...Element) *CompoundElement {
-	return newCE("Link", children)
+// A MinAltitudeElement is a minAltitude element.
+type MinAltitudeElement struct {
+	Value float64
 }
 
-// URL returns a new Url element.
-func URL(children ...Element) *CompoundElement {
-	return newCE("Url", children)
+// MinAltitude returns a new MinAltitudeElement.
+func MinAltitude(value float64) *MinAltitudeElement {
+	return &MinAltitudeElement{
+		Value: value,
+	}
 }
 
-// MultiGeometry returns a new MultiGeometry element.
-func MultiGeometry(children ...Element) *CompoundElement {
-	return newCE("MultiGeometry", children)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *MinAltitudeElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "minAltitude"}}
+	charData := xml.CharData(strconv.FormatFloat(e.Value, 'f', -1, 64))
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// Point returns a new Point element.
-func Point(children ...Element) *CompoundElement {
-	return newCE("Point", children)
+// A MinFadeExtentElement is a minFadeExtent element.
+type MinFadeExtentElement struct {
+	Value float64
 }
 
-// LineString returns a new LineString element.
-func LineString(children ...Element) *CompoundElement {
-	return newCE("LineString", children)
+// MinFadeExtent returns a new MinFadeExtentElement.
+func MinFadeExtent(value float64) *MinFadeExtentElement {
+	return &MinFadeExtentElement{
+		Value: value,
+	}
 }
 
-// LinearRing returns a new LinearRing element.
-func LinearRing(children ...Element) *CompoundElement {
-	return newCE("LinearRing", children)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *MinFadeExtentElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "minFadeExtent"}}
+	charData := xml.CharData(strconv.FormatFloat(e.Value, 'f', -1, 64))
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// Polygon returns a new Polygon element.
-func Polygon(children ...Element) *CompoundElement {
-	return newCE("Polygon", children)
+// A MinLODPixelsElement is a minLodPixels element.
+type MinLODPixelsElement struct {
+	Value float64
 }
 
-// OuterBoundaryIs returns a new outerBoundaryIs element.
-func OuterBoundaryIs(value Element) *CompoundElement {
-	return newSEElement("outerBoundaryIs", value)
+// MinLODPixels returns a new MinLODPixelsElement.
+func MinLODPixels(value float64) *MinLODPixelsElement {
+	return &MinLODPixelsElement{
+		Value: value,
+	}
 }
 
-// InnerBoundaryIs returns a new innerBoundaryIs element.
-func InnerBoundaryIs(value Element) *CompoundElement {
-	return newSEElement("innerBoundaryIs", value)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *MinLODPixelsElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "minLodPixels"}}
+	charData := xml.CharData(strconv.FormatFloat(e.Value, 'f', -1, 64))
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// Model returns a new Model element.
-func Model(children ...Element) *CompoundElement {
-	return newCE("Model", children)
+// A MinRefreshPeriodElement is a minRefreshPeriod element.
+type MinRefreshPeriodElement struct {
+	Value time.Duration
 }
 
-// Location returns a new Location element.
-func Location(children ...Element) *CompoundElement {
-	return newCE("Location", children)
+// MinRefreshPeriod returns a new MinRefreshPeriodElement.
+func MinRefreshPeriod(value time.Duration) *MinRefreshPeriodElement {
+	return &MinRefreshPeriodElement{
+		Value: value,
+	}
 }
 
-// Orientation returns a new Orientation element.
-func Orientation(children ...Element) *CompoundElement {
-	return newCE("Orientation", children)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *MinRefreshPeriodElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "minRefreshPeriod"}}
+	seconds := float64(e.Value) / float64(time.Second)
+	charData := xml.CharData(strconv.FormatFloat(seconds, 'f', -1, 64))
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// ResourceMap returns a new ResourceMap element.
-func ResourceMap(children ...Element) *CompoundElement {
-	return newCE("ResourceMap", children)
+// A MaxAltitudeElement is a maxAltitude element.
+type MaxAltitudeElement struct {
+	Value float64
 }
 
-// Alias returns a new Alias element.
-func Alias(children ...Element) *CompoundElement {
-	return newCE("Alias", children)
+// MaxAltitude returns a new MaxAltitudeElement.
+func MaxAltitude(value float64) *MaxAltitudeElement {
+	return &MaxAltitudeElement{
+		Value: value,
+	}
 }
 
-// GroundOverlay returns a new GroundOverlay element.
-func GroundOverlay(children ...Element) *CompoundElement {
-	return newCE("GroundOverlay", children)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *MaxAltitudeElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "maxAltitude"}}
+	charData := xml.CharData(strconv.FormatFloat(e.Value, 'f', -1, 64))
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// LatLonBox returns a new LatLonBox element.
-func LatLonBox(children ...Element) *CompoundElement {
-	return newCE("LatLonBox", children)
+// A MaxFadeExtentElement is a maxFadeExtent element.
+type MaxFadeExtentElement struct {
+	Value float64
 }
 
-// ScreenOverlay returns a new ScreenOverlay element.
-func ScreenOverlay(children ...Element) *CompoundElement {
-	return newCE("ScreenOverlay", children)
+// MaxFadeExtent returns a new MaxFadeExtentElement.
+func MaxFadeExtent(value float64) *MaxFadeExtentElement {
+	return &MaxFadeExtentElement{
+		Value: value,
+	}
 }
 
-// PhotoOverlay returns a new PhotoOverlay element.
-func PhotoOverlay(children ...Element) *CompoundElement {
-	return newCE("PhotoOverlay", children)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *MaxFadeExtentElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "maxFadeExtent"}}
+	charData := xml.CharData(strconv.FormatFloat(e.Value, 'f', -1, 64))
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// ViewVolume returns a new ViewVolume element.
-func ViewVolume(children ...Element) *CompoundElement {
-	return newCE("ViewVolume", children)
+// A MaxLODPixelsElement is a maxLodPixels element.
+type MaxLODPixelsElement struct {
+	Value float64
 }
 
-// ImagePyramid returns a new ImagePyramid element.
-func ImagePyramid(children ...Element) *CompoundElement {
-	return newCE("ImagePyramid", children)
+// MaxLODPixels returns a new MaxLODPixelsElement.
+func MaxLODPixels(value float64) *MaxLODPixelsElement {
+	return &MaxLODPixelsElement{
+		Value: value,
+	}
 }
 
-// Style returns a new Style element.
-func Style(children ...Element) *CompoundElement {
-	return newCE("Style", children)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *MaxLODPixelsElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "maxLodPixels"}}
+	charData := xml.CharData(strconv.FormatFloat(e.Value, 'f', -1, 64))
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// StyleMap returns a new StyleMap element.
-func StyleMap(children ...Element) *CompoundElement {
-	return newCE("StyleMap", children)
+// A MaxHeightElement is a maxHeight element.
+type MaxHeightElement struct {
+	Value int
 }
 
-// Pair returns a new Pair element.
-func Pair(children ...Element) *CompoundElement {
-	return newCE("Pair", children)
+// MaxHeight returns a new MaxHeightElement.
+func MaxHeight(value int) *MaxHeightElement {
+	return &MaxHeightElement{
+		Value: value,
+	}
 }
 
-// IconStyle returns a new IconStyle element.
-func IconStyle(children ...Element) *CompoundElement {
-	return newCE("IconStyle", children)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *MaxHeightElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "maxHeight"}}
+	charData := xml.CharData(strconv.Itoa(e.Value))
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// LabelStyle returns a new LabelStyle element.
-func LabelStyle(children ...Element) *CompoundElement {
-	return newCE("LabelStyle", children)
+// A MaxWidthElement is a maxWidth element.
+type MaxWidthElement struct {
+	Value int
 }
 
-// LineStyle returns a new LineStyle element.
-func LineStyle(children ...Element) *CompoundElement {
-	return newCE("LineStyle", children)
+// MaxWidth returns a new MaxWidthElement.
+func MaxWidth(value int) *MaxWidthElement {
+	return &MaxWidthElement{
+		Value: value,
+	}
 }
 
-// PolyStyle returns a new PolyStyle element.
-func PolyStyle(children ...Element) *CompoundElement {
-	return newCE("PolyStyle", children)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *MaxWidthElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "maxWidth"}}
+	charData := xml.CharData(strconv.Itoa(e.Value))
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// BalloonStyle returns a new BalloonStyle element.
-func BalloonStyle(children ...Element) *CompoundElement {
-	return newCE("BalloonStyle", children)
+// A NameElement is a name element.
+type NameElement struct {
+	Value string
 }
 
-// ListStyle returns a new ListStyle element.
-func ListStyle(children ...Element) *CompoundElement {
-	return newCE("ListStyle", children)
+// Name returns a new NameElement.
+func Name(value string) *NameElement {
+	return &NameElement{
+		Value: value,
+	}
 }
 
-// ItemIcon returns a new ItemIcon element.
-func ItemIcon(children ...Element) *CompoundElement {
-	return newCE("ItemIcon", children)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *NameElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "name"}}
+	charData := xml.CharData(e.Value)
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// TimeStamp returns a new TimeStamp element.
-func TimeStamp(children ...Element) *CompoundElement {
-	return newCE("TimeStamp", children)
+// A NearElement is a near element.
+type NearElement struct {
+	Value float64
 }
 
-// TimeSpan returns a new TimeSpan element.
-func TimeSpan(children ...Element) *CompoundElement {
-	return newCE("TimeSpan", children)
+// Near returns a new NearElement.
+func Near(value float64) *NearElement {
+	return &NearElement{
+		Value: value,
+	}
 }
 
-// Update returns a new Update element.
-func Update(children ...Element) *CompoundElement {
-	return newCE("Update", children)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *NearElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "near"}}
+	charData := xml.CharData(strconv.FormatFloat(e.Value, 'f', -1, 64))
+	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
-// Create returns a new Create element.
-func Create(children ...Element) *CompoundElement {
-	return newCE("Create", children)
+// A NorthElement is a north element.
+type NorthElement struct {
+	Value float64
 }
 
-// Delete returns a new Delete element.
-func Delete(children ...Element) *CompoundElement {
-	return newCE("Delete", children)
+// North returns a new NorthElement.
+func North(value float64) *NorthElement {
+	return &NorthElement{
+		Value: value,
+	}
 }
 
-// Change returns a new Change element.
-func Change(children ...Element) *CompoundElement {
-	return newCE("Change", children)
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *NorthElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "north"}}
+	charData := xml.CharData(strconv.FormatFloat(e.Value, 'f', -1, 64))
+	return encodeElementWithCharData(encoder, startElement, charData)
+}
+
+// An OpenElement is an open element.
+type OpenElement struct {
+	Value bool
+}
+
+// Open returns a new OpenElement.
+func Open(value bool) *OpenElement {
+	return &OpenElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *OpenElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "open"}}
+	var charData xml.CharData
+	if e.Value {
+		charData = xml.CharData("1")
+	} else {
+		charData = xml.CharData("0")
+	}
+	return encodeElementWithCharData(encoder, startElement, charData)
+}
+
+// An OutlineElement is an outline element.
+type OutlineElement struct {
+	Value bool
+}
+
+// Outline returns a new OutlineElement.
+func Outline(value bool) *OutlineElement {
+	return &OutlineElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *OutlineElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "outline"}}
+	var charData xml.CharData
+	if e.Value {
+		charData = xml.CharData("1")
+	} else {
+		charData = xml.CharData("0")
+	}
+	return encodeElementWithCharData(encoder, startElement, charData)
+}
+
+// An OverlayXYElement is an overlayXY element.
+type OverlayXYElement struct {
+	Value Vec2
+}
+
+// OverlayXY returns a new OverlayXYElement.
+func OverlayXY(value Vec2) *OverlayXYElement {
+	return &OverlayXYElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *OverlayXYElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{
+		Name: xml.Name{Local: "overlayXY"},
+		Attr: e.Value.attr(),
+	}
+	return encodeElement(encoder, startElement)
+}
+
+// A PhoneNumberElement is a phoneNumber element.
+type PhoneNumberElement struct {
+	Value string
+}
+
+// PhoneNumber returns a new PhoneNumberElement.
+func PhoneNumber(value string) *PhoneNumberElement {
+	return &PhoneNumberElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *PhoneNumberElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "phoneNumber"}}
+	charData := xml.CharData(e.Value)
+	return encodeElementWithCharData(encoder, startElement, charData)
+}
+
+// A RangeElement is a range element.
+type RangeElement struct {
+	Value float64
+}
+
+// Range returns a new RangeElement.
+func Range(value float64) *RangeElement {
+	return &RangeElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *RangeElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "range"}}
+	charData := xml.CharData(strconv.FormatFloat(e.Value, 'f', -1, 64))
+	return encodeElementWithCharData(encoder, startElement, charData)
+}
+
+// A RefreshModeElement is a refreshMode element.
+type RefreshModeElement struct {
+	Value RefreshModeEnum
+}
+
+// RefreshMode returns a new RefreshModeElement.
+func RefreshMode(value RefreshModeEnum) *RefreshModeElement {
+	return &RefreshModeElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *RefreshModeElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "refreshMode"}}
+	charData := xml.CharData(e.Value)
+	return encodeElementWithCharData(encoder, startElement, charData)
+}
+
+// A RefreshIntervalElement is a refreshInterval element.
+type RefreshIntervalElement struct {
+	Value time.Duration
+}
+
+// RefreshInterval returns a new RefreshIntervalElement.
+func RefreshInterval(value time.Duration) *RefreshIntervalElement {
+	return &RefreshIntervalElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *RefreshIntervalElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "refreshInterval"}}
+	seconds := float64(e.Value) / float64(time.Second)
+	charData := xml.CharData(strconv.FormatFloat(seconds, 'f', -1, 64))
+	return encodeElementWithCharData(encoder, startElement, charData)
+}
+
+// A RefreshVisibilityElement is a refreshVisibility element.
+type RefreshVisibilityElement struct {
+	Value bool
+}
+
+// RefreshVisibility returns a new RefreshVisibilityElement.
+func RefreshVisibility(value bool) *RefreshVisibilityElement {
+	return &RefreshVisibilityElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *RefreshVisibilityElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "refreshVisibility"}}
+	var charData xml.CharData
+	if e.Value {
+		charData = xml.CharData("1")
+	} else {
+		charData = xml.CharData("0")
+	}
+	return encodeElementWithCharData(encoder, startElement, charData)
+}
+
+// A RightFOVElement is a rightFov element.
+type RightFOVElement struct {
+	Value float64
+}
+
+// RightFOV returns a new RightFOVElement.
+func RightFOV(value float64) *RightFOVElement {
+	return &RightFOVElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *RightFOVElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "rightFov"}}
+	charData := xml.CharData(strconv.FormatFloat(e.Value, 'f', -1, 64))
+	return encodeElementWithCharData(encoder, startElement, charData)
+}
+
+// A RollElement is a roll element.
+type RollElement struct {
+	Value float64
+}
+
+// Roll returns a new RollElement.
+func Roll(value float64) *RollElement {
+	return &RollElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *RollElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "roll"}}
+	charData := xml.CharData(strconv.FormatFloat(e.Value, 'f', -1, 64))
+	return encodeElementWithCharData(encoder, startElement, charData)
+}
+
+// A RotationElement is a rotation element.
+type RotationElement struct {
+	Value float64
+}
+
+// Rotation returns a new RotationElement.
+func Rotation(value float64) *RotationElement {
+	return &RotationElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *RotationElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "rotation"}}
+	charData := xml.CharData(strconv.FormatFloat(e.Value, 'f', -1, 64))
+	return encodeElementWithCharData(encoder, startElement, charData)
+}
+
+// A RotationXYElement is a rotationXY element.
+type RotationXYElement struct {
+	Value Vec2
+}
+
+// RotationXY returns a new RotationXYElement.
+func RotationXY(value Vec2) *RotationXYElement {
+	return &RotationXYElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *RotationXYElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{
+		Name: xml.Name{Local: "rotationXY"},
+		Attr: e.Value.attr(),
+	}
+	return encodeElement(encoder, startElement)
+}
+
+// A ScaleElement is a scale element.
+type ScaleElement struct {
+	Value float64
+}
+
+// Scale returns a new ScaleElement.
+func Scale(value float64) *ScaleElement {
+	return &ScaleElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *ScaleElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "scale"}}
+	charData := xml.CharData(strconv.FormatFloat(e.Value, 'f', -1, 64))
+	return encodeElementWithCharData(encoder, startElement, charData)
+}
+
+// A ScreenXYElement is a screenXY element.
+type ScreenXYElement struct {
+	Value Vec2
+}
+
+// ScreenXY returns a new ScreenXYElement.
+func ScreenXY(value Vec2) *ScreenXYElement {
+	return &ScreenXYElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *ScreenXYElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{
+		Name: xml.Name{Local: "screenXY"},
+		Attr: e.Value.attr(),
+	}
+	return encodeElement(encoder, startElement)
+}
+
+// A ShapeElement is a shape element.
+type ShapeElement struct {
+	Value ShapeEnum
+}
+
+// Shape returns a new ShapeElement.
+func Shape(value ShapeEnum) *ShapeElement {
+	return &ShapeElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *ShapeElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "shape"}}
+	charData := xml.CharData(e.Value)
+	return encodeElementWithCharData(encoder, startElement, charData)
+}
+
+// A SizeElement is a size element.
+type SizeElement struct {
+	Value Vec2
+}
+
+// Size returns a new SizeElement.
+func Size(value Vec2) *SizeElement {
+	return &SizeElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *SizeElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{
+		Name: xml.Name{Local: "size"},
+		Attr: e.Value.attr(),
+	}
+	return encodeElement(encoder, startElement)
+}
+
+// A SouthElement is a south element.
+type SouthElement struct {
+	Value float64
+}
+
+// South returns a new SouthElement.
+func South(value float64) *SouthElement {
+	return &SouthElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *SouthElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "south"}}
+	charData := xml.CharData(strconv.FormatFloat(e.Value, 'f', -1, 64))
+	return encodeElementWithCharData(encoder, startElement, charData)
+}
+
+// A SourceHrefElement is a sourceHref element.
+type SourceHrefElement struct {
+	Value string
+}
+
+// SourceHref returns a new SourceHrefElement.
+func SourceHref(value string) *SourceHrefElement {
+	return &SourceHrefElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *SourceHrefElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "sourceHref"}}
+	charData := xml.CharData(e.Value)
+	return encodeElementWithCharData(encoder, startElement, charData)
+}
+
+// A StateElement is a state element.
+type StateElement struct {
+	Value ItemIconStateEnum
+}
+
+// State returns a new StateElement.
+func State(value ItemIconStateEnum) *StateElement {
+	return &StateElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *StateElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "state"}}
+	charData := xml.CharData(e.Value)
+	return encodeElementWithCharData(encoder, startElement, charData)
+}
+
+// A StyleURLElement is a styleUrl element.
+type StyleURLElement struct {
+	Value string
+}
+
+// StyleURL returns a new StyleURLElement.
+func StyleURL(value string) *StyleURLElement {
+	return &StyleURLElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *StyleURLElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "styleUrl"}}
+	charData := xml.CharData(e.Value)
+	return encodeElementWithCharData(encoder, startElement, charData)
+}
+
+// A TargetHrefElement is a targetHref element.
+type TargetHrefElement struct {
+	Value string
+}
+
+// TargetHref returns a new TargetHrefElement.
+func TargetHref(value string) *TargetHrefElement {
+	return &TargetHrefElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *TargetHrefElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "targetHref"}}
+	charData := xml.CharData(e.Value)
+	return encodeElementWithCharData(encoder, startElement, charData)
+}
+
+// A TessellateElement is a tessellate element.
+type TessellateElement struct {
+	Value bool
+}
+
+// Tessellate returns a new TessellateElement.
+func Tessellate(value bool) *TessellateElement {
+	return &TessellateElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *TessellateElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "tessellate"}}
+	var charData xml.CharData
+	if e.Value {
+		charData = xml.CharData("1")
+	} else {
+		charData = xml.CharData("0")
+	}
+	return encodeElementWithCharData(encoder, startElement, charData)
+}
+
+// A TextElement is a text element.
+type TextElement struct {
+	Value string
+}
+
+// Text returns a new TextElement.
+func Text(value string) *TextElement {
+	return &TextElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *TextElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "text"}}
+	charData := xml.CharData(e.Value)
+	return encodeElementWithCharData(encoder, startElement, charData)
+}
+
+// A TextColorElement is a textColor element.
+type TextColorElement struct {
+	Value color.Color
+}
+
+// TextColor returns a new TextColorElement.
+func TextColor(value color.Color) *TextColorElement {
+	return &TextColorElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *TextColorElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "textColor"}}
+	red, green, blue, alpha := e.Value.RGBA()
+	charData := xml.CharData(fmt.Sprintf("%02x%02x%02x%02x", alpha/256, blue/256, green/256, red/256))
+	return encodeElementWithCharData(encoder, startElement, charData)
+}
+
+// A TileSizeElement is a tileSize element.
+type TileSizeElement struct {
+	Value int
+}
+
+// TileSize returns a new TileSizeElement.
+func TileSize(value int) *TileSizeElement {
+	return &TileSizeElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *TileSizeElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "tileSize"}}
+	charData := xml.CharData(strconv.Itoa(e.Value))
+	return encodeElementWithCharData(encoder, startElement, charData)
+}
+
+// A TiltElement is a tilt element.
+type TiltElement struct {
+	Value float64
+}
+
+// Tilt returns a new TiltElement.
+func Tilt(value float64) *TiltElement {
+	return &TiltElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *TiltElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "tilt"}}
+	charData := xml.CharData(strconv.FormatFloat(e.Value, 'f', -1, 64))
+	return encodeElementWithCharData(encoder, startElement, charData)
+}
+
+// A TopFOVElement is a topFov element.
+type TopFOVElement struct {
+	Value float64
+}
+
+// TopFOV returns a new TopFOVElement.
+func TopFOV(value float64) *TopFOVElement {
+	return &TopFOVElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *TopFOVElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "topFov"}}
+	charData := xml.CharData(strconv.FormatFloat(e.Value, 'f', -1, 64))
+	return encodeElementWithCharData(encoder, startElement, charData)
+}
+
+// A ViewBoundScaleElement is a viewBoundScale element.
+type ViewBoundScaleElement struct {
+	Value float64
+}
+
+// ViewBoundScale returns a new ViewBoundScaleElement.
+func ViewBoundScale(value float64) *ViewBoundScaleElement {
+	return &ViewBoundScaleElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *ViewBoundScaleElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "viewBoundScale"}}
+	charData := xml.CharData(strconv.FormatFloat(e.Value, 'f', -1, 64))
+	return encodeElementWithCharData(encoder, startElement, charData)
+}
+
+// A ViewFormatElement is a viewFormat element.
+type ViewFormatElement struct {
+	Value string
+}
+
+// ViewFormat returns a new ViewFormatElement.
+func ViewFormat(value string) *ViewFormatElement {
+	return &ViewFormatElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *ViewFormatElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "viewFormat"}}
+	charData := xml.CharData(e.Value)
+	return encodeElementWithCharData(encoder, startElement, charData)
+}
+
+// A ViewRefreshModeElement is a viewRefreshMode element.
+type ViewRefreshModeElement struct {
+	Value ViewRefreshModeEnum
+}
+
+// ViewRefreshMode returns a new ViewRefreshModeElement.
+func ViewRefreshMode(value ViewRefreshModeEnum) *ViewRefreshModeElement {
+	return &ViewRefreshModeElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *ViewRefreshModeElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "viewRefreshMode"}}
+	charData := xml.CharData(e.Value)
+	return encodeElementWithCharData(encoder, startElement, charData)
+}
+
+// A ViewRefreshTimeElement is a viewRefreshTime element.
+type ViewRefreshTimeElement struct {
+	Value time.Duration
+}
+
+// ViewRefreshTime returns a new ViewRefreshTimeElement.
+func ViewRefreshTime(value time.Duration) *ViewRefreshTimeElement {
+	return &ViewRefreshTimeElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *ViewRefreshTimeElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "viewRefreshTime"}}
+	seconds := float64(e.Value) / float64(time.Second)
+	charData := xml.CharData(strconv.FormatFloat(seconds, 'f', -1, 64))
+	return encodeElementWithCharData(encoder, startElement, charData)
+}
+
+// A VisibilityElement is a visibility element.
+type VisibilityElement struct {
+	Value bool
+}
+
+// Visibility returns a new VisibilityElement.
+func Visibility(value bool) *VisibilityElement {
+	return &VisibilityElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *VisibilityElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "visibility"}}
+	var charData xml.CharData
+	if e.Value {
+		charData = xml.CharData("1")
+	} else {
+		charData = xml.CharData("0")
+	}
+	return encodeElementWithCharData(encoder, startElement, charData)
+}
+
+// A WestElement is a west element.
+type WestElement struct {
+	Value float64
+}
+
+// West returns a new WestElement.
+func West(value float64) *WestElement {
+	return &WestElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *WestElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "west"}}
+	charData := xml.CharData(strconv.FormatFloat(e.Value, 'f', -1, 64))
+	return encodeElementWithCharData(encoder, startElement, charData)
+}
+
+// A WhenElement is a when element.
+type WhenElement struct {
+	Value time.Time
+}
+
+// When returns a new WhenElement.
+func When(value time.Time) *WhenElement {
+	return &WhenElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *WhenElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "when"}}
+	charData := xml.CharData(e.Value.Format(time.RFC3339))
+	return encodeElementWithCharData(encoder, startElement, charData)
+}
+
+// A WidthElement is a width element.
+type WidthElement struct {
+	Value float64
+}
+
+// Width returns a new WidthElement.
+func Width(value float64) *WidthElement {
+	return &WidthElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *WidthElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "width"}}
+	charData := xml.CharData(strconv.FormatFloat(e.Value, 'f', -1, 64))
+	return encodeElementWithCharData(encoder, startElement, charData)
+}
+
+// A XElement is a x element.
+type XElement struct {
+	Value float64
+}
+
+// X returns a new XElement.
+func X(value float64) *XElement {
+	return &XElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *XElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "x"}}
+	charData := xml.CharData(strconv.FormatFloat(e.Value, 'f', -1, 64))
+	return encodeElementWithCharData(encoder, startElement, charData)
+}
+
+// A YElement is a y element.
+type YElement struct {
+	Value float64
+}
+
+// Y returns a new YElement.
+func Y(value float64) *YElement {
+	return &YElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *YElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "y"}}
+	charData := xml.CharData(strconv.FormatFloat(e.Value, 'f', -1, 64))
+	return encodeElementWithCharData(encoder, startElement, charData)
+}
+
+// A ZElement is a z element.
+type ZElement struct {
+	Value float64
+}
+
+// Z returns a new ZElement.
+func Z(value float64) *ZElement {
+	return &ZElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *ZElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "z"}}
+	charData := xml.CharData(strconv.FormatFloat(e.Value, 'f', -1, 64))
+	return encodeElementWithCharData(encoder, startElement, charData)
+}
+
+// A LookAtElement is a LookAt element.
+type LookAtElement struct {
+	Children []Element
+}
+
+// LookAt returns a new LookAtElement.
+func LookAt(children ...Element) *LookAtElement {
+	return &LookAtElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *LookAtElement) Append(children ...Element) *LookAtElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *LookAtElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "LookAt"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A CameraElement is a Camera element.
+type CameraElement struct {
+	Children []Element
+}
+
+// Camera returns a new CameraElement.
+func Camera(children ...Element) *CameraElement {
+	return &CameraElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *CameraElement) Append(children ...Element) *CameraElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *CameraElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "Camera"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A MetadataElement is a Metadata element.
+type MetadataElement struct {
+	Children []Element
+}
+
+// Metadata returns a new MetadataElement.
+func Metadata(children ...Element) *MetadataElement {
+	return &MetadataElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *MetadataElement) Append(children ...Element) *MetadataElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *MetadataElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "Metadata"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// An ExtendedDataElement is an ExtendedData element.
+type ExtendedDataElement struct {
+	Children []Element
+}
+
+// ExtendedData returns a new ExtendedDataElement.
+func ExtendedData(children ...Element) *ExtendedDataElement {
+	return &ExtendedDataElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *ExtendedDataElement) Append(children ...Element) *ExtendedDataElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *ExtendedDataElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "ExtendedData"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A NetworkLinkControlElement is a NetworkLinkControl element.
+type NetworkLinkControlElement struct {
+	Children []Element
+}
+
+// NetworkLinkControl returns a new NetworkLinkControlElement.
+func NetworkLinkControl(children ...Element) *NetworkLinkControlElement {
+	return &NetworkLinkControlElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *NetworkLinkControlElement) Append(children ...Element) *NetworkLinkControlElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *NetworkLinkControlElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "NetworkLinkControl"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A DocumentElement is a Document element.
+type DocumentElement struct {
+	Children []Element
+}
+
+// Document returns a new DocumentElement.
+func Document(children ...Element) *DocumentElement {
+	return &DocumentElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *DocumentElement) Append(children ...Element) *DocumentElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *DocumentElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "Document"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A FolderElement is a Folder element.
+type FolderElement struct {
+	Children []Element
+}
+
+// Folder returns a new FolderElement.
+func Folder(children ...Element) *FolderElement {
+	return &FolderElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *FolderElement) Append(children ...Element) *FolderElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *FolderElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "Folder"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A PlacemarkElement is a Placemark element.
+type PlacemarkElement struct {
+	Children []Element
+}
+
+// Placemark returns a new PlacemarkElement.
+func Placemark(children ...Element) *PlacemarkElement {
+	return &PlacemarkElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *PlacemarkElement) Append(children ...Element) *PlacemarkElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *PlacemarkElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "Placemark"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A NetworkLinkElement is a NetworkLink element.
+type NetworkLinkElement struct {
+	Children []Element
+}
+
+// NetworkLink returns a new NetworkLinkElement.
+func NetworkLink(children ...Element) *NetworkLinkElement {
+	return &NetworkLinkElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *NetworkLinkElement) Append(children ...Element) *NetworkLinkElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *NetworkLinkElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "NetworkLink"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A RegionElement is a Region element.
+type RegionElement struct {
+	Children []Element
+}
+
+// Region returns a new RegionElement.
+func Region(children ...Element) *RegionElement {
+	return &RegionElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *RegionElement) Append(children ...Element) *RegionElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *RegionElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "Region"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A LatLonAltBoxElement is a LatLonAltBox element.
+type LatLonAltBoxElement struct {
+	Children []Element
+}
+
+// LatLonAltBox returns a new LatLonAltBoxElement.
+func LatLonAltBox(children ...Element) *LatLonAltBoxElement {
+	return &LatLonAltBoxElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *LatLonAltBoxElement) Append(children ...Element) *LatLonAltBoxElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *LatLonAltBoxElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "LatLonAltBox"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A LODElement is a Lod element.
+type LODElement struct {
+	Children []Element
+}
+
+// LOD returns a new LODElement.
+func LOD(children ...Element) *LODElement {
+	return &LODElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *LODElement) Append(children ...Element) *LODElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *LODElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "Lod"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// An IconElement is an Icon element.
+type IconElement struct {
+	Children []Element
+}
+
+// Icon returns a new IconElement.
+func Icon(children ...Element) *IconElement {
+	return &IconElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *IconElement) Append(children ...Element) *IconElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *IconElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "Icon"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A LinkElement is a Link element.
+type LinkElement struct {
+	Children []Element
+}
+
+// Link returns a new LinkElement.
+func Link(children ...Element) *LinkElement {
+	return &LinkElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *LinkElement) Append(children ...Element) *LinkElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *LinkElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "Link"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A URLElement is a Url element.
+type URLElement struct {
+	Children []Element
+}
+
+// URL returns a new URLElement.
+func URL(children ...Element) *URLElement {
+	return &URLElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *URLElement) Append(children ...Element) *URLElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *URLElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "Url"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A MultiGeometryElement is a MultiGeometry element.
+type MultiGeometryElement struct {
+	Children []Element
+}
+
+// MultiGeometry returns a new MultiGeometryElement.
+func MultiGeometry(children ...Element) *MultiGeometryElement {
+	return &MultiGeometryElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *MultiGeometryElement) Append(children ...Element) *MultiGeometryElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *MultiGeometryElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "MultiGeometry"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A PointElement is a Point element.
+type PointElement struct {
+	Children []Element
+}
+
+// Point returns a new PointElement.
+func Point(children ...Element) *PointElement {
+	return &PointElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *PointElement) Append(children ...Element) *PointElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *PointElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "Point"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A LineStringElement is a LineString element.
+type LineStringElement struct {
+	Children []Element
+}
+
+// LineString returns a new LineStringElement.
+func LineString(children ...Element) *LineStringElement {
+	return &LineStringElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *LineStringElement) Append(children ...Element) *LineStringElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *LineStringElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "LineString"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A LinearRingElement is a LinearRing element.
+type LinearRingElement struct {
+	Children []Element
+}
+
+// LinearRing returns a new LinearRingElement.
+func LinearRing(children ...Element) *LinearRingElement {
+	return &LinearRingElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *LinearRingElement) Append(children ...Element) *LinearRingElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *LinearRingElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "LinearRing"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A PolygonElement is a Polygon element.
+type PolygonElement struct {
+	Children []Element
+}
+
+// Polygon returns a new PolygonElement.
+func Polygon(children ...Element) *PolygonElement {
+	return &PolygonElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *PolygonElement) Append(children ...Element) *PolygonElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *PolygonElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "Polygon"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// An OuterBoundaryIsElement is an outerBoundaryIs element.
+type OuterBoundaryIsElement struct {
+	Children []Element
+}
+
+// OuterBoundaryIs returns a new OuterBoundaryIsElement.
+func OuterBoundaryIs(children ...Element) *OuterBoundaryIsElement {
+	return &OuterBoundaryIsElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *OuterBoundaryIsElement) Append(children ...Element) *OuterBoundaryIsElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *OuterBoundaryIsElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "outerBoundaryIs"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// An InnerBoundaryIsElement is an innerBoundaryIs element.
+type InnerBoundaryIsElement struct {
+	Children []Element
+}
+
+// InnerBoundaryIs returns a new InnerBoundaryIsElement.
+func InnerBoundaryIs(children ...Element) *InnerBoundaryIsElement {
+	return &InnerBoundaryIsElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *InnerBoundaryIsElement) Append(children ...Element) *InnerBoundaryIsElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *InnerBoundaryIsElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "innerBoundaryIs"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A ModelElement is a Model element.
+type ModelElement struct {
+	Children []Element
+}
+
+// Model returns a new ModelElement.
+func Model(children ...Element) *ModelElement {
+	return &ModelElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *ModelElement) Append(children ...Element) *ModelElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *ModelElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "Model"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A LocationElement is a Location element.
+type LocationElement struct {
+	Children []Element
+}
+
+// Location returns a new LocationElement.
+func Location(children ...Element) *LocationElement {
+	return &LocationElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *LocationElement) Append(children ...Element) *LocationElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *LocationElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "Location"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// An OrientationElement is an Orientation element.
+type OrientationElement struct {
+	Children []Element
+}
+
+// Orientation returns a new OrientationElement.
+func Orientation(children ...Element) *OrientationElement {
+	return &OrientationElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *OrientationElement) Append(children ...Element) *OrientationElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *OrientationElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "Orientation"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A ResourceMapElement is a ResourceMap element.
+type ResourceMapElement struct {
+	Children []Element
+}
+
+// ResourceMap returns a new ResourceMapElement.
+func ResourceMap(children ...Element) *ResourceMapElement {
+	return &ResourceMapElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *ResourceMapElement) Append(children ...Element) *ResourceMapElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *ResourceMapElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "ResourceMap"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// An AliasElement is an Alias element.
+type AliasElement struct {
+	Children []Element
+}
+
+// Alias returns a new AliasElement.
+func Alias(children ...Element) *AliasElement {
+	return &AliasElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *AliasElement) Append(children ...Element) *AliasElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *AliasElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "Alias"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A GroundOverlayElement is a GroundOverlay element.
+type GroundOverlayElement struct {
+	Children []Element
+}
+
+// GroundOverlay returns a new GroundOverlayElement.
+func GroundOverlay(children ...Element) *GroundOverlayElement {
+	return &GroundOverlayElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *GroundOverlayElement) Append(children ...Element) *GroundOverlayElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *GroundOverlayElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "GroundOverlay"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A LatLonBoxElement is a LatLonBox element.
+type LatLonBoxElement struct {
+	Children []Element
+}
+
+// LatLonBox returns a new LatLonBoxElement.
+func LatLonBox(children ...Element) *LatLonBoxElement {
+	return &LatLonBoxElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *LatLonBoxElement) Append(children ...Element) *LatLonBoxElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *LatLonBoxElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "LatLonBox"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A ScreenOverlayElement is a ScreenOverlay element.
+type ScreenOverlayElement struct {
+	Children []Element
+}
+
+// ScreenOverlay returns a new ScreenOverlayElement.
+func ScreenOverlay(children ...Element) *ScreenOverlayElement {
+	return &ScreenOverlayElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *ScreenOverlayElement) Append(children ...Element) *ScreenOverlayElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *ScreenOverlayElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "ScreenOverlay"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A PhotoOverlayElement is a PhotoOverlay element.
+type PhotoOverlayElement struct {
+	Children []Element
+}
+
+// PhotoOverlay returns a new PhotoOverlayElement.
+func PhotoOverlay(children ...Element) *PhotoOverlayElement {
+	return &PhotoOverlayElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *PhotoOverlayElement) Append(children ...Element) *PhotoOverlayElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *PhotoOverlayElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "PhotoOverlay"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A ViewVolumeElement is a ViewVolume element.
+type ViewVolumeElement struct {
+	Children []Element
+}
+
+// ViewVolume returns a new ViewVolumeElement.
+func ViewVolume(children ...Element) *ViewVolumeElement {
+	return &ViewVolumeElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *ViewVolumeElement) Append(children ...Element) *ViewVolumeElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *ViewVolumeElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "ViewVolume"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// An ImagePyramidElement is an ImagePyramid element.
+type ImagePyramidElement struct {
+	Children []Element
+}
+
+// ImagePyramid returns a new ImagePyramidElement.
+func ImagePyramid(children ...Element) *ImagePyramidElement {
+	return &ImagePyramidElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *ImagePyramidElement) Append(children ...Element) *ImagePyramidElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *ImagePyramidElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "ImagePyramid"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A PairElement is a Pair element.
+type PairElement struct {
+	Children []Element
+}
+
+// Pair returns a new PairElement.
+func Pair(children ...Element) *PairElement {
+	return &PairElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *PairElement) Append(children ...Element) *PairElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *PairElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "Pair"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// An IconStyleElement is an IconStyle element.
+type IconStyleElement struct {
+	Children []Element
+}
+
+// IconStyle returns a new IconStyleElement.
+func IconStyle(children ...Element) *IconStyleElement {
+	return &IconStyleElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *IconStyleElement) Append(children ...Element) *IconStyleElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *IconStyleElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "IconStyle"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A LabelStyleElement is a LabelStyle element.
+type LabelStyleElement struct {
+	Children []Element
+}
+
+// LabelStyle returns a new LabelStyleElement.
+func LabelStyle(children ...Element) *LabelStyleElement {
+	return &LabelStyleElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *LabelStyleElement) Append(children ...Element) *LabelStyleElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *LabelStyleElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "LabelStyle"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A LineStyleElement is a LineStyle element.
+type LineStyleElement struct {
+	Children []Element
+}
+
+// LineStyle returns a new LineStyleElement.
+func LineStyle(children ...Element) *LineStyleElement {
+	return &LineStyleElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *LineStyleElement) Append(children ...Element) *LineStyleElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *LineStyleElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "LineStyle"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A PolyStyleElement is a PolyStyle element.
+type PolyStyleElement struct {
+	Children []Element
+}
+
+// PolyStyle returns a new PolyStyleElement.
+func PolyStyle(children ...Element) *PolyStyleElement {
+	return &PolyStyleElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *PolyStyleElement) Append(children ...Element) *PolyStyleElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *PolyStyleElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "PolyStyle"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A BalloonStyleElement is a BalloonStyle element.
+type BalloonStyleElement struct {
+	Children []Element
+}
+
+// BalloonStyle returns a new BalloonStyleElement.
+func BalloonStyle(children ...Element) *BalloonStyleElement {
+	return &BalloonStyleElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *BalloonStyleElement) Append(children ...Element) *BalloonStyleElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *BalloonStyleElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "BalloonStyle"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A ListStyleElement is a ListStyle element.
+type ListStyleElement struct {
+	Children []Element
+}
+
+// ListStyle returns a new ListStyleElement.
+func ListStyle(children ...Element) *ListStyleElement {
+	return &ListStyleElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *ListStyleElement) Append(children ...Element) *ListStyleElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *ListStyleElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "ListStyle"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// An ItemIconElement is an ItemIcon element.
+type ItemIconElement struct {
+	Children []Element
+}
+
+// ItemIcon returns a new ItemIconElement.
+func ItemIcon(children ...Element) *ItemIconElement {
+	return &ItemIconElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *ItemIconElement) Append(children ...Element) *ItemIconElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *ItemIconElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "ItemIcon"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A TimeStampElement is a TimeStamp element.
+type TimeStampElement struct {
+	Children []Element
+}
+
+// TimeStamp returns a new TimeStampElement.
+func TimeStamp(children ...Element) *TimeStampElement {
+	return &TimeStampElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *TimeStampElement) Append(children ...Element) *TimeStampElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *TimeStampElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "TimeStamp"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A TimeSpanElement is a TimeSpan element.
+type TimeSpanElement struct {
+	Children []Element
+}
+
+// TimeSpan returns a new TimeSpanElement.
+func TimeSpan(children ...Element) *TimeSpanElement {
+	return &TimeSpanElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *TimeSpanElement) Append(children ...Element) *TimeSpanElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *TimeSpanElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "TimeSpan"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A UpdateElement is a Update element.
+type UpdateElement struct {
+	Children []Element
+}
+
+// Update returns a new UpdateElement.
+func Update(children ...Element) *UpdateElement {
+	return &UpdateElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *UpdateElement) Append(children ...Element) *UpdateElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *UpdateElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "Update"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A CreateElement is a Create element.
+type CreateElement struct {
+	Children []Element
+}
+
+// Create returns a new CreateElement.
+func Create(children ...Element) *CreateElement {
+	return &CreateElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *CreateElement) Append(children ...Element) *CreateElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *CreateElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "Create"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A DeleteElement is a Delete element.
+type DeleteElement struct {
+	Children []Element
+}
+
+// Delete returns a new DeleteElement.
+func Delete(children ...Element) *DeleteElement {
+	return &DeleteElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *DeleteElement) Append(children ...Element) *DeleteElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *DeleteElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "Delete"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
+// A ChangeElement is a Change element.
+type ChangeElement struct {
+	Children []Element
+}
+
+// Change returns a new ChangeElement.
+func Change(children ...Element) *ChangeElement {
+	return &ChangeElement{
+		Children: children,
+	}
+}
+
+// Append appends children to e.
+func (e *ChangeElement) Append(children ...Element) *ChangeElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *ChangeElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "Change"}}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
 }
