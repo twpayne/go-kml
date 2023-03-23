@@ -4,10 +4,10 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
+	"github.com/alecthomas/assert"
 
-	"github.com/twpayne/go-kml/v2"
-	"github.com/twpayne/go-kml/v2/sphere"
+	"github.com/twpayne/go-kml/v3"
+	"github.com/twpayne/go-kml/v3/sphere"
 )
 
 func TestSphereHaversineDistance(t *testing.T) {
@@ -27,7 +27,7 @@ func TestSphereHaversineDistance(t *testing.T) {
 		},
 	} {
 		t.Run(strconv.Itoa(i), func(t *testing.T) {
-			assert.InDeltaf(t, tc.expected, tc.sphere.HaversineDistance(tc.c1, tc.c2), tc.delta, "")
+			assert.True(t, tc.sphere.HaversineDistance(tc.c1, tc.c2)-tc.expected < tc.delta)
 		})
 	}
 }

@@ -11,9 +11,9 @@ import (
 	"os"
 
 	"github.com/twpayne/go-gpx"
-	kml "github.com/twpayne/go-kml/v2"
-	"github.com/twpayne/go-kml/v2/icon"
-	"github.com/twpayne/go-kml/v2/sphere"
+	kml "github.com/twpayne/go-kml/v3"
+	"github.com/twpayne/go-kml/v3/icon"
+	"github.com/twpayne/go-kml/v3/sphere"
 	polyline "github.com/twpayne/go-polyline"
 )
 
@@ -827,7 +827,7 @@ func (r race) kmlTurnpointsFolder() kml.Element {
 	)
 }
 
-func (r race) kmlDocument() kml.Element {
+func (r race) kmlDocument() *kml.KMLElement {
 	return kml.KML(
 		kml.Document(
 			kml.Name(fmt.Sprintf("%s Route", r.name)),

@@ -5,7 +5,7 @@ package icon
 import (
 	"strconv"
 
-	"github.com/twpayne/go-kml/v2"
+	"github.com/twpayne/go-kml/v3"
 )
 
 // CharacterHref returns the href of the icon wirh the specificed character, or
@@ -50,7 +50,7 @@ func PaddleHref(id string) string {
 
 // PaddleIconStyle returns an IconStyle for the paddle icon with id and the
 // hotspot set. See http://kml4earth.appspot.com/icons.html#paddle.
-func PaddleIconStyle(id string) *kml.CompoundElement {
+func PaddleIconStyle(id string) *kml.IconStyleElement {
 	return kml.IconStyle(
 		kml.HotSpot(kml.Vec2{X: 0.5, Y: 0, XUnits: kml.UnitsFraction, YUnits: kml.UnitsFraction}),
 		kml.Icon(

@@ -4,10 +4,10 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
+	"github.com/alecthomas/assert"
 
-	"github.com/twpayne/go-kml/v2"
-	"github.com/twpayne/go-kml/v2/sphere"
+	"github.com/twpayne/go-kml/v3"
+	"github.com/twpayne/go-kml/v3/sphere"
 )
 
 func TestCircle(t *testing.T) {
