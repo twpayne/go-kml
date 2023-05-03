@@ -69,7 +69,6 @@ linters:
   - stylecheck
   - tagliatelle
   - tenv
-  - testableexamples
   - testpackage
   - thelper
   - tparallel
@@ -93,6 +92,7 @@ linters:
   - nlreturn
   - paralleltest
   - structcheck # https://github.com/golangci/golangci-lint/issues/2649
+  - testableexamples
   - varnamelen
   - wrapcheck
   - wsl
@@ -129,3 +129,6 @@ issues:
     - forbidigo
     - gosec
     path: "internal/"
+  - linters:
+    - goerr113
+    text: do not define dynamic errors, use wrapped static errors instead
