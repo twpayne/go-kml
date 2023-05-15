@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/alecthomas/assert"
+	"github.com/alecthomas/assert/v2"
 
 	kml "github.com/twpayne/go-kml/v3"
 )
