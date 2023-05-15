@@ -4,7 +4,7 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/alecthomas/assert"
+	"github.com/alecthomas/assert/v2"
 
 	"github.com/twpayne/go-kml/v3"
 	"github.com/twpayne/go-kml/v3/sphere"

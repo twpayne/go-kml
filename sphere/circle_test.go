@@ -1,10 +1,11 @@
 package sphere_test
 
 import (
+	"math"
 	"strconv"
 	"testing"
 
-	"github.com/alecthomas/assert"
+	"github.com/alecthomas/assert/v2"
 
 	"github.com/twpayne/go-kml/v3"
 	"github.com/twpayne/go-kml/v3/sphere"
@@ -98,16 +99,24 @@ func TestCircle(t *testing.T) {
 	} {
 		t.Run(strconv.Itoa(i), func(t *testing.T) {
 			actual := sphere.WGS84.Circle(tc.center, tc.radius, tc.maxErr)
-			assert.Len(t, actual, len(tc.expected))
+			assert.Equal(t, len(tc.expected), len(actual))
 			for i, actualCoordinate := range actual {
-				assert.InDelta(t, tc.expected[i].Lon, actualCoordinate.Lon, 1e-14)
-				assert.InDelta(t, tc.expected[i].Lat, actualCoordinate.Lat, 1e-14)
+				assertInDelta(t, tc.expected[i].Lon, actualCoordinate.Lon, 1e-14)
+				assertInDelta(t, tc.expected[i].Lat, actualCoordinate.Lat, 1e-14)
 				assert.Equal(t, tc.center.Alt, actualCoordinate.Alt)
-				assert.InDelta(t, tc.radius, sphere.WGS84.HaversineDistance(tc.center, actualCoordinate), 1e-9)
+				assertInDelta(t, tc.radius, sphere.WGS84.HaversineDistance(tc.center, actualCoordinate), 1e-9)
 			}
 			for _, expectedCoordinate := range tc.expected {
-				assert.InDelta(t, tc.radius, sphere.WGS84.HaversineDistance(tc.center, expectedCoordinate), 1e-9)
+				assertInDelta(t, tc.radius, sphere.WGS84.HaversineDistance(tc.center, expectedCoordinate), 1e-9)
 			}
 		})
 	}
+}
+
+func assertInDelta(tb testing.TB, expected, actual, delta float64) {
+	tb.Helper()
+	if math.Abs(expected-actual) <= delta {
+		return
+	}
+	tb.Fatalf("Expected %f to be within %f of %f", actual, delta, expected)
 }
