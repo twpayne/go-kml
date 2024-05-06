@@ -8,7 +8,7 @@ Package `kml` provides convenience methods for creating and writing KML document
 
 * Simple API for building arbitrarily complex KML documents.
 * Support for all KML elements, including Google Earth `gx:` extensions.
-* Compatibilty with the standard library [`encoding/xml`](https://pkg.go.dev/encoding/xml) package.
+* Compatibility with the standard library [`encoding/xml`](https://pkg.go.dev/encoding/xml) package.
 * Pretty (neatly indented) and compact (minimum size) output formats.
 * Support for shared `Style` and `StyleMap` elements.
 * Simple mapping between functions and KML elements.
