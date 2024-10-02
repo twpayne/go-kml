@@ -7,8 +7,10 @@ linters:
   - asciicheck
   - bidichk
   - bodyclose
+  - canonicalheader
   - containedctx
   - contextcheck
+  - copyloopvar
   - decorder
   - dogsled
   - dupl
@@ -20,7 +22,6 @@ linters:
   - errname
   - errorlint
   - exhaustive
-  - exportloopref
   - fatcontext
   - forbidigo
   - forcetypeassert
@@ -50,6 +51,7 @@ linters:
   - inamedparam
   - ineffassign
   - interfacebloat
+  - intrange
   - ireturn
   - loggercheck
   - makezero
@@ -94,7 +96,6 @@ linters:
   - whitespace
   - zerologlint
   disable:
-  - canonicalheader
   - cyclop
   - depguard
   - exhaustruct
@@ -118,7 +119,6 @@ linters-settings:
     - prefix(github.com/twpayne/go-kml)
   gofumpt:
     extra-rules: true
-    local-prefixes: github.com/twpayne/go-kml
   goimports:
     local-prefixes: github.com/twpayne/go-kml
   govet:
