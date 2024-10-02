@@ -133,7 +133,12 @@ func Data(name string, children ...Element) *DataElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *DataElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *DataElement) Append(children ...Element) *DataElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -224,7 +229,12 @@ func ModelScale(children ...Element) *ModelScaleElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *ModelScaleElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *ModelScaleElement) Append(children ...Element) *ModelScaleElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -260,7 +270,12 @@ func Schema(id string, children ...Element) *SchemaElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *SchemaElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *SchemaElement) Append(children ...Element) *SchemaElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -310,7 +325,12 @@ func SchemaData(schemaURL string, children ...Element) *SchemaDataElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *SchemaDataElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *SchemaDataElement) Append(children ...Element) *SchemaDataElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -369,7 +389,12 @@ func SimpleField(name, _type string, children ...Element) *SimpleFieldElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *SimpleFieldElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *SimpleFieldElement) Append(children ...Element) *SimpleFieldElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -440,7 +465,12 @@ func Style(children ...Element) *StyleElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *StyleElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *StyleElement) Append(children ...Element) *StyleElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -492,7 +522,12 @@ func StyleMap(children ...Element) *StyleMapElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *StyleMapElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *StyleMapElement) Append(children ...Element) *StyleMapElement {
 	e.Children = append(e.Children, children...)
 	return e

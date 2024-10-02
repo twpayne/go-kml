@@ -58,7 +58,12 @@ func {{ $name }}(children ...Element) *{{ $elementTypeName }} {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *{{ $elementTypeName }}) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *{{ $elementTypeName }}) Append(children ...Element) *{{ $elementTypeName }} {
 	e.Children = append(e.Children, children...)
 	return e

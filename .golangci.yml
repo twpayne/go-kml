@@ -126,6 +126,10 @@ linters-settings:
     - fieldalignment
     - shadow
     enable-all: true
+  ireturn:
+    allow:
+    - error
+    - github.com/twpayne/go-kml/v3.ParentElement
   misspell:
     locale: US
   stylecheck:

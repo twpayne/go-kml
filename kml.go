@@ -38,6 +38,12 @@ type Element interface {
 	xml.Marshaler
 }
 
+// A ParentElement is a KML element with children.
+type ParentElement interface {
+	Element
+	Add(children ...Element) ParentElement
+}
+
 // A TopLevelElement is a top level KML element.
 type TopLevelElement interface {
 	Element

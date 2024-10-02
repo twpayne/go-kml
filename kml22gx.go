@@ -152,6 +152,17 @@ func GxSimpleArrayField(name, _type string, children ...Element) *GxSimpleArrayF
 	}
 }
 
+// Add appends children to e and returns e as a ParentElement.
+func (e *GxSimpleArrayFieldElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
+func (e *GxSimpleArrayFieldElement) Append(children ...Element) *GxSimpleArrayFieldElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
 // MarshalXML implements encoding/xml.Marshaler.MarshalXML.
 func (e *GxSimpleArrayFieldElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
 	startElement := xml.StartElement{

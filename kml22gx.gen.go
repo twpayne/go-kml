@@ -436,7 +436,12 @@ func GxAbstractTourPrimitive(children ...Element) *GxAbstractTourPrimitiveElemen
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *GxAbstractTourPrimitiveElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *GxAbstractTourPrimitiveElement) Append(children ...Element) *GxAbstractTourPrimitiveElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -460,7 +465,12 @@ func GxAnimatedUpdate(children ...Element) *GxAnimatedUpdateElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *GxAnimatedUpdateElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *GxAnimatedUpdateElement) Append(children ...Element) *GxAnimatedUpdateElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -484,7 +494,12 @@ func GxFlyTo(children ...Element) *GxFlyToElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *GxFlyToElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *GxFlyToElement) Append(children ...Element) *GxFlyToElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -508,7 +523,12 @@ func GxPlaylist(children ...Element) *GxPlaylistElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *GxPlaylistElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *GxPlaylistElement) Append(children ...Element) *GxPlaylistElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -532,7 +552,12 @@ func GxSoundCue(children ...Element) *GxSoundCueElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *GxSoundCueElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *GxSoundCueElement) Append(children ...Element) *GxSoundCueElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -556,7 +581,12 @@ func GxTour(children ...Element) *GxTourElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *GxTourElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *GxTourElement) Append(children ...Element) *GxTourElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -580,7 +610,12 @@ func GxTimeStamp(children ...Element) *GxTimeStampElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *GxTimeStampElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *GxTimeStampElement) Append(children ...Element) *GxTimeStampElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -604,7 +639,12 @@ func GxTimeSpan(children ...Element) *GxTimeSpanElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *GxTimeSpanElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *GxTimeSpanElement) Append(children ...Element) *GxTimeSpanElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -628,7 +668,12 @@ func GxTourControl(children ...Element) *GxTourControlElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *GxTourControlElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *GxTourControlElement) Append(children ...Element) *GxTourControlElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -652,7 +697,12 @@ func GxWait(children ...Element) *GxWaitElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *GxWaitElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *GxWaitElement) Append(children ...Element) *GxWaitElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -676,7 +726,12 @@ func GxLatLonQuad(children ...Element) *GxLatLonQuadElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *GxLatLonQuadElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *GxLatLonQuadElement) Append(children ...Element) *GxLatLonQuadElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -700,7 +755,12 @@ func GxTrack(children ...Element) *GxTrackElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *GxTrackElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *GxTrackElement) Append(children ...Element) *GxTrackElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -724,7 +784,12 @@ func GxMultiTrack(children ...Element) *GxMultiTrackElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *GxMultiTrackElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *GxMultiTrackElement) Append(children ...Element) *GxMultiTrackElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -748,7 +813,12 @@ func GxSimpleArrayData(children ...Element) *GxSimpleArrayDataElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *GxSimpleArrayDataElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *GxSimpleArrayDataElement) Append(children ...Element) *GxSimpleArrayDataElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -772,7 +842,12 @@ func GxViewerOptions(children ...Element) *GxViewerOptionsElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *GxViewerOptionsElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *GxViewerOptionsElement) Append(children ...Element) *GxViewerOptionsElement {
 	e.Children = append(e.Children, children...)
 	return e
