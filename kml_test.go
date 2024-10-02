@@ -165,6 +165,11 @@ func TestSimpleElements(t *testing.T) {
 			expected: `<overlayXY x="0" y="0" xunits="fraction" yunits="fraction"></overlayXY>`,
 		},
 		{
+			name:     "Snippet",
+			element:  kml.Snippet("snippet").WithMaxLines(1),
+			expected: `<Snippet maxLines="1">snippet</Snippet>`,
+		},
+		{
 			name:     "value_charData",
 			element:  kml.Value(xml.CharData("<>")),
 			expected: "<value>&lt;&gt;</value>",
@@ -289,10 +294,10 @@ func TestSimpleElements(t *testing.T) {
 	}
 }
 
-func TestCompoundElements(t *testing.T) {
+func TestParentElements(t *testing.T) {
 	for _, tc := range []struct {
 		name     string
-		element  kml.Element
+		element  kml.ParentElement
 		expected string
 	}{
 		{
@@ -396,11 +401,6 @@ func TestCompoundElements(t *testing.T) {
 				`<displayName>Power</displayName>` +
 				`</gx:SimpleArrayField>` +
 				`</Schema>`,
-		},
-		{
-			name:     "Snippet",
-			element:  kml.Snippet("snippet").WithMaxLines(1),
-			expected: `<Snippet maxLines="1">snippet</Snippet>`,
 		},
 		{
 			name: "gx:Wait",

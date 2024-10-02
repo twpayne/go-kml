@@ -1789,7 +1789,12 @@ func LookAt(children ...Element) *LookAtElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *LookAtElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *LookAtElement) Append(children ...Element) *LookAtElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -1813,7 +1818,12 @@ func Camera(children ...Element) *CameraElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *CameraElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *CameraElement) Append(children ...Element) *CameraElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -1837,7 +1847,12 @@ func Metadata(children ...Element) *MetadataElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *MetadataElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *MetadataElement) Append(children ...Element) *MetadataElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -1861,7 +1876,12 @@ func ExtendedData(children ...Element) *ExtendedDataElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *ExtendedDataElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *ExtendedDataElement) Append(children ...Element) *ExtendedDataElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -1885,7 +1905,12 @@ func NetworkLinkControl(children ...Element) *NetworkLinkControlElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *NetworkLinkControlElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *NetworkLinkControlElement) Append(children ...Element) *NetworkLinkControlElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -1909,7 +1934,12 @@ func Document(children ...Element) *DocumentElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *DocumentElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *DocumentElement) Append(children ...Element) *DocumentElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -1933,7 +1963,12 @@ func Folder(children ...Element) *FolderElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *FolderElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *FolderElement) Append(children ...Element) *FolderElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -1957,7 +1992,12 @@ func Placemark(children ...Element) *PlacemarkElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *PlacemarkElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *PlacemarkElement) Append(children ...Element) *PlacemarkElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -1981,7 +2021,12 @@ func NetworkLink(children ...Element) *NetworkLinkElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *NetworkLinkElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *NetworkLinkElement) Append(children ...Element) *NetworkLinkElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -2005,7 +2050,12 @@ func Region(children ...Element) *RegionElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *RegionElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *RegionElement) Append(children ...Element) *RegionElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -2029,7 +2079,12 @@ func LatLonAltBox(children ...Element) *LatLonAltBoxElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *LatLonAltBoxElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *LatLonAltBoxElement) Append(children ...Element) *LatLonAltBoxElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -2053,7 +2108,12 @@ func LOD(children ...Element) *LODElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *LODElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *LODElement) Append(children ...Element) *LODElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -2077,7 +2137,12 @@ func Icon(children ...Element) *IconElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *IconElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *IconElement) Append(children ...Element) *IconElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -2101,7 +2166,12 @@ func Link(children ...Element) *LinkElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *LinkElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *LinkElement) Append(children ...Element) *LinkElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -2125,7 +2195,12 @@ func URL(children ...Element) *URLElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *URLElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *URLElement) Append(children ...Element) *URLElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -2149,7 +2224,12 @@ func MultiGeometry(children ...Element) *MultiGeometryElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *MultiGeometryElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *MultiGeometryElement) Append(children ...Element) *MultiGeometryElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -2173,7 +2253,12 @@ func Point(children ...Element) *PointElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *PointElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *PointElement) Append(children ...Element) *PointElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -2197,7 +2282,12 @@ func LineString(children ...Element) *LineStringElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *LineStringElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *LineStringElement) Append(children ...Element) *LineStringElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -2221,7 +2311,12 @@ func LinearRing(children ...Element) *LinearRingElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *LinearRingElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *LinearRingElement) Append(children ...Element) *LinearRingElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -2245,7 +2340,12 @@ func Polygon(children ...Element) *PolygonElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *PolygonElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *PolygonElement) Append(children ...Element) *PolygonElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -2269,7 +2369,12 @@ func OuterBoundaryIs(children ...Element) *OuterBoundaryIsElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *OuterBoundaryIsElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *OuterBoundaryIsElement) Append(children ...Element) *OuterBoundaryIsElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -2293,7 +2398,12 @@ func InnerBoundaryIs(children ...Element) *InnerBoundaryIsElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *InnerBoundaryIsElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *InnerBoundaryIsElement) Append(children ...Element) *InnerBoundaryIsElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -2317,7 +2427,12 @@ func Model(children ...Element) *ModelElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *ModelElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *ModelElement) Append(children ...Element) *ModelElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -2341,7 +2456,12 @@ func Location(children ...Element) *LocationElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *LocationElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *LocationElement) Append(children ...Element) *LocationElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -2365,7 +2485,12 @@ func Orientation(children ...Element) *OrientationElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *OrientationElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *OrientationElement) Append(children ...Element) *OrientationElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -2389,7 +2514,12 @@ func ResourceMap(children ...Element) *ResourceMapElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *ResourceMapElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *ResourceMapElement) Append(children ...Element) *ResourceMapElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -2413,7 +2543,12 @@ func Alias(children ...Element) *AliasElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *AliasElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *AliasElement) Append(children ...Element) *AliasElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -2437,7 +2572,12 @@ func GroundOverlay(children ...Element) *GroundOverlayElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *GroundOverlayElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *GroundOverlayElement) Append(children ...Element) *GroundOverlayElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -2461,7 +2601,12 @@ func LatLonBox(children ...Element) *LatLonBoxElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *LatLonBoxElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *LatLonBoxElement) Append(children ...Element) *LatLonBoxElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -2485,7 +2630,12 @@ func ScreenOverlay(children ...Element) *ScreenOverlayElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *ScreenOverlayElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *ScreenOverlayElement) Append(children ...Element) *ScreenOverlayElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -2509,7 +2659,12 @@ func PhotoOverlay(children ...Element) *PhotoOverlayElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *PhotoOverlayElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *PhotoOverlayElement) Append(children ...Element) *PhotoOverlayElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -2533,7 +2688,12 @@ func ViewVolume(children ...Element) *ViewVolumeElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *ViewVolumeElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *ViewVolumeElement) Append(children ...Element) *ViewVolumeElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -2557,7 +2717,12 @@ func ImagePyramid(children ...Element) *ImagePyramidElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *ImagePyramidElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *ImagePyramidElement) Append(children ...Element) *ImagePyramidElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -2581,7 +2746,12 @@ func Pair(children ...Element) *PairElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *PairElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *PairElement) Append(children ...Element) *PairElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -2605,7 +2775,12 @@ func IconStyle(children ...Element) *IconStyleElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *IconStyleElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *IconStyleElement) Append(children ...Element) *IconStyleElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -2629,7 +2804,12 @@ func LabelStyle(children ...Element) *LabelStyleElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *LabelStyleElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *LabelStyleElement) Append(children ...Element) *LabelStyleElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -2653,7 +2833,12 @@ func LineStyle(children ...Element) *LineStyleElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *LineStyleElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *LineStyleElement) Append(children ...Element) *LineStyleElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -2677,7 +2862,12 @@ func PolyStyle(children ...Element) *PolyStyleElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *PolyStyleElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *PolyStyleElement) Append(children ...Element) *PolyStyleElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -2701,7 +2891,12 @@ func BalloonStyle(children ...Element) *BalloonStyleElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *BalloonStyleElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *BalloonStyleElement) Append(children ...Element) *BalloonStyleElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -2725,7 +2920,12 @@ func ListStyle(children ...Element) *ListStyleElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *ListStyleElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *ListStyleElement) Append(children ...Element) *ListStyleElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -2749,7 +2949,12 @@ func ItemIcon(children ...Element) *ItemIconElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *ItemIconElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *ItemIconElement) Append(children ...Element) *ItemIconElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -2773,7 +2978,12 @@ func TimeStamp(children ...Element) *TimeStampElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *TimeStampElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *TimeStampElement) Append(children ...Element) *TimeStampElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -2797,7 +3007,12 @@ func TimeSpan(children ...Element) *TimeSpanElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *TimeSpanElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *TimeSpanElement) Append(children ...Element) *TimeSpanElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -2821,7 +3036,12 @@ func Update(children ...Element) *UpdateElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *UpdateElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *UpdateElement) Append(children ...Element) *UpdateElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -2845,7 +3065,12 @@ func Create(children ...Element) *CreateElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *CreateElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *CreateElement) Append(children ...Element) *CreateElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -2869,7 +3094,12 @@ func Delete(children ...Element) *DeleteElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *DeleteElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *DeleteElement) Append(children ...Element) *DeleteElement {
 	e.Children = append(e.Children, children...)
 	return e
@@ -2893,7 +3123,12 @@ func Change(children ...Element) *ChangeElement {
 	}
 }
 
-// Append appends children to e.
+// Add appends children to e and returns e as a ParentElement.
+func (e *ChangeElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
 func (e *ChangeElement) Append(children ...Element) *ChangeElement {
 	e.Children = append(e.Children, children...)
 	return e
