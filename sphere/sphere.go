@@ -46,7 +46,7 @@ func (t T) Offset(origin kml.Coordinate, distance, bearing float64) kml.Coordina
 func (t T) Circle(center kml.Coordinate, radius, maxErr float64) []kml.Coordinate {
 	numVertices := int(math.Ceil(math.Pi / math.Acos((radius-maxErr)/(radius+maxErr))))
 	cs := make([]kml.Coordinate, numVertices+1)
-	for i := 0; i < numVertices; i++ {
+	for i := range numVertices {
 		cs[i] = t.Offset(center, radius, 360*float64(i)/float64(numVertices))
 	}
 	cs[numVertices] = cs[0]

@@ -1,11 +1,16 @@
+run:
+  go: '1.22'
+
 linters:
   enable:
   - asasalint
   - asciicheck
   - bidichk
   - bodyclose
+  - canonicalheader
   - containedctx
   - contextcheck
+  - copyloopvar
   - decorder
   - dogsled
   - dupl
@@ -17,7 +22,6 @@ linters:
   - errname
   - errorlint
   - exhaustive
-  - exportloopref
   - fatcontext
   - forbidigo
   - forcetypeassert
@@ -47,6 +51,7 @@ linters:
   - inamedparam
   - ineffassign
   - interfacebloat
+  - intrange
   - ireturn
   - loggercheck
   - makezero
@@ -77,6 +82,7 @@ linters:
   - tagalign
   - tagliatelle
   - tenv
+  - testableexamples
   - testifylint
   - testpackage
   - thelper
@@ -90,7 +96,6 @@ linters:
   - whitespace
   - zerologlint
   disable:
-  - canonicalheader
   - cyclop
   - depguard
   - exhaustruct
@@ -102,7 +107,6 @@ linters:
   - maintidx
   - nlreturn
   - paralleltest
-  - testableexamples
   - varnamelen
   - wrapcheck
   - wsl
@@ -115,7 +119,6 @@ linters-settings:
     - prefix(github.com/twpayne/go-kml)
   gofumpt:
     extra-rules: true
-    local-prefixes: github.com/twpayne/go-kml
   goimports:
     local-prefixes: github.com/twpayne/go-kml
   govet:
