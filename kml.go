@@ -1,5 +1,5 @@
-//go:generate go run ./internal/generate -o kml22gx.gen.go -n gx: xsd/kml22gx.xsd
-//go:generate go run ./internal/generate -o ogckml22.gen.go xsd/ogckml22.xsd
+//go:generate go tool generate -o kml22gx.gen.go -n gx: xsd/kml22gx.xsd
+//go:generate go tool generate -o ogckml22.gen.go xsd/ogckml22.xsd
 
 // Package kml provides convenience methods for creating and writing KML documents.
 //
