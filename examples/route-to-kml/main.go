@@ -6,9 +6,10 @@ import (
 	"image/color"
 	"os"
 
+	"github.com/twpayne/go-waypoint"
+
 	"github.com/twpayne/go-kml/v3"
 	"github.com/twpayne/go-kml/v3/icon"
-	"github.com/twpayne/go-waypoint"
 )
 
 var name = flag.String("name", "Route", "name")
@@ -44,25 +45,25 @@ func run() error {
 		waypointsByID[w.ID] = w
 	}
 
-	var turnpoints []*waypoint.T
+	turnpoints := make([]*waypoint.T, flag.NArg()-1)
 	turnpointIDs := make(map[string]bool)
-	for _, arg := range flag.Args()[1:] {
+	for i, arg := range flag.Args()[1:] {
 		turnpoint, ok := waypointsByID[arg]
 		if !ok {
 			return fmt.Errorf("unknown waypoint: %s", arg)
 		}
-		turnpoints = append(turnpoints, turnpoint)
+		turnpoints[i] = turnpoint
 		turnpointIDs[arg] = true
 	}
 
-	var routeCoordinates []kml.Coordinate
-	for _, turnpoint := range turnpoints {
+	routeCoordinates := make([]kml.Coordinate, len(turnpoints))
+	for i, turnpoint := range turnpoints {
 		coordinate := kml.Coordinate{
 			Lon: turnpoint.Longitude,
 			Lat: turnpoint.Latitude,
 			Alt: turnpoint.Altitude,
 		}
-		routeCoordinates = append(routeCoordinates, coordinate)
+		routeCoordinates[i] = coordinate
 	}
 
 	routeFolder := kml.Folder(
@@ -86,8 +87,8 @@ func run() error {
 		),
 	)
 
-	var turnpointFolders []kml.Element
-	for i := 0; i < len(turnpoints)-1; i++ {
+	turnpointFolders := make([]kml.Element, len(turnpoints))
+	for i := range turnpoints {
 		turnpoint := turnpoints[i]
 		var name string
 		var paddleID string
@@ -124,7 +125,7 @@ func run() error {
 				),
 			),
 		)
-		turnpointFolders = append(turnpointFolders, turnpointFolder)
+		turnpointFolders[i] = turnpointFolder
 	}
 
 	turnpointsFolder := kml.Folder(
@@ -136,7 +137,7 @@ func run() error {
 		)...,
 	)
 
-	var waypointFolders []kml.Element
+	waypointFolders := make([]kml.Element, 0, len(waypoints))
 	for _, waypoint := range waypoints {
 		if _, ok := turnpointIDs[waypoint.ID]; ok {
 			continue

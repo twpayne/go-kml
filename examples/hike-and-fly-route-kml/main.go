@@ -9,12 +9,14 @@ import (
 	"log"
 	"net/url"
 	"os"
+	"strconv"
 
 	"github.com/twpayne/go-gpx"
+	polyline "github.com/twpayne/go-polyline"
+
 	kml "github.com/twpayne/go-kml/v3"
 	"github.com/twpayne/go-kml/v3/icon"
 	"github.com/twpayne/go-kml/v3/sphere"
-	polyline "github.com/twpayne/go-polyline"
 )
 
 var (
@@ -543,7 +545,7 @@ var races = map[string]race{
 				lat:    43.309111,
 				lon:    -1.635409,
 				paddle: "1",
-				notes:  "Pilots must walk across the gate on the summit. If it is flyable, the organisation will mark the take off.",
+				notes:  "Pilots must walk across the gate on the summit. If it is flyable, the organization will mark the take off.",
 			},
 			{
 				name:   "TP2: Orhi",
@@ -677,9 +679,9 @@ func (tp turnpoint) desc() string {
 	case tp.notes != "":
 		return tp.notes
 	case tp.pass != "":
-		return fmt.Sprintf("pass %s", tp.pass)
+		return "pass " + tp.pass
 	case tp.radius != 0:
-		return fmt.Sprintf("%dm radius", tp.radius)
+		return strconv.Itoa(tp.radius) + "m radius"
 	default:
 		return ""
 	}
@@ -759,11 +761,11 @@ func (tp turnpoint) kmlFolder() kml.Element {
 }
 
 func (r race) gpx() *gpx.GPX {
-	var wpts []*gpx.WptType
 	rte := &gpx.RteType{
 		Name: r.name,
 		Desc: r.snippet,
 	}
+	wpts := make([]*gpx.WptType, 0, len(r.turnpoints))
 	for _, tp := range r.turnpoints {
 		if tp.offRoute {
 			continue
@@ -816,9 +818,9 @@ func (r race) kmlRouteFolder() kml.Element {
 }
 
 func (r race) kmlTurnpointsFolder() kml.Element {
-	var turnpointFolders []kml.Element
-	for _, tp := range r.turnpoints {
-		turnpointFolders = append(turnpointFolders, tp.kmlFolder())
+	turnpointFolders := make([]kml.Element, len(r.turnpoints))
+	for i, tp := range r.turnpoints {
+		turnpointFolders[i] = tp.kmlFolder()
 	}
 	return kml.Folder(append([]kml.Element{
 		kml.Name("Turnpoints"),
@@ -830,7 +832,7 @@ func (r race) kmlTurnpointsFolder() kml.Element {
 func (r race) kmlDocument() *kml.KMLElement {
 	return kml.KML(
 		kml.Document(
-			kml.Name(fmt.Sprintf("%s Route", r.name)),
+			kml.Name(r.name+" Route"),
 			kml.Snippet(r.snippet),
 			kml.Open(true),
 			r.kmlRouteFolder(),
@@ -840,9 +842,9 @@ func (r race) kmlDocument() *kml.KMLElement {
 }
 
 func (r race) flyXCURL() *url.URL {
-	var coords [][]float64
-	for _, tp := range r.turnpoints {
-		coords = append(coords, []float64{tp.lat, tp.lon})
+	coords := make([][]float64, len(r.turnpoints))
+	for i, tp := range r.turnpoints {
+		coords[i] = []float64{tp.lat, tp.lon}
 	}
 	vs := url.Values{}
 	vs.Set("p", string(polyline.EncodeCoords(coords)))
