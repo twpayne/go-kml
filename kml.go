@@ -51,6 +51,16 @@ type TopLevelElement interface {
 	WriteIndent(w io.Writer, prefix, indent string) error
 }
 
+// MakeElements converts a slice of any type that implements Element to a slice
+// of Elements.
+func MakeElements[S []T, T Element](s S) []Element {
+	elements := make([]Element, len(s))
+	for i, element := range s {
+		elements[i] = element
+	}
+	return elements
+}
+
 func encodeElement(encoder *xml.Encoder, startElement xml.StartElement) error {
 	if err := encoder.EncodeToken(startElement); err != nil {
 		return err
