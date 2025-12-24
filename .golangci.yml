@@ -1,8 +1,9 @@
 version: "2"
 run:
-  go: "1.22"
+  go: "1.24"
 linters:
   enable:
+    - arangolint
     - asasalint
     - asciicheck
     - bidichk
@@ -16,14 +17,17 @@ linters:
     - dupl
     - dupword
     - durationcheck
+    - embeddedstructfieldcheck
     - err113
     - errchkjson
     - errname
     - errorlint
     - exhaustive
+    - exptostd
     - fatcontext
     - forbidigo
     - forcetypeassert
+    - funcorder
     - ginkgolinter
     - gocheckcompilerdirectives
     - gochecknoinits
@@ -45,20 +49,24 @@ linters:
     - inamedparam
     - interfacebloat
     - intrange
+    - iotamixing
     - ireturn
     - loggercheck
     - makezero
     - mirror
     - misspell
+    - modernize
     - musttag
     - nakedret
     - nestif
     - nilerr
+    - nilnesserr
     - nilnil
     - noctx
     - nolintlint
     - nonamedreturns
     - nosprintfhostport
+    - paralleltest
     - perfsprint
     - prealloc
     - predeclared
@@ -81,7 +89,9 @@ linters:
     - tparallel
     - unconvert
     - unparam
+    - unqueryvet
     - usestdlibvars
+    - usetesting
     - wastedassign
     - whitespace
     - zerologlint
@@ -94,11 +104,13 @@ linters:
     - godox
     - lll
     - maintidx
+    - mnd
     - nlreturn
     - paralleltest
     - varnamelen
     - wrapcheck
     - wsl
+    - wsl_v5
   settings:
     govet:
       disable:
