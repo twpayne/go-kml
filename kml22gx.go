@@ -210,3 +210,13 @@ func (e *GxSimpleArrayFieldElement) MarshalXML(encoder *xml.Encoder, _ xml.Start
 	}
 	return encodeElementWithChildren(encoder, startElement, e.Children)
 }
+
+// GxFloat64Value returns a new GxValueElement with the given float64 value.
+func GxFloat64Value(value float64) *GxValueElement {
+	return GxValue(strconv.FormatFloat(value, 'f', -1, 64))
+}
+
+// GxIntValue returns a new GxValueElement with the given float64 value.
+func GxIntValue(value int) *GxValueElement {
+	return GxValue(strconv.Itoa(value))
+}

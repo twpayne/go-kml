@@ -284,6 +284,16 @@ func TestSimpleElements(t *testing.T) {
 			element:  kml.GxValue("value"),
 			expected: "<gx:value>value</gx:value>",
 		},
+		{
+			name:     "gx:value_float64",
+			element:  kml.GxFloat64Value(1.23),
+			expected: "<gx:value>1.23</gx:value>",
+		},
+		{
+			name:     "gx:value_int",
+			element:  kml.GxIntValue(1),
+			expected: "<gx:value>1</gx:value>",
+		},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			var builder strings.Builder
