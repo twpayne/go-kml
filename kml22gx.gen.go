@@ -348,6 +348,25 @@ func (e *GxRankElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) err
 	return encodeElementWithCharData(encoder, startElement, charData)
 }
 
+// A GxValueElement is a value element.
+type GxValueElement struct {
+	Value string
+}
+
+// GxValue returns a new GxValueElement.
+func GxValue(value string) *GxValueElement {
+	return &GxValueElement{
+		Value: value,
+	}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *GxValueElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{Name: xml.Name{Local: "gx:value"}}
+	charData := xml.CharData(e.Value)
+	return encodeElementWithCharData(encoder, startElement, charData)
+}
+
 // A GxXElement is a x element.
 type GxXElement struct {
 	Value int
@@ -798,35 +817,6 @@ func (e *GxMultiTrackElement) Append(children ...Element) *GxMultiTrackElement {
 // MarshalXML implements encoding/xml.Marshaler.MarshalXML.
 func (e *GxMultiTrackElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
 	startElement := xml.StartElement{Name: xml.Name{Local: "gx:MultiTrack"}}
-	return encodeElementWithChildren(encoder, startElement, e.Children)
-}
-
-// A GxSimpleArrayDataElement is a SimpleArrayData element.
-type GxSimpleArrayDataElement struct {
-	Children []Element
-}
-
-// GxSimpleArrayData returns a new GxSimpleArrayDataElement.
-func GxSimpleArrayData(children ...Element) *GxSimpleArrayDataElement {
-	return &GxSimpleArrayDataElement{
-		Children: children,
-	}
-}
-
-// Add appends children to e and returns e as a ParentElement.
-func (e *GxSimpleArrayDataElement) Add(children ...Element) ParentElement {
-	return e.Append(children...)
-}
-
-// Append appends children to e and returns e.
-func (e *GxSimpleArrayDataElement) Append(children ...Element) *GxSimpleArrayDataElement {
-	e.Children = append(e.Children, children...)
-	return e
-}
-
-// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
-func (e *GxSimpleArrayDataElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
-	startElement := xml.StartElement{Name: xml.Name{Local: "gx:SimpleArrayData"}}
 	return encodeElementWithChildren(encoder, startElement, e.Children)
 }
 
