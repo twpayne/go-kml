@@ -136,6 +136,42 @@ func (e *GxOptionElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) e
 	return encodeElement(encoder, startElement)
 }
 
+// A GxSimpleArrayDataElement is a SimpleArrayData element.
+type GxSimpleArrayDataElement struct {
+	Name     string
+	Children []Element
+}
+
+// GxSimpleArrayData returns a new GxSimpleArrayDataElement.
+func GxSimpleArrayData(name string, children ...Element) *GxSimpleArrayDataElement {
+	return &GxSimpleArrayDataElement{
+		Name:     name,
+		Children: children,
+	}
+}
+
+// Add appends children to e and returns e as a ParentElement.
+func (e *GxSimpleArrayDataElement) Add(children ...Element) ParentElement {
+	return e.Append(children...)
+}
+
+// Append appends children to e and returns e.
+func (e *GxSimpleArrayDataElement) Append(children ...Element) *GxSimpleArrayDataElement {
+	e.Children = append(e.Children, children...)
+	return e
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *GxSimpleArrayDataElement) MarshalXML(encoder *xml.Encoder, _ xml.StartElement) error {
+	startElement := xml.StartElement{
+		Name: xml.Name{Local: "gx:SimpleArrayData"},
+		Attr: []xml.Attr{
+			{Name: xml.Name{Local: "name"}, Value: e.Name},
+		},
+	}
+	return encodeElementWithChildren(encoder, startElement, e.Children)
+}
+
 // A GxSimpleArrayFieldElement is a gx:SimpleArrayField element.
 type GxSimpleArrayFieldElement struct {
 	Name     string

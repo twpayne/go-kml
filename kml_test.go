@@ -279,6 +279,11 @@ func TestSimpleElements(t *testing.T) {
 			element:     kml.Value(kml.Value(nil)),
 			expectedErr: "*kml.ValueElement: unsupported type",
 		},
+		{
+			name:     "gx:value",
+			element:  kml.GxValue("value"),
+			expected: "<gx:value>value</gx:value>",
+		},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			var builder strings.Builder

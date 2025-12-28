@@ -40,7 +40,7 @@ const (
 {{- end }}
 
 {{- range .Schema.Element }}
-{{- if or .Abstract (eq .Name "Data" "Scale" "Schema" "SchemaData" "SimpleArrayField" "SimpleData" "SimpleField" "Snippet" "Style" "StyleMap" "angles" "coord" "coordinates" "kml" "linkSnippet" "maxSnippetLines" "option" "snippet" "value") }}
+{{- if or .Abstract (eq .Name "Data" "Scale" "Schema" "SchemaData" "SimpleArrayData" "SimpleArrayField" "SimpleData" "SimpleField" "Snippet" "Style" "StyleMap" "angles" "coord" "coordinates" "kml" "linkSnippet" "maxSnippetLines" "option" "snippet") (and (eq $namespace "") (eq .Name "value")) }}
 {{- continue }}
 {{- else if eq .Name (.Name | titleFirst) "innerBoundaryIs" "outerBoundaryIs" }}
 {{- $name := printf "%s%s" $gxPrefix (.Name | nameToGoName | titleFirst ) }}
