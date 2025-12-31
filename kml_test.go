@@ -294,6 +294,11 @@ func TestSimpleElements(t *testing.T) {
 			element:  kml.GxIntValue(1),
 			expected: "<gx:value>1</gx:value>",
 		},
+		{
+			name:     "Empty",
+			element:  kml.Empty(),
+			expected: "",
+		},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			var builder strings.Builder
