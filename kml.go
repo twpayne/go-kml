@@ -38,6 +38,9 @@ type Element interface {
 	xml.Marshaler
 }
 
+// An EmptyElement is an empty KML element.
+type EmptyElement struct{}
+
 // A ParentElement is a KML element with children.
 type ParentElement interface {
 	Element
@@ -59,6 +62,16 @@ func MakeElements[S []T, T Element](s S) []Element {
 		elements[i] = element
 	}
 	return elements
+}
+
+// Empty returns a new EmptyElement.
+func Empty() *EmptyElement {
+	return &EmptyElement{}
+}
+
+// MarshalXML implements encoding/xml.Marshaler.MarshalXML.
+func (e *EmptyElement) MarshalXML(*xml.Encoder, xml.StartElement) error {
+	return nil
 }
 
 func encodeElement(encoder *xml.Encoder, startElement xml.StartElement) error {
